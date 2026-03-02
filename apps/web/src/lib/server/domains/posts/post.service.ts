@@ -63,6 +63,7 @@ export async function createPost(
     displayName?: string
   }
 ): Promise<CreatePostResult> {
+  console.log(`[domain:posts] createPost: boardId=${input.boardId}`)
   // Basic validation (also done at action layer, but enforced here for direct service calls)
   const title = input.title?.trim()
   const content = input.content?.trim() ?? ''
@@ -165,6 +166,7 @@ export async function createPost(
  * @returns Result containing the updated post or an error
  */
 export async function updatePost(id: PostId, input: UpdatePostInput): Promise<Post> {
+  console.log(`[domain:posts] updatePost: id=${id}`)
   // Get existing post
   const existingPost = await db.query.posts.findFirst({ where: eq(posts.id, id) })
   if (!existingPost) {
@@ -231,6 +233,7 @@ export async function updatePost(id: PostId, input: UpdatePostInput): Promise<Po
  * @returns Result containing the post with details or an error
  */
 export async function getPostById(postId: PostId): Promise<Post> {
+  console.log(`[domain:posts] getPostById: postId=${postId}`)
   // Single query with board relation (validates both exist)
   const post = await db.query.posts.findFirst({
     where: eq(posts.id, postId),

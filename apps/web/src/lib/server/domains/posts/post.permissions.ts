@@ -39,6 +39,9 @@ export async function canEditPost(
   actor: { principalId: PrincipalId; role: 'admin' | 'member' | 'user' },
   portalConfig?: PortalConfig
 ): Promise<PermissionCheckResult> {
+  console.log(
+    `[domain:post-permissions] canEditPost: postId=${postId} principalId=${actor.principalId} role=${actor.role}`
+  )
   // Get the post
   const post = await db.query.posts.findFirst({
     where: eq(posts.id, postId),
@@ -103,6 +106,9 @@ export async function canDeletePost(
   actor: { principalId: PrincipalId; role: 'admin' | 'member' | 'user' },
   portalConfig?: PortalConfig
 ): Promise<PermissionCheckResult> {
+  console.log(
+    `[domain:post-permissions] canDeletePost: postId=${postId} principalId=${actor.principalId} role=${actor.role}`
+  )
   // Get the post
   const post = await db.query.posts.findFirst({
     where: eq(posts.id, postId),
@@ -171,6 +177,9 @@ export async function getPostPermissions(
   canEdit: PermissionCheckResult
   canDelete: PermissionCheckResult
 }> {
+  console.log(
+    `[domain:post-permissions] getPostPermissions: postId=${postId} principalId=${actor.principalId} role=${actor.role}`
+  )
   // Get the post with status in single query (eliminates separate isDefaultStatus query)
   const post = await db.query.posts.findFirst({
     where: eq(posts.id, postId),
@@ -282,6 +291,9 @@ export async function userEditPost(
   input: UserEditPostInput,
   actor: { principalId: PrincipalId; role: 'admin' | 'member' | 'user' }
 ): Promise<Post> {
+  console.log(
+    `[domain:post-permissions] userEditPost: postId=${postId} principalId=${actor.principalId} role=${actor.role}`
+  )
   // Validate input first (no DB needed)
   if (!input.title?.trim()) {
     throw new ValidationError('VALIDATION_ERROR', 'Title is required')
@@ -383,6 +395,9 @@ export async function softDeletePost(
   postId: PostId,
   actor: { principalId: PrincipalId; role: 'admin' | 'member' | 'user' }
 ): Promise<void> {
+  console.log(
+    `[domain:post-permissions] softDeletePost: postId=${postId} principalId=${actor.principalId} role=${actor.role}`
+  )
   // Fetch post with status + portal config in parallel (eliminates duplicate fetches)
   const [existingPost, config] = await Promise.all([
     db.query.posts.findFirst({
@@ -456,6 +471,7 @@ export async function softDeletePost(
  * @returns Restored post
  */
 export async function restorePost(postId: PostId): Promise<Post> {
+  console.log(`[domain:post-permissions] restorePost: postId=${postId}`)
   // Get the post first to validate it exists and is deleted
   const existingPost = await db.query.posts.findFirst({ where: eq(posts.id, postId) })
   if (!existingPost) {
@@ -501,6 +517,7 @@ export async function restorePost(postId: PostId): Promise<Post> {
  * @param postId - Post ID to permanently delete
  */
 export async function permanentDeletePost(postId: PostId): Promise<void> {
+  console.log(`[domain:post-permissions] permanentDeletePost: postId=${postId}`)
   const [deleted] = await db.delete(posts).where(eq(posts.id, postId)).returning()
   if (!deleted) {
     throw new NotFoundError('POST_NOT_FOUND', `Post with ID ${postId} not found`)

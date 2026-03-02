@@ -56,18 +56,25 @@ export const Route = createFileRoute('/accept-invitation/$id')({
     const { id } = params
     const { session } = context
 
+    console.log(
+      `[route:accept-invitation] loader: id=${id}, hasSession=${!!session?.user}, sessionEmail=${session?.user?.email ?? 'none'}`
+    )
+
     const branding = await getInviteBrandingFn({ data: id }).catch(() => DEFAULT_BRANDING)
 
     if (!session?.user) {
+      console.log(`[route:accept-invitation] loader: no session, showing sign-in`)
       return { state: 'not-authenticated' as const, branding }
     }
 
     try {
       const data = await getInvitationDetailsFn({ data: id })
+      console.log(`[route:accept-invitation] loader: state=welcome`)
       return { state: 'welcome' as const, ...data, branding }
     } catch (err) {
       if (isRedirect(err)) throw err
       const message = err instanceof Error ? err.message : 'Failed to load invitation'
+      console.error(`[route:accept-invitation] loader: state=error, message=${message}`)
       return { state: 'error' as const, error: message, branding }
     }
   },
@@ -81,6 +88,7 @@ function AcceptInvitationPage() {
   const { branding } = data
 
   if (errorCode) {
+    console.log(`[route:accept-invitation] component: errorCode=${errorCode}`)
     const message =
       ERROR_MESSAGES[errorCode] ??
       'Something went wrong with the invitation link. Please ask your administrator to resend the invitation.'

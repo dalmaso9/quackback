@@ -55,15 +55,22 @@ const fetchPortalDataSchema = z.object({
 export const getPrincipalIdForUser = createServerFn({ method: 'GET' })
   .inputValidator(z.object({ userId: z.string() }))
   .handler(async ({ data }): Promise<PrincipalId | null> => {
-    const record = await db.query.principal.findFirst({
-      where: eq(principalTable.userId, data.userId as UserId),
-    })
-    return record?.id ?? null
+    console.log(`[fn:portal] getPrincipalIdForUser: userId=${data.userId}`)
+    try {
+      const record = await db.query.principal.findFirst({
+        where: eq(principalTable.userId, data.userId as UserId),
+      })
+      return record?.id ?? null
+    } catch (error) {
+      console.error(`[fn:portal] getPrincipalIdForUser failed:`, error)
+      throw error
+    }
   })
 
 export const fetchPortalData = createServerFn({ method: 'GET' })
   .inputValidator(fetchPortalDataSchema)
   .handler(async ({ data }) => {
+    console.log(`[fn:portal] fetchPortalData: boardSlug=${data.boardSlug}, sort=${data.sort}`)
     // Run ALL queries in parallel for maximum performance
     // Member lookup and votes run independently alongside posts/boards/statuses/tags
     const [memberResult, boardsRaw, postsResult, statuses, tags, allVotedPosts] = await Promise.all(
@@ -128,21 +135,34 @@ export const fetchPortalData = createServerFn({ method: 'GET' })
   })
 
 export const fetchPublicBoards = createServerFn({ method: 'GET' }).handler(async () => {
-  const boards = await listPublicBoardsWithStats()
-  return boards.map((b) => ({ ...b, settings: (b.settings ?? {}) as BoardSettings }))
+  console.log(`[fn:portal] fetchPublicBoards`)
+  try {
+    const boards = await listPublicBoardsWithStats()
+    return boards.map((b) => ({ ...b, settings: (b.settings ?? {}) as BoardSettings }))
+  } catch (error) {
+    console.error(`[fn:portal] fetchPublicBoards failed:`, error)
+    throw error
+  }
 })
 
 export const fetchPublicBoardBySlug = createServerFn({ method: 'GET' })
   .inputValidator(z.object({ slug: z.string() }))
   .handler(async ({ data }) => {
-    const board = await getPublicBoardBySlug(data.slug)
-    if (!board) return null
-    return { ...board, settings: (board.settings ?? {}) as BoardSettings }
+    console.log(`[fn:portal] fetchPublicBoardBySlug: slug=${data.slug}`)
+    try {
+      const board = await getPublicBoardBySlug(data.slug)
+      if (!board) return null
+      return { ...board, settings: (board.settings ?? {}) as BoardSettings }
+    } catch (error) {
+      console.error(`[fn:portal] fetchPublicBoardBySlug failed:`, error)
+      throw error
+    }
   })
 
 export const fetchPublicPostDetail = createServerFn({ method: 'GET' })
   .inputValidator(z.object({ postId: z.string() }))
   .handler(async ({ data }) => {
+    console.log(`[fn:portal] fetchPublicPostDetail: postId=${data.postId}`)
     // Only fetch auth if user has a session cookie (for highlighting own comments)
     const principalId = hasSessionCookie() ? (await getOptionalAuth())?.principal?.id : undefined
     const result = await getPublicPostDetail(data.postId as PostId, principalId)
@@ -189,86 +209,132 @@ export const fetchPublicPostDetail = createServerFn({ method: 'GET' })
 export const fetchPublicPosts = createServerFn({ method: 'GET' })
   .inputValidator(fetchPublicPostsSchema)
   .handler(async ({ data }) => {
-    const result = await listPublicPosts({ ...data, page: 1, limit: 20 })
-    return {
-      ...result,
-      items: result.items.map((p) => ({ ...p, createdAt: p.createdAt.toISOString() })),
+    console.log(`[fn:portal] fetchPublicPosts: boardSlug=${data.boardSlug}, sort=${data.sort}`)
+    try {
+      const result = await listPublicPosts({ ...data, page: 1, limit: 20 })
+      return {
+        ...result,
+        items: result.items.map((p) => ({ ...p, createdAt: p.createdAt.toISOString() })),
+      }
+    } catch (error) {
+      console.error(`[fn:portal] fetchPublicPosts failed:`, error)
+      throw error
     }
   })
 
-export const fetchPublicStatuses = createServerFn({ method: 'GET' }).handler(() =>
-  listPublicStatuses()
-)
+export const fetchPublicStatuses = createServerFn({ method: 'GET' }).handler(async () => {
+  console.log(`[fn:portal] fetchPublicStatuses`)
+  try {
+    return await listPublicStatuses()
+  } catch (error) {
+    console.error(`[fn:portal] fetchPublicStatuses failed:`, error)
+    throw error
+  }
+})
 
-export const fetchPublicTags = createServerFn({ method: 'GET' }).handler(() => listPublicTags())
+export const fetchPublicTags = createServerFn({ method: 'GET' }).handler(async () => {
+  console.log(`[fn:portal] fetchPublicTags`)
+  try {
+    return await listPublicTags()
+  } catch (error) {
+    console.error(`[fn:portal] fetchPublicTags failed:`, error)
+    throw error
+  }
+})
 
 export const fetchUserAvatar = createServerFn({ method: 'GET' })
   .inputValidator(
     z.object({ userId: z.string(), fallbackImageUrl: z.string().nullable().optional() })
   )
   .handler(async ({ data }) => {
-    const user = await db.query.user.findFirst({
-      where: eq(userTable.id, data.userId as UserId),
-      columns: { imageKey: true, image: true },
-    })
+    console.log(`[fn:portal] fetchUserAvatar: userId=${data.userId}`)
+    try {
+      const user = await db.query.user.findFirst({
+        where: eq(userTable.id, data.userId as UserId),
+        columns: { imageKey: true, image: true },
+      })
 
-    if (!user) return { avatarUrl: data.fallbackImageUrl ?? null, hasCustomAvatar: false }
+      if (!user) return { avatarUrl: data.fallbackImageUrl ?? null, hasCustomAvatar: false }
 
-    if (user.imageKey) {
-      const avatarUrl = getPublicUrlOrNull(user.imageKey)
-      if (avatarUrl) {
-        return { avatarUrl, hasCustomAvatar: true }
+      if (user.imageKey) {
+        const avatarUrl = getPublicUrlOrNull(user.imageKey)
+        if (avatarUrl) {
+          return { avatarUrl, hasCustomAvatar: true }
+        }
       }
-    }
 
-    return { avatarUrl: user.image ?? data.fallbackImageUrl ?? null, hasCustomAvatar: false }
+      return { avatarUrl: user.image ?? data.fallbackImageUrl ?? null, hasCustomAvatar: false }
+    } catch (error) {
+      console.error(`[fn:portal] fetchUserAvatar failed:`, error)
+      throw error
+    }
   })
 
 export const fetchAvatars = createServerFn({ method: 'GET' })
   .inputValidator(z.array(z.string()))
   .handler(async ({ data }) => {
-    const principalIds = (data as PrincipalId[]).filter((id): id is PrincipalId => id !== null)
-    if (principalIds.length === 0) return {}
+    console.log(`[fn:portal] fetchAvatars: count=${data.length}`)
+    try {
+      const principalIds = (data as PrincipalId[]).filter((id): id is PrincipalId => id !== null)
+      if (principalIds.length === 0) return {}
 
-    const principals = await db
-      .select({
-        id: principalTable.id,
-        avatarKey: principalTable.avatarKey,
-        avatarUrl: principalTable.avatarUrl,
-      })
-      .from(principalTable)
-      .where(inArray(principalTable.id, principalIds))
+      const principals = await db
+        .select({
+          id: principalTable.id,
+          avatarKey: principalTable.avatarKey,
+          avatarUrl: principalTable.avatarUrl,
+        })
+        .from(principalTable)
+        .where(inArray(principalTable.id, principalIds))
 
-    const avatarMap = new Map<PrincipalId, string | null>()
-    for (const p of principals) {
-      const s3Url = p.avatarKey ? getPublicUrlOrNull(p.avatarKey) : null
-      avatarMap.set(p.id, s3Url ?? p.avatarUrl)
+      const avatarMap = new Map<PrincipalId, string | null>()
+      for (const p of principals) {
+        const s3Url = p.avatarKey ? getPublicUrlOrNull(p.avatarKey) : null
+        avatarMap.set(p.id, s3Url ?? p.avatarUrl)
+      }
+      for (const id of principalIds) {
+        if (!avatarMap.has(id)) avatarMap.set(id, null)
+      }
+
+      return Object.fromEntries(avatarMap)
+    } catch (error) {
+      console.error(`[fn:portal] fetchAvatars failed:`, error)
+      throw error
     }
-    for (const id of principalIds) {
-      if (!avatarMap.has(id)) avatarMap.set(id, null)
-    }
-
-    return Object.fromEntries(avatarMap)
   })
 
 export const fetchSubscriptionStatus = createServerFn({ method: 'GET' })
   .inputValidator(z.object({ principalId: z.string(), postId: z.string() }))
-  .handler(({ data }) =>
-    getSubscriptionStatus(data.principalId as PrincipalId, data.postId as PostId)
-  )
+  .handler(async ({ data }) => {
+    console.log(
+      `[fn:portal] fetchSubscriptionStatus: principalId=${data.principalId}, postId=${data.postId}`
+    )
+    try {
+      return await getSubscriptionStatus(data.principalId as PrincipalId, data.postId as PostId)
+    } catch (error) {
+      console.error(`[fn:portal] fetchSubscriptionStatus failed:`, error)
+      throw error
+    }
+  })
 
 export const fetchPublicRoadmaps = createServerFn({ method: 'GET' }).handler(async () => {
-  const roadmaps = await listPublicRoadmaps()
-  return roadmaps.map((r) => ({
-    id: r.id,
-    name: r.name,
-    slug: r.slug,
-    description: r.description,
-    isPublic: r.isPublic,
-    position: r.position,
-    createdAt: r.createdAt.toISOString(),
-    updatedAt: r.updatedAt.toISOString(),
-  }))
+  console.log(`[fn:portal] fetchPublicRoadmaps`)
+  try {
+    const roadmaps = await listPublicRoadmaps()
+    return roadmaps.map((r) => ({
+      id: r.id,
+      name: r.name,
+      slug: r.slug,
+      description: r.description,
+      isPublic: r.isPublic,
+      position: r.position,
+      createdAt: r.createdAt.toISOString(),
+      updatedAt: r.updatedAt.toISOString(),
+    }))
+  } catch (error) {
+    console.error(`[fn:portal] fetchPublicRoadmaps failed:`, error)
+    throw error
+  }
 })
 
 export const fetchPublicRoadmapPosts = createServerFn({ method: 'GET' })
@@ -286,62 +352,76 @@ export const fetchPublicRoadmapPosts = createServerFn({ method: 'GET' })
     })
   )
   .handler(async ({ data }) => {
-    // Segment filtering requires admin/member role
-    let segmentIds: SegmentId[] | undefined
-    if (data.segmentIds?.length && hasSessionCookie()) {
-      const auth = await getOptionalAuth()
-      if (auth && isTeamMember(auth.principal.role)) {
-        segmentIds = data.segmentIds as SegmentId[]
+    console.log(
+      `[fn:portal] fetchPublicRoadmapPosts: roadmapId=${data.roadmapId}, limit=${data.limit}, offset=${data.offset}`
+    )
+    try {
+      // Segment filtering requires admin/member role
+      let segmentIds: SegmentId[] | undefined
+      if (data.segmentIds?.length && hasSessionCookie()) {
+        const auth = await getOptionalAuth()
+        if (auth && isTeamMember(auth.principal.role)) {
+          segmentIds = data.segmentIds as SegmentId[]
+        }
+        // Non-admin callers silently ignore segmentIds
       }
-      // Non-admin callers silently ignore segmentIds
-    }
 
-    const result = await getPublicRoadmapPosts(data.roadmapId as RoadmapId, {
-      statusId: data.statusId as StatusId | undefined,
-      limit: data.limit ?? 20,
-      offset: data.offset ?? 0,
-      search: data.search,
-      boardIds: data.boardIds as BoardId[] | undefined,
-      tagIds: data.tagIds as TagId[] | undefined,
-      segmentIds,
-      sort: data.sort,
-    })
+      const result = await getPublicRoadmapPosts(data.roadmapId as RoadmapId, {
+        statusId: data.statusId as StatusId | undefined,
+        limit: data.limit ?? 20,
+        offset: data.offset ?? 0,
+        search: data.search,
+        boardIds: data.boardIds as BoardId[] | undefined,
+        tagIds: data.tagIds as TagId[] | undefined,
+        segmentIds,
+        sort: data.sort,
+      })
 
-    return {
-      ...result,
-      items: result.items.map((item) => ({
-        id: String(item.id),
-        title: item.title,
-        voteCount: item.voteCount,
-        statusId: item.statusId ? String(item.statusId) : null,
-        board: { id: String(item.board.id), name: item.board.name, slug: item.board.slug },
-        roadmapEntry: {
-          postId: String(item.roadmapEntry.postId),
-          roadmapId: String(item.roadmapEntry.roadmapId),
-          position: item.roadmapEntry.position,
-        },
-      })),
+      return {
+        ...result,
+        items: result.items.map((item) => ({
+          id: String(item.id),
+          title: item.title,
+          voteCount: item.voteCount,
+          statusId: item.statusId ? String(item.statusId) : null,
+          board: { id: String(item.board.id), name: item.board.name, slug: item.board.slug },
+          roadmapEntry: {
+            postId: String(item.roadmapEntry.postId),
+            roadmapId: String(item.roadmapEntry.roadmapId),
+            position: item.roadmapEntry.position,
+          },
+        })),
+      }
+    } catch (error) {
+      console.error(`[fn:portal] fetchPublicRoadmapPosts failed:`, error)
+      throw error
     }
   })
 
 export const getCommentsSectionDataFn = createServerFn({ method: 'GET' }).handler(async () => {
-  // Early bailout: no session cookie = anonymous user (skip DB queries)
-  if (!hasSessionCookie()) {
-    return {
-      isMember: false,
-      canComment: false,
-      user: undefined,
+  console.log(`[fn:portal] getCommentsSectionDataFn`)
+  try {
+    // Early bailout: no session cookie = anonymous user (skip DB queries)
+    if (!hasSessionCookie()) {
+      return {
+        isMember: false,
+        canComment: false,
+        user: undefined,
+      }
     }
-  }
 
-  const ctx = await getOptionalAuth()
-  const isMember = !!(ctx?.user && ctx?.principal)
+    const ctx = await getOptionalAuth()
+    const isMember = !!(ctx?.user && ctx?.principal)
 
-  return {
-    isMember,
-    canComment: isMember,
-    user: isMember
-      ? { name: ctx.user.name, email: ctx.user.email, principalId: ctx.principal.id }
-      : undefined,
+    return {
+      isMember,
+      canComment: isMember,
+      user: isMember
+        ? { name: ctx.user.name, email: ctx.user.email, principalId: ctx.principal.id }
+        : undefined,
+    }
+  } catch (error) {
+    console.error(`[fn:portal] getCommentsSectionDataFn failed:`, error)
+    throw error
   }
 })

@@ -17,10 +17,17 @@ import { getSession } from './auth'
 export const getInvitationDetailsFn = createServerFn({ method: 'GET' })
   .inputValidator((invitationId: string) => invitationId)
   .handler(async ({ data: invitationId }) => {
+    console.log(`[fn:invitations] getInvitationDetailsFn: invitationId=${invitationId}`)
+
     const session = await getSession()
     if (!session?.user) {
+      console.warn(`[fn:invitations] getInvitationDetailsFn: no session - user not authenticated`)
       throw new Error('Not authenticated')
     }
+
+    console.log(
+      `[fn:invitations] getInvitationDetailsFn: session user=${session.user.email} (${session.user.id})`
+    )
 
     const [inv, settings, authConfig, credentialAccount] = await Promise.all([
       db.query.invitation.findFirst({
@@ -39,12 +46,22 @@ export const getInvitationDetailsFn = createServerFn({ method: 'GET' })
     ])
 
     if (!inv) {
+      console.warn(
+        `[fn:invitations] getInvitationDetailsFn: invitation not found for id=${invitationId}`
+      )
       throw new Error(
         'This invitation could not be found. It may have been cancelled. Please contact your administrator.'
       )
     }
 
+    console.log(
+      `[fn:invitations] getInvitationDetailsFn: invitation found - email=${inv.email}, status=${inv.status}, expiresAt=${inv.expiresAt}`
+    )
+
     if (inv.status !== 'pending') {
+      console.warn(
+        `[fn:invitations] getInvitationDetailsFn: invitation status is '${inv.status}', expected 'pending'`
+      )
       throw new Error(
         inv.status === 'accepted'
           ? "This invitation has already been accepted. If you're having trouble accessing the dashboard, try signing in."
@@ -53,11 +70,17 @@ export const getInvitationDetailsFn = createServerFn({ method: 'GET' })
     }
 
     if (new Date(inv.expiresAt) < new Date()) {
+      console.warn(
+        `[fn:invitations] getInvitationDetailsFn: invitation expired at ${inv.expiresAt}`
+      )
       throw new Error('This invitation has expired. Please ask your administrator to resend it.')
     }
 
     // Verify the authenticated user's email matches the invitation
     if (inv.email.toLowerCase() !== session.user.email?.toLowerCase()) {
+      console.warn(
+        `[fn:invitations] getInvitationDetailsFn: email mismatch - invitation=${inv.email}, session=${session.user.email}`
+      )
       throw new Error(
         'This invitation was sent to a different email address. Please sign in with the email address that received the invitation, or ask your administrator to send a new invitation to your current email.'
       )
@@ -65,6 +88,10 @@ export const getInvitationDetailsFn = createServerFn({ method: 'GET' })
 
     const passwordEnabled = authConfig.oauth.password ?? true
     const requiresPasswordSetup = passwordEnabled && !credentialAccount?.password
+
+    console.log(
+      `[fn:invitations] getInvitationDetailsFn: OK - passwordEnabled=${passwordEnabled}, requiresPasswordSetup=${requiresPasswordSetup}`
+    )
 
     return {
       invite: {
@@ -106,11 +133,13 @@ export const acceptInvitationFn = createServerFn({ method: 'POST' })
       // Get current session
       const session = await getSession()
       if (!session?.user) {
+        console.warn(`[fn:invitations] acceptInvitationFn: no session`)
         throw new Error('Your session has expired. Please sign in again using the invitation link.')
       }
 
       const userId = session.user.id as UserId
       const userEmail = session.user.email?.toLowerCase()
+      console.log(`[fn:invitations] acceptInvitationFn: session user=${userEmail} (${userId})`)
 
       if (!userEmail) {
         throw new Error(
@@ -131,6 +160,9 @@ export const acceptInvitationFn = createServerFn({ method: 'POST' })
         const inv = await db.query.invitation.findFirst({
           where: eq(invitation.id, invitationId as InviteId),
         })
+        console.warn(
+          `[fn:invitations] acceptInvitationFn: claim failed - inv exists=${!!inv}, status=${inv?.status}`
+        )
         if (!inv) throw new Error('This invitation could not be found. It may have been cancelled.')
         throw new Error(
           inv.status === 'accepted'
@@ -140,6 +172,9 @@ export const acceptInvitationFn = createServerFn({ method: 'POST' })
       }
 
       didClaim = true
+      console.log(
+        `[fn:invitations] acceptInvitationFn: claimed invitation, email=${claimed.email}, role=${claimed.role}`
+      )
 
       async function rollbackAndThrow(message: string): Promise<never> {
         await db

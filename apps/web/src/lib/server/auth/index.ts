@@ -356,8 +356,20 @@ export const auth = {
     })
   },
   async handler(request: Request) {
+    const url = new URL(request.url)
+    const isMagicLink = url.pathname.includes('magic-link')
+    if (isMagicLink) {
+      console.log(`[auth] magic-link request: ${request.method} ${url.pathname}${url.search}`)
+    }
     const authInstance = await getAuth()
-    return authInstance.handler(request)
+    const response = await authInstance.handler(request)
+    if (isMagicLink) {
+      const location = response.headers.get('location')
+      console.log(
+        `[auth] magic-link response: status=${response.status}, location=${location ?? 'none'}`
+      )
+    }
+    return response
   },
 }
 

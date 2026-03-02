@@ -67,6 +67,9 @@ export interface MergeSuggestionView {
  * Create a merge suggestion. Uses onConflictDoNothing for the partial unique index.
  */
 export async function createMergeSuggestion(opts: CreateMergeSuggestionOpts): Promise<void> {
+  console.log(
+    `[domain:merge-suggestions] createMergeSuggestion: sourcePostId=${opts.sourcePostId} targetPostId=${opts.targetPostId} hybridScore=${opts.hybridScore}`
+  )
   await db
     .insert(mergeSuggestions)
     .values({
@@ -90,6 +93,9 @@ export async function acceptMergeSuggestion(
   principalId: PrincipalId,
   opts?: { swapDirection?: boolean }
 ): Promise<void> {
+  console.log(
+    `[domain:merge-suggestions] acceptMergeSuggestion: id=${id} principalId=${principalId} swapDirection=${opts?.swapDirection ?? false}`
+  )
   const suggestion = await db.query.mergeSuggestions.findFirst({
     where: (s, { eq }) => eq(s.id, id),
   })
@@ -143,6 +149,9 @@ export async function dismissMergeSuggestion(
   id: MergeSuggestionId,
   principalId: PrincipalId
 ): Promise<void> {
+  console.log(
+    `[domain:merge-suggestions] dismissMergeSuggestion: id=${id} principalId=${principalId}`
+  )
   await db
     .update(mergeSuggestions)
     .set({
@@ -158,6 +167,7 @@ export async function dismissMergeSuggestion(
  * Get pending merge suggestions for a post (where the post is source OR target).
  */
 export async function getPendingSuggestionsForPost(postId: PostId): Promise<MergeSuggestionView[]> {
+  console.log(`[domain:merge-suggestions] getPendingSuggestionsForPost: postId=${postId}`)
   const sourcePostsAlias = db
     .select({
       id: posts.id,
@@ -243,6 +253,9 @@ export async function getPendingMergeSuggestions(opts: {
   }>
   total: number
 }> {
+  console.log(
+    `[domain:merge-suggestions] getPendingMergeSuggestions: sort=${opts.sort ?? 'newest'} limit=${opts.limit ?? 50}`
+  )
   // Step 1: Fetch count + merge suggestion rows in parallel
   const orderBy =
     opts.sort === 'relevance'
@@ -322,6 +335,7 @@ export async function getPendingMergeSuggestions(opts: {
  * Expire stale pending suggestions (older than 30 days).
  */
 export async function expireStaleMergeSuggestions(): Promise<number> {
+  console.log(`[domain:merge-suggestions] expireStaleMergeSuggestions`)
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
   const result = await db
     .update(mergeSuggestions)

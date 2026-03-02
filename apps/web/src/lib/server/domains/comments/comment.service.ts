@@ -103,6 +103,9 @@ export async function createComment(
     role: 'admin' | 'member' | 'user'
   }
 ): Promise<CreateCommentResult> {
+  console.log(
+    `[domain:comments] createComment: postId=${input.postId}, parentId=${input.parentId ?? 'none'}`
+  )
   // Validate post exists (and is not deleted) and eagerly load board in single query
   const post = await db.query.posts.findFirst({
     where: and(eq(posts.id, input.postId), isNull(posts.deletedAt)),
@@ -304,6 +307,7 @@ export async function updateComment(
   input: UpdateCommentInput,
   actor: { principalId: PrincipalId; role: 'admin' | 'member' | 'user' }
 ): Promise<Comment> {
+  console.log(`[domain:comments] updateComment: id=${id}`)
   // Get existing comment with post and board in single query
   const existingComment = await db.query.comments.findFirst({
     where: eq(comments.id, id),
@@ -372,6 +376,7 @@ export async function deleteComment(
   id: CommentId,
   actor: { principalId: PrincipalId; role: 'admin' | 'member' | 'user' }
 ): Promise<void> {
+  console.log(`[domain:comments] deleteComment: id=${id}`)
   // Get existing comment with post and board in single query
   const existingComment = await db.query.comments.findFirst({
     where: eq(comments.id, id),
@@ -426,6 +431,7 @@ export async function deleteComment(
 export async function getCommentById(
   id: CommentId
 ): Promise<Comment & { authorName: string | null; authorEmail: string | null }> {
+  console.log(`[domain:comments] getCommentById: id=${id}`)
   const comment = await db.query.comments.findFirst({
     where: eq(comments.id, id),
     with: {
@@ -475,6 +481,7 @@ export async function getCommentsByPost(
   postId: PostId,
   principalId?: PrincipalId
 ): Promise<CommentThread[]> {
+  console.log(`[domain:comments] getCommentsByPost: postId=${postId}`)
   // Verify post exists
   const post = await db.query.posts.findFirst({ where: eq(posts.id, postId) })
   if (!post) {
@@ -547,6 +554,7 @@ export async function addReaction(
   emoji: string,
   principalId: PrincipalId
 ): Promise<ReactionResult> {
+  console.log(`[domain:comments] addReaction: commentId=${commentId}, emoji=${emoji}`)
   // Verify comment exists with post and board in single query
   const comment = await db.query.comments.findFirst({
     where: eq(comments.id, commentId),
@@ -607,6 +615,7 @@ export async function removeReaction(
   emoji: string,
   principalId: PrincipalId
 ): Promise<ReactionResult> {
+  console.log(`[domain:comments] removeReaction: commentId=${commentId}, emoji=${emoji}`)
   // Verify comment exists with post and board in single query
   const comment = await db.query.comments.findFirst({
     where: eq(comments.id, commentId),
@@ -666,6 +675,7 @@ export async function canEditComment(
   commentId: CommentId,
   actor: { principalId: PrincipalId; role: 'admin' | 'member' | 'user' }
 ): Promise<CommentPermissionCheckResult> {
+  console.log(`[domain:comments] canEditComment: commentId=${commentId}`)
   // Get the comment
   const comment = await db.query.comments.findFirst({
     where: eq(comments.id, commentId),
@@ -714,6 +724,7 @@ export async function canDeleteComment(
   commentId: CommentId,
   actor: { principalId: PrincipalId; role: 'admin' | 'member' | 'user' }
 ): Promise<CommentPermissionCheckResult> {
+  console.log(`[domain:comments] canDeleteComment: commentId=${commentId}`)
   // Get the comment
   const comment = await db.query.comments.findFirst({
     where: eq(comments.id, commentId),
@@ -764,6 +775,7 @@ export async function userEditComment(
   content: string,
   actor: { principalId: PrincipalId; role: 'admin' | 'member' | 'user' }
 ): Promise<Comment> {
+  console.log(`[domain:comments] userEditComment: commentId=${commentId}`)
   // Check permission first
   const permResult = await canEditComment(commentId, actor)
   if (!permResult.allowed) {
@@ -823,6 +835,7 @@ export async function softDeleteComment(
   commentId: CommentId,
   actor: { principalId: PrincipalId; role: 'admin' | 'member' | 'user' }
 ): Promise<void> {
+  console.log(`[domain:comments] softDeleteComment: commentId=${commentId}`)
   // Check permission first
   const permResult = await canDeleteComment(commentId, actor)
   if (!permResult.allowed) {
@@ -893,6 +906,7 @@ export async function canPinComment(commentId: CommentId): Promise<{
   canPin: boolean
   reason?: string
 }> {
+  console.log(`[domain:comments] canPinComment: commentId=${commentId}`)
   const comment = await db.query.comments.findFirst({
     where: eq(comments.id, commentId),
   })
@@ -935,6 +949,7 @@ export async function pinComment(
   commentId: CommentId,
   actor: { principalId: PrincipalId; role: 'admin' | 'member' | 'user' }
 ): Promise<{ postId: PostId }> {
+  console.log(`[domain:comments] pinComment: commentId=${commentId}`)
   // Only team members can pin comments
   if (!isTeamMember(actor.role)) {
     throw new ForbiddenError('UNAUTHORIZED', 'Only team members can pin comments')
@@ -976,6 +991,7 @@ export async function unpinComment(
   postId: PostId,
   actor: { principalId: PrincipalId; role: 'admin' | 'member' | 'user' }
 ): Promise<void> {
+  console.log(`[domain:comments] unpinComment: postId=${postId}`)
   // Only team members can unpin comments
   if (!isTeamMember(actor.role)) {
     throw new ForbiddenError('UNAUTHORIZED', 'Only team members can unpin comments')

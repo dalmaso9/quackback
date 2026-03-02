@@ -84,6 +84,9 @@ const deleteSourceSchema = z.object({
 export const fetchSuggestions = createServerFn({ method: 'GET' })
   .inputValidator(listSuggestionsSchema)
   .handler(async ({ data }) => {
+    console.log(
+      `[fn:feedback] fetchSuggestions: status=${data.status}, sort=${data.sort}, limit=${data.limit}, offset=${data.offset}`
+    )
     await requireAuth({ roles: ['admin', 'member'] })
 
     // If filtering to duplicate_post only, skip feedback suggestions query
@@ -255,6 +258,7 @@ export const fetchSuggestions = createServerFn({ method: 'GET' })
 export const fetchSuggestionDetail = createServerFn({ method: 'GET' })
   .inputValidator(getSuggestionSchema)
   .handler(async ({ data }) => {
+    console.log(`[fn:feedback] fetchSuggestionDetail: id=${data.id}`)
     await requireAuth({ roles: ['admin', 'member'] })
 
     const suggestion = await db.query.feedbackSuggestions.findFirst({
@@ -296,6 +300,7 @@ export const fetchSuggestionDetail = createServerFn({ method: 'GET' })
   })
 
 export const fetchSuggestionStats = createServerFn({ method: 'GET' }).handler(async () => {
+  console.log(`[fn:feedback] fetchSuggestionStats`)
   await requireAuth({ roles: ['admin', 'member'] })
 
   const [feedbackResults, mergeCountResult] = await Promise.all([
@@ -328,6 +333,7 @@ export const fetchSuggestionStats = createServerFn({ method: 'GET' }).handler(as
 })
 
 export const fetchFeedbackPipelineStats = createServerFn({ method: 'GET' }).handler(async () => {
+  console.log(`[fn:feedback] fetchFeedbackPipelineStats`)
   await requireAuth({ roles: ['admin', 'member'] })
 
   const [rawCounts, signalCounts, suggestionCounts] = await Promise.all([
@@ -359,6 +365,7 @@ export const fetchFeedbackPipelineStats = createServerFn({ method: 'GET' }).hand
 })
 
 export const fetchFeedbackSources = createServerFn({ method: 'GET' }).handler(async () => {
+  console.log(`[fn:feedback] fetchFeedbackSources`)
   await requireAuth({ roles: ['admin', 'member'] })
 
   const sources = await db.query.feedbackSources.findMany({
@@ -386,67 +393,119 @@ export const fetchFeedbackSources = createServerFn({ method: 'GET' }).handler(as
 export const acceptSuggestionFn = createServerFn({ method: 'POST' })
   .inputValidator(acceptSuggestionSchema)
   .handler(async ({ data }) => {
-    const auth = await requireAuth({ roles: ['admin', 'member'] })
-
-    // Handle post-to-post merge suggestions (TypeID prefix: merge_sug)
-    if (isTypeId(data.id, 'merge_sug')) {
-      const { acceptMergeSuggestion: acceptPostMerge } =
-        await import('@/lib/server/domains/merge-suggestions/merge-suggestion.service')
-      await acceptPostMerge(data.id, auth.principal.id as PrincipalId, {
-        swapDirection: data.swapDirection,
-      })
-      return { success: true }
-    }
-
-    const suggestion = await db.query.feedbackSuggestions.findFirst({
-      where: eq(feedbackSuggestions.id, data.id as FeedbackSuggestionId),
-      columns: { id: true, suggestionType: true, status: true },
-    })
-
-    if (!suggestion || suggestion.status !== 'pending') {
-      return { success: false, error: 'Suggestion not found or already resolved' }
-    }
-
-    const { acceptCreateSuggestion } =
-      await import('@/lib/server/domains/feedback/pipeline/suggestion.service')
-
-    const result = await acceptCreateSuggestion(
-      data.id as FeedbackSuggestionId,
-      auth.principal.id as PrincipalId,
-      data.edits
+    console.log(
+      `[fn:feedback] acceptSuggestionFn: id=${data.id}, swapDirection=${data.swapDirection}`
     )
-    return { success: true, resultPostId: result.resultPostId }
+    try {
+      const auth = await requireAuth({ roles: ['admin', 'member'] })
+
+      // Handle post-to-post merge suggestions (TypeID prefix: merge_sug)
+      if (isTypeId(data.id, 'merge_sug')) {
+        const { acceptMergeSuggestion: acceptPostMerge } =
+          await import('@/lib/server/domains/merge-suggestions/merge-suggestion.service')
+        await acceptPostMerge(data.id, auth.principal.id as PrincipalId, {
+          swapDirection: data.swapDirection,
+        })
+        return { success: true }
+      }
+
+      const suggestion = await db.query.feedbackSuggestions.findFirst({
+        where: eq(feedbackSuggestions.id, data.id as FeedbackSuggestionId),
+        columns: { id: true, suggestionType: true, status: true },
+      })
+
+      if (!suggestion || suggestion.status !== 'pending') {
+        return { success: false, error: 'Suggestion not found or already resolved' }
+      }
+
+      const { acceptCreateSuggestion } =
+        await import('@/lib/server/domains/feedback/pipeline/suggestion.service')
+
+      const result = await acceptCreateSuggestion(
+        data.id as FeedbackSuggestionId,
+        auth.principal.id as PrincipalId,
+        data.edits
+      )
+      return { success: true, resultPostId: result.resultPostId }
+    } catch (error) {
+      console.error(`[fn:feedback] acceptSuggestionFn failed:`, error)
+      throw error
+    }
   })
 
 export const dismissSuggestionFn = createServerFn({ method: 'POST' })
   .inputValidator(dismissSuggestionSchema)
   .handler(async ({ data }) => {
-    const auth = await requireAuth({ roles: ['admin', 'member'] })
+    console.log(`[fn:feedback] dismissSuggestionFn: id=${data.id}`)
+    try {
+      const auth = await requireAuth({ roles: ['admin', 'member'] })
 
-    // Handle post-to-post merge suggestions (TypeID prefix: merge_sug)
-    if (isTypeId(data.id, 'merge_sug')) {
-      const { dismissMergeSuggestion } =
-        await import('@/lib/server/domains/merge-suggestions/merge-suggestion.service')
-      await dismissMergeSuggestion(data.id, auth.principal.id as PrincipalId)
+      // Handle post-to-post merge suggestions (TypeID prefix: merge_sug)
+      if (isTypeId(data.id, 'merge_sug')) {
+        const { dismissMergeSuggestion } =
+          await import('@/lib/server/domains/merge-suggestions/merge-suggestion.service')
+        await dismissMergeSuggestion(data.id, auth.principal.id as PrincipalId)
+        return { success: true }
+      }
+
+      const { dismissSuggestion } =
+        await import('@/lib/server/domains/feedback/pipeline/suggestion.service')
+
+      await dismissSuggestion(data.id as FeedbackSuggestionId, auth.principal.id as PrincipalId)
+
       return { success: true }
+    } catch (error) {
+      console.error(`[fn:feedback] dismissSuggestionFn failed:`, error)
+      throw error
     }
-
-    const { dismissSuggestion } =
-      await import('@/lib/server/domains/feedback/pipeline/suggestion.service')
-
-    await dismissSuggestion(data.id as FeedbackSuggestionId, auth.principal.id as PrincipalId)
-
-    return { success: true }
   })
 
 export const retryFailedItemFn = createServerFn({ method: 'POST' })
   .inputValidator(retryItemSchema)
   .handler(async ({ data }) => {
+    console.log(`[fn:feedback] retryFailedItemFn: rawItemId=${data.rawItemId}`)
+    try {
+      await requireAuth({ roles: ['admin', 'member'] })
+
+      const { enqueueFeedbackAiJob } =
+        await import('@/lib/server/domains/feedback/queues/feedback-ai-queue')
+
+      await db
+        .update(rawFeedbackItems)
+        .set({
+          processingState: 'ready_for_extraction',
+          stateChangedAt: new Date(),
+          lastError: null,
+          updatedAt: new Date(),
+        })
+        .where(eq(rawFeedbackItems.id, data.rawItemId as any))
+
+      await enqueueFeedbackAiJob({ type: 'extract-signals', rawItemId: data.rawItemId })
+
+      return { success: true }
+    } catch (error) {
+      console.error(`[fn:feedback] retryFailedItemFn failed:`, error)
+      throw error
+    }
+  })
+
+export const retryAllFailedItemsFn = createServerFn({ method: 'POST' }).handler(async () => {
+  console.log(`[fn:feedback] retryAllFailedItemsFn`)
+  try {
     await requireAuth({ roles: ['admin', 'member'] })
 
     const { enqueueFeedbackAiJob } =
       await import('@/lib/server/domains/feedback/queues/feedback-ai-queue')
 
+    // Find all failed items
+    const failedItems = await db.query.rawFeedbackItems.findMany({
+      where: eq(rawFeedbackItems.processingState, 'failed'),
+      columns: { id: true },
+    })
+
+    if (failedItems.length === 0) return { retriedCount: 0 }
+
+    // Reset state and re-enqueue
     await db
       .update(rawFeedbackItems)
       .set({
@@ -455,88 +514,82 @@ export const retryFailedItemFn = createServerFn({ method: 'POST' })
         lastError: null,
         updatedAt: new Date(),
       })
-      .where(eq(rawFeedbackItems.id, data.rawItemId as any))
+      .where(eq(rawFeedbackItems.processingState, 'failed'))
 
-    await enqueueFeedbackAiJob({ type: 'extract-signals', rawItemId: data.rawItemId })
+    for (const item of failedItems) {
+      await enqueueFeedbackAiJob({ type: 'extract-signals', rawItemId: item.id })
+    }
 
-    return { success: true }
-  })
-
-export const retryAllFailedItemsFn = createServerFn({ method: 'POST' }).handler(async () => {
-  await requireAuth({ roles: ['admin', 'member'] })
-
-  const { enqueueFeedbackAiJob } =
-    await import('@/lib/server/domains/feedback/queues/feedback-ai-queue')
-
-  // Find all failed items
-  const failedItems = await db.query.rawFeedbackItems.findMany({
-    where: eq(rawFeedbackItems.processingState, 'failed'),
-    columns: { id: true },
-  })
-
-  if (failedItems.length === 0) return { retriedCount: 0 }
-
-  // Reset state and re-enqueue
-  await db
-    .update(rawFeedbackItems)
-    .set({
-      processingState: 'ready_for_extraction',
-      stateChangedAt: new Date(),
-      lastError: null,
-      updatedAt: new Date(),
-    })
-    .where(eq(rawFeedbackItems.processingState, 'failed'))
-
-  for (const item of failedItems) {
-    await enqueueFeedbackAiJob({ type: 'extract-signals', rawItemId: item.id })
+    return { retriedCount: failedItems.length }
+  } catch (error) {
+    console.error(`[fn:feedback] retryAllFailedItemsFn failed:`, error)
+    throw error
   }
-
-  return { retriedCount: failedItems.length }
 })
 
 export const createFeedbackSourceFn = createServerFn({ method: 'POST' })
   .inputValidator(createSourceSchema)
   .handler(async ({ data }) => {
-    await requireAuth({ roles: ['admin'] })
+    console.log(
+      `[fn:feedback] createFeedbackSourceFn: name=${data.name}, sourceType=${data.sourceType}, deliveryMode=${data.deliveryMode}`
+    )
+    try {
+      await requireAuth({ roles: ['admin'] })
 
-    const [source] = await db
-      .insert(feedbackSources)
-      .values({
-        name: data.name,
-        sourceType: data.sourceType,
-        deliveryMode: data.deliveryMode,
-        config: data.config ?? {},
-      })
-      .returning()
+      const [source] = await db
+        .insert(feedbackSources)
+        .values({
+          name: data.name,
+          sourceType: data.sourceType,
+          deliveryMode: data.deliveryMode,
+          config: data.config ?? {},
+        })
+        .returning()
 
-    return source as any
+      return source as any
+    } catch (error) {
+      console.error(`[fn:feedback] createFeedbackSourceFn failed:`, error)
+      throw error
+    }
   })
 
 export const updateFeedbackSourceFn = createServerFn({ method: 'POST' })
   .inputValidator(updateSourceSchema)
   .handler(async ({ data }) => {
-    await requireAuth({ roles: ['admin'] })
+    console.log(`[fn:feedback] updateFeedbackSourceFn: id=${data.id}`)
+    try {
+      await requireAuth({ roles: ['admin'] })
 
-    const updates: Record<string, unknown> = { updatedAt: new Date() }
-    if (data.name !== undefined) updates.name = data.name
-    if (data.enabled !== undefined) updates.enabled = data.enabled
-    if (data.config !== undefined) updates.config = data.config
+      const updates: Record<string, unknown> = { updatedAt: new Date() }
+      if (data.name !== undefined) updates.name = data.name
+      if (data.enabled !== undefined) updates.enabled = data.enabled
+      if (data.config !== undefined) updates.config = data.config
 
-    const [updated] = await db
-      .update(feedbackSources)
-      .set(updates)
-      .where(eq(feedbackSources.id, data.id as FeedbackSourceId))
-      .returning()
+      const [updated] = await db
+        .update(feedbackSources)
+        .set(updates)
+        .where(eq(feedbackSources.id, data.id as FeedbackSourceId))
+        .returning()
 
-    return updated as any
+      return updated as any
+    } catch (error) {
+      console.error(`[fn:feedback] updateFeedbackSourceFn failed:`, error)
+      throw error
+    }
   })
 
 export const deleteFeedbackSourceFn = createServerFn({ method: 'POST' })
   .inputValidator(deleteSourceSchema)
   .handler(async ({ data }) => {
-    await requireAuth({ roles: ['admin'] })
+    console.log(`[fn:feedback] deleteFeedbackSourceFn: id=${data.id}`)
+    try {
+      await requireAuth({ roles: ['admin'] })
 
-    await db.delete(feedbackSources).where(eq(feedbackSources.id, data.id as FeedbackSourceId))
+      await db.delete(feedbackSources).where(eq(feedbackSources.id, data.id as FeedbackSourceId))
 
-    return { success: true }
+      return { success: true }
+    } catch (error) {
+      console.error(`[fn:feedback] deleteFeedbackSourceFn failed:`, error)
+      throw error
+    }
   })

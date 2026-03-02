@@ -39,6 +39,7 @@ export async function createNotificationsBatch(
   inputs: CreateNotificationInput[],
   tx?: Transaction
 ): Promise<NotificationId[]> {
+  console.log(`[domain:notifications] createNotificationsBatch: count=${inputs.length}`)
   if (inputs.length === 0) return []
 
   const executor = tx ?? db
@@ -69,6 +70,9 @@ export async function createNotification(
   input: CreateNotificationInput,
   tx?: Transaction
 ): Promise<NotificationId> {
+  console.log(
+    `[domain:notifications] createNotification: type=${input.type}, principalId=${input.principalId}`
+  )
   const [id] = await createNotificationsBatch([input], tx)
   return id
 }
@@ -80,6 +84,7 @@ export async function getNotificationsForMember(
   principalId: PrincipalId,
   options: GetNotificationsOptions = {}
 ): Promise<NotificationListResult> {
+  console.log(`[domain:notifications] getNotificationsForMember: principalId=${principalId}`)
   const { limit = 20, offset = 0, unreadOnly = false } = options
 
   // Build where clause
@@ -162,6 +167,7 @@ export async function getNotificationsForMember(
  * Get unread notification count for a member (optimized for badge display)
  */
 export async function getUnreadCount(principalId: PrincipalId): Promise<number> {
+  console.log(`[domain:notifications] getUnreadCount: principalId=${principalId}`)
   const result = await db
     .select({ count: sql<number>`count(*)::int`.as('count') })
     .from(inAppNotifications)
@@ -183,6 +189,9 @@ export async function markAsRead(
   principalId: PrincipalId,
   notificationId: NotificationId
 ): Promise<void> {
+  console.log(
+    `[domain:notifications] markAsRead: principalId=${principalId}, notificationId=${notificationId}`
+  )
   // Verify ownership and update in single query
   const result = await db
     .update(inAppNotifications)
@@ -204,6 +213,7 @@ export async function markAsRead(
  * Mark all notifications as read for a member
  */
 export async function markAllAsRead(principalId: PrincipalId): Promise<void> {
+  console.log(`[domain:notifications] markAllAsRead: principalId=${principalId}`)
   await db
     .update(inAppNotifications)
     .set({ readAt: new Date() })
@@ -223,6 +233,9 @@ export async function archiveNotification(
   principalId: PrincipalId,
   notificationId: NotificationId
 ): Promise<void> {
+  console.log(
+    `[domain:notifications] archiveNotification: principalId=${principalId}, notificationId=${notificationId}`
+  )
   const existing = await db.query.inAppNotifications.findFirst({
     where: and(
       eq(inAppNotifications.id, notificationId),
@@ -244,6 +257,7 @@ export async function archiveNotification(
  * Archive all notifications for a member
  */
 export async function archiveAllNotifications(principalId: PrincipalId): Promise<void> {
+  console.log(`[domain:notifications] archiveAllNotifications: principalId=${principalId}`)
   await db
     .update(inAppNotifications)
     .set({ archivedAt: new Date() })

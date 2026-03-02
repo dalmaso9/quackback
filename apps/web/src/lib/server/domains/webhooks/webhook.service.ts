@@ -61,6 +61,9 @@ export async function createWebhook(
   input: CreateWebhookInput,
   createdById: PrincipalId
 ): Promise<CreateWebhookResult> {
+  console.log(
+    `[domain:webhooks] createWebhook: url=${input.url} events=${input.events.length} createdById=${createdById}`
+  )
   // Validate URL
   if (!input.url?.trim()) {
     throw new ValidationError('VALIDATION_ERROR', 'Webhook URL is required')
@@ -116,6 +119,7 @@ export async function createWebhook(
  * List all webhooks (excludes soft-deleted)
  */
 export async function listWebhooks(): Promise<Webhook[]> {
+  console.log(`[domain:webhooks] listWebhooks`)
   const result = await db.query.webhooks.findMany({
     where: isNull(webhooks.deletedAt),
     orderBy: (t, { desc }) => [desc(t.createdAt)],
@@ -128,6 +132,7 @@ export async function listWebhooks(): Promise<Webhook[]> {
  * Get a webhook by ID
  */
 export async function getWebhookById(id: WebhookId): Promise<Webhook> {
+  console.log(`[domain:webhooks] getWebhookById: id=${id}`)
   const webhook = await db.query.webhooks.findFirst({
     where: eq(webhooks.id, id),
   })
@@ -143,6 +148,7 @@ export async function getWebhookById(id: WebhookId): Promise<Webhook> {
  * Update a webhook
  */
 export async function updateWebhook(id: WebhookId, input: UpdateWebhookInput): Promise<Webhook> {
+  console.log(`[domain:webhooks] updateWebhook: id=${id}`)
   // Validate URL if provided
   if (input.url !== undefined) {
     if (!input.url?.trim()) {
@@ -193,6 +199,7 @@ export async function updateWebhook(id: WebhookId, input: UpdateWebhookInput): P
  * Sets deletedAt timestamp instead of removing the row.
  */
 export async function deleteWebhook(id: WebhookId): Promise<void> {
+  console.log(`[domain:webhooks] deleteWebhook: id=${id}`)
   const [deleted] = await db
     .update(webhooks)
     .set({ deletedAt: new Date() })
@@ -211,6 +218,7 @@ export async function deleteWebhook(id: WebhookId): Promise<void> {
 export async function rotateWebhookSecret(
   id: WebhookId
 ): Promise<{ webhook: Webhook; secret: string }> {
+  console.log(`[domain:webhooks] rotateWebhookSecret: id=${id}`)
   // Generate new secret
   const secret = generateSecret()
   const secretEncrypted = encryptWebhookSecret(secret)

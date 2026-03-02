@@ -24,60 +24,66 @@ export interface WidgetAuthContext {
 
 /** Returns widget auth context from `Authorization: Bearer <token>`, or null if invalid/expired. */
 export async function getWidgetSession(): Promise<WidgetAuthContext | null> {
-  const headers = getRequestHeaders()
-  const authHeader = headers.get('authorization')
-  if (!authHeader?.startsWith('Bearer ')) return null
+  console.log(`[fn:widget-auth] getWidgetSession`)
+  try {
+    const headers = getRequestHeaders()
+    const authHeader = headers.get('authorization')
+    if (!authHeader?.startsWith('Bearer ')) return null
 
-  const token = authHeader.slice(7)
-  if (!token) return null
+    const token = authHeader.slice(7)
+    if (!token) return null
 
-  const sessionRecord = await db.query.session.findFirst({
-    where: and(eq(session.token, token), gt(session.expiresAt, new Date())),
-    with: { user: true },
-  })
+    const sessionRecord = await db.query.session.findFirst({
+      where: and(eq(session.token, token), gt(session.expiresAt, new Date())),
+      with: { user: true },
+    })
 
-  if (!sessionRecord?.user) return null
+    if (!sessionRecord?.user) return null
 
-  const userId = sessionRecord.userId as UserId
+    const userId = sessionRecord.userId as UserId
 
-  const { getSettings } = await import('./workspace')
-  const appSettings = await getSettings()
-  if (!appSettings) return null
+    const { getSettings } = await import('./workspace')
+    const appSettings = await getSettings()
+    if (!appSettings) return null
 
-  let principalRecord = await db.query.principal.findFirst({
-    where: eq(principal.userId, userId),
-  })
+    let principalRecord = await db.query.principal.findFirst({
+      where: eq(principal.userId, userId),
+    })
 
-  if (!principalRecord) {
-    const [created] = await db
-      .insert(principal)
-      .values({
-        id: generateId('principal'),
-        userId,
-        role: 'user',
-        displayName: sessionRecord.user.name,
-        avatarUrl: sessionRecord.user.image ?? null,
-        createdAt: new Date(),
-      })
-      .returning()
-    principalRecord = created
-  }
+    if (!principalRecord) {
+      const [created] = await db
+        .insert(principal)
+        .values({
+          id: generateId('principal'),
+          userId,
+          role: 'user',
+          displayName: sessionRecord.user.name,
+          avatarUrl: sessionRecord.user.image ?? null,
+          createdAt: new Date(),
+        })
+        .returning()
+      principalRecord = created
+    }
 
-  return {
-    settings: {
-      id: appSettings.id as WorkspaceId,
-      slug: appSettings.slug,
-      name: appSettings.name,
-    },
-    user: {
-      id: userId,
-      email: sessionRecord.user.email,
-      name: sessionRecord.user.name,
-      image: sessionRecord.user.image ?? null,
-    },
-    principal: {
-      id: principalRecord.id as PrincipalId,
-      role: principalRecord.role as Role,
-    },
+    return {
+      settings: {
+        id: appSettings.id as WorkspaceId,
+        slug: appSettings.slug,
+        name: appSettings.name,
+      },
+      user: {
+        id: userId,
+        email: sessionRecord.user.email,
+        name: sessionRecord.user.name,
+        image: sessionRecord.user.image ?? null,
+      },
+      principal: {
+        id: principalRecord.id as PrincipalId,
+        role: principalRecord.role as Role,
+      },
+    }
+  } catch (error) {
+    console.error(`[fn:widget-auth] getWidgetSession failed:`, error)
+    throw error
   }
 }

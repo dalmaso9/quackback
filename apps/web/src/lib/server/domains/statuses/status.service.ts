@@ -38,6 +38,7 @@ async function setStatusAsDefaultAtomic(statusId: StatusId): Promise<void> {
  * Create a new status
  */
 export async function createStatus(input: CreateStatusInput): Promise<Status> {
+  console.log(`[domain:statuses] createStatus: slug=${input.slug}`)
   // Validate input
   if (!input.name?.trim()) {
     throw new ValidationError('VALIDATION_ERROR', 'Name is required')
@@ -95,6 +96,7 @@ export async function createStatus(input: CreateStatusInput): Promise<Status> {
  * Update an existing status
  */
 export async function updateStatus(id: StatusId, input: UpdateStatusInput): Promise<Status> {
+  console.log(`[domain:statuses] updateStatus: id=${id}`)
   // Get existing status (moved outside transaction for neon-http compatibility)
   const existingStatus = await db.query.postStatuses.findFirst({
     where: eq(postStatuses.id, id),
@@ -153,6 +155,7 @@ export async function updateStatus(id: StatusId, input: UpdateStatusInput): Prom
  * Sets deletedAt timestamp instead of removing the row.
  */
 export async function deleteStatus(id: StatusId): Promise<void> {
+  console.log(`[domain:statuses] deleteStatus: id=${id}`)
   // Get existing status (moved outside transaction for neon-http compatibility)
   const existingStatus = await db.query.postStatuses.findFirst({
     where: and(eq(postStatuses.id, id), isNull(postStatuses.deletedAt)),
@@ -199,6 +202,7 @@ export async function deleteStatus(id: StatusId): Promise<void> {
  * Get a status by ID
  */
 export async function getStatusById(id: StatusId): Promise<Status> {
+  console.log(`[domain:statuses] getStatusById: id=${id}`)
   const status = await db.query.postStatuses.findFirst({
     where: eq(postStatuses.id, id),
   })
@@ -213,6 +217,7 @@ export async function getStatusById(id: StatusId): Promise<Status> {
  * List all statuses for the organization (excludes soft-deleted)
  */
 export async function listStatuses(): Promise<Status[]> {
+  console.log(`[domain:statuses] listStatuses`)
   const statuses = await db.query.postStatuses.findMany({
     where: isNull(postStatuses.deletedAt),
     orderBy: [
@@ -234,6 +239,7 @@ export async function listStatuses(): Promise<Status[]> {
  * Uses a single batch UPDATE with CASE WHEN for efficiency
  */
 export async function reorderStatuses(ids: StatusId[]): Promise<void> {
+  console.log(`[domain:statuses] reorderStatuses: count=${ids?.length ?? 0}`)
   // Validate input
   if (!ids || ids.length === 0) {
     throw new ValidationError('VALIDATION_ERROR', 'Status IDs are required')
@@ -257,6 +263,7 @@ export async function reorderStatuses(ids: StatusId[]): Promise<void> {
  * Set a status as the default for new posts
  */
 export async function setDefaultStatus(id: StatusId): Promise<Status> {
+  console.log(`[domain:statuses] setDefaultStatus: id=${id}`)
   // Get existing status to verify it exists (moved outside transaction for neon-http compatibility)
   const existingStatus = await db.query.postStatuses.findFirst({
     where: eq(postStatuses.id, id),
@@ -283,6 +290,7 @@ export async function setDefaultStatus(id: StatusId): Promise<Status> {
  * Get the default status for new posts
  */
 export async function getDefaultStatus(): Promise<Status | null> {
+  console.log(`[domain:statuses] getDefaultStatus`)
   const defaultStatus = await db.query.postStatuses.findFirst({
     where: eq(postStatuses.isDefault, true),
   })
@@ -294,6 +302,7 @@ export async function getDefaultStatus(): Promise<Status | null> {
  * Get a status by slug
  */
 export async function getStatusBySlug(slug: string): Promise<Status> {
+  console.log(`[domain:statuses] getStatusBySlug: slug=${slug}`)
   const status = await db.query.postStatuses.findFirst({
     where: eq(postStatuses.slug, slug),
   })
@@ -308,12 +317,14 @@ export async function getStatusBySlug(slug: string): Promise<Status> {
  * List all statuses (public, no authentication required).
  */
 export async function listPublicStatuses(): Promise<Status[]> {
+  console.log(`[domain:statuses] listPublicStatuses`)
   try {
     return await db.query.postStatuses.findMany({
       where: isNull(postStatuses.deletedAt),
       orderBy: [asc(postStatuses.category), asc(postStatuses.position)],
     })
   } catch (error) {
+    console.error(`[domain:statuses] listPublicStatuses failed:`, error)
     throw new InternalError(
       'DATABASE_ERROR',
       `Failed to fetch statuses: ${error instanceof Error ? error.message : 'Unknown error'}`,

@@ -56,34 +56,40 @@ let _initialized = false
 
 export const getBootstrapData = createServerFn({ method: 'GET' }).handler(
   async (): Promise<BootstrapData> => {
-    // Fetch session and settings in parallel
-    const [session, settings] = await Promise.all([getSessionInternal(), getTenantSettings()])
+    console.log(`[fn:bootstrap] getBootstrapData`)
+    try {
+      // Fetch session and settings in parallel
+      const [session, settings] = await Promise.all([getSessionInternal(), getTenantSettings()])
 
-    // Get user role
-    const userRole = session
-      ? await db.query.principal
-          .findFirst({
-            where: eq(principal.userId, session.user.id as UserId),
-            columns: { role: true },
-          })
-          .then((m) => (m?.role as 'admin' | 'member' | 'user' | null) ?? null)
-      : null
+      // Get user role
+      const userRole = session
+        ? await db.query.principal
+            .findFirst({
+              where: eq(principal.userId, session.user.id as UserId),
+              columns: { role: true },
+            })
+            .then((m) => (m?.role as 'admin' | 'member' | 'user' | null) ?? null)
+        : null
 
-    // One-time initialization on first request
-    if (!_initialized) {
-      _initialized = true
+      // One-time initialization on first request
+      if (!_initialized) {
+        _initialized = true
 
-      // Delay telemetry to let the DB connection initialize
-      setTimeout(async () => {
-        try {
-          const { startTelemetry } = await import('@/lib/server/telemetry')
-          await startTelemetry()
-        } catch {
-          // Silent failure -- telemetry must never affect the application
-        }
-      }, 10_000)
+        // Delay telemetry to let the DB connection initialize
+        setTimeout(async () => {
+          try {
+            const { startTelemetry } = await import('@/lib/server/telemetry')
+            await startTelemetry()
+          } catch {
+            // Silent failure -- telemetry must never affect the application
+          }
+        }, 10_000)
+      }
+
+      return { baseUrl: config.baseUrl, session, settings, userRole }
+    } catch (error) {
+      console.error(`[fn:bootstrap] getBootstrapData failed:`, error)
+      throw error
     }
-
-    return { baseUrl: config.baseUrl, session, settings, userRole }
   }
 )
