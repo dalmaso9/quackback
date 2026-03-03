@@ -14,6 +14,7 @@ import {
   processUnsubscribeToken,
   type SubscriptionLevel,
 } from '@/lib/server/domains/subscriptions/subscription.service'
+import { db, votes, eq, and } from '@/lib/server/db'
 
 const getSubscriptionStatusSchema = z.object({
   postId: z.string(),
@@ -134,10 +135,23 @@ export const adminUpdateVoterSubscriptionFn = createServerFn({ method: 'POST' })
       const targetPrincipalId = data.principalId as PrincipalId
       const targetPostId = data.postId as PostId
 
+      // Verify the principal actually has a vote on this post
+      const [vote] = await db
+        .select({ id: votes.id })
+        .from(votes)
+        .where(and(eq(votes.postId, targetPostId), eq(votes.principalId, targetPrincipalId)))
+        .limit(1)
+      if (!vote) {
+        throw new Error('Principal does not have a vote on this post')
+      }
+
       if (data.level === 'none') {
         await unsubscribeFromPost(targetPrincipalId, targetPostId)
       } else {
-        await subscribeToPost(targetPrincipalId, targetPostId, 'manual')
+        // Pass level directly to avoid intermediate over-subscribed state
+        await subscribeToPost(targetPrincipalId, targetPostId, 'manual', {
+          level: data.level as SubscriptionLevel,
+        })
         await updateSubscriptionLevel(
           targetPrincipalId,
           targetPostId,
