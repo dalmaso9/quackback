@@ -87,8 +87,10 @@ function AcceptInvitationPage() {
   const { id } = Route.useParams()
   const { branding } = data
 
-  if (errorCode) {
-    console.log(`[route:complete-signup] component: errorCode=${errorCode}`)
+  // If the loader succeeded (state='welcome'), a stale ?error= from a previous
+  // redirect attempt (e.g. Outlook Safe Links) should not override the valid invitation.
+  if (errorCode && data.state !== 'welcome') {
+    console.log(`[route:complete-signup] component: errorCode=${errorCode}, state=${data.state}`)
     const message =
       ERROR_MESSAGES[errorCode] ??
       'Something went wrong with the invitation link. Please ask your administrator to resend the invitation.'
@@ -121,7 +123,6 @@ function AcceptInvitationPage() {
       <WelcomeContent
         invite={data.invite}
         passwordEnabled={data.passwordEnabled}
-        requiresPasswordSetup={data.requiresPasswordSetup}
         branding={branding}
       />
       <FeatureHighlights />
@@ -228,7 +229,6 @@ function NotAuthenticatedContent({
 function WelcomeContent({
   invite,
   passwordEnabled,
-  requiresPasswordSetup,
   branding,
 }: {
   invite: {
@@ -238,7 +238,6 @@ function WelcomeContent({
     inviterName: string | null
   }
   passwordEnabled: boolean
-  requiresPasswordSetup: boolean
   branding: InviteBranding
 }) {
   const { id } = Route.useParams()
@@ -259,11 +258,7 @@ function WelcomeContent({
       setError('Please enter your name (at least 2 characters)')
       return
     }
-    if (requiresPasswordSetup && password.length < 8) {
-      setError('Please set a password (at least 8 characters)')
-      return
-    }
-    if (!requiresPasswordSetup && !skipPassword && password && password.length < 8) {
+    if (!skipPassword && password && password.length < 8) {
       setError('Password must be at least 8 characters')
       return
     }
@@ -272,13 +267,9 @@ function WelcomeContent({
     setIsLoading(true)
 
     try {
-      if (requiresPasswordSetup) {
-        await setPasswordFn({ data: { newPassword: password } })
-      }
-
       await acceptInvitationFn({ data: { invitationId: id, name: trimmedName } })
 
-      if (!requiresPasswordSetup && !skipPassword && password.length >= 8) {
+      if (!skipPassword && password.length >= 8) {
         await setPasswordFn({ data: { newPassword: password } }).catch((err) => {
           console.warn('[complete-signup] optional setPassword failed:', err)
         })
@@ -344,10 +335,7 @@ function WelcomeContent({
           {passwordEnabled && (
             <div className="space-y-2">
               <label htmlFor="password" className="text-sm font-medium">
-                Set a password{' '}
-                {!requiresPasswordSetup && (
-                  <span className="text-muted-foreground font-normal">(optional)</span>
-                )}
+                Set a password <span className="text-muted-foreground font-normal">(optional)</span>
               </label>
               <Input
                 id="password"
@@ -357,7 +345,6 @@ function WelcomeContent({
                 placeholder="At least 8 characters"
                 autoComplete="new-password"
                 disabled={isLoading}
-                required={requiresPasswordSetup}
                 className="h-11"
               />
             </div>
@@ -365,15 +352,13 @@ function WelcomeContent({
 
           <Button
             type="submit"
-            disabled={
-              isLoading || name.trim().length < 2 || (requiresPasswordSetup && password.length < 8)
-            }
+            disabled={isLoading || name.trim().length < 2}
             className="w-full h-11"
           >
             {isLoading ? <ArrowPathIcon className="h-4 w-4 animate-spin" /> : 'Get started'}
           </Button>
 
-          {passwordEnabled && !requiresPasswordSetup && (
+          {passwordEnabled && (
             <Button
               type="button"
               variant="ghost"

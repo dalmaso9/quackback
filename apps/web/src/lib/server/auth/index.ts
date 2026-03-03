@@ -33,7 +33,8 @@ export function getMagicLinkToken(email: string): string | undefined {
 
 // Lazy-initialized auth instance
 // This prevents client bundling of database code
-let _auth: ReturnType<typeof betterAuth> | null = null
+type AuthInstance = Awaited<ReturnType<typeof createAuth>>
+let _auth: AuthInstance | null = null
 
 async function createAuth() {
   // Dynamic imports to prevent client bundling
@@ -257,6 +258,7 @@ async function createAuth() {
         },
         expiresIn: 60 * 60 * 24 * 7, // 7 days - match invitation expiry
         disableSignUp: false, // Allow new users to sign up via invitation
+        allowedAttempts: 3, // Allow multiple attempts (Outlook Safe Links consumes tokens)
       }),
 
       // One-time token plugin for cross-domain session transfer (used by /get-started)
@@ -336,7 +338,7 @@ async function createAuth() {
  * Get the auth instance (lazy-initialized).
  * This allows dynamic imports of database code to prevent client bundling.
  */
-export async function getAuth() {
+export async function getAuth(): Promise<AuthInstance> {
   if (!_auth) {
     _auth = await createAuth()
   }
@@ -356,7 +358,7 @@ export function resetAuth(): void {
 export const auth = {
   get api() {
     // Create a proxy for the API that awaits initialization
-    return new Proxy({} as ReturnType<typeof betterAuth>['api'], {
+    return new Proxy({} as AuthInstance['api'], {
       get(_, prop) {
         return async (...args: unknown[]) => {
           const authInstance = await getAuth()
@@ -384,7 +386,7 @@ export const auth = {
   },
 }
 
-export type Auth = ReturnType<typeof betterAuth>
+export type Auth = AuthInstance
 
 // Role-based access control
 
