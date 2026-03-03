@@ -3,7 +3,7 @@ import { getRequestHeaders } from '@tanstack/react-start/server'
 import { z } from 'zod'
 import type { InviteId, PrincipalId, UserId } from '@quackback/ids'
 import { generateId } from '@quackback/ids'
-import { db, invitation, principal, user, account, and, eq } from '@/lib/server/db'
+import { db, invitation, principal, user, and, eq } from '@/lib/server/db'
 import { getPublicUrlOrNull } from '@/lib/server/storage/s3'
 import { getSession } from './auth'
 
@@ -29,20 +29,13 @@ export const getInvitationDetailsFn = createServerFn({ method: 'GET' })
       `[fn:invitations] getInvitationDetailsFn: session user=${session.user.email} (${session.user.id})`
     )
 
-    const [inv, settings, authConfig, credentialAccount] = await Promise.all([
+    const [inv, settings, authConfig] = await Promise.all([
       db.query.invitation.findFirst({
         where: eq(invitation.id, invitationId as InviteId),
         with: { inviter: true },
       }),
       db.query.settings.findFirst(),
       import('@/lib/server/domains/settings/settings.service').then((m) => m.getPublicAuthConfig()),
-      db.query.account.findFirst({
-        where: and(
-          eq(account.userId, session.user.id as UserId),
-          eq(account.providerId, 'credential')
-        ),
-        columns: { password: true },
-      }),
     ])
 
     if (!inv) {
@@ -86,11 +79,14 @@ export const getInvitationDetailsFn = createServerFn({ method: 'GET' })
       )
     }
 
-    const passwordEnabled = authConfig.oauth.password ?? true
-    const requiresPasswordSetup = passwordEnabled && !credentialAccount?.password
+    // If the user existed before this invitation, they already have an auth method —
+    // skip password setup entirely (it's just a role upgrade).
+    // For new users created by the magic link, offer optional password setup.
+    const isExistingUser = new Date(session.user.createdAt) < inv.createdAt
+    const passwordEnabled = !isExistingUser && (authConfig.oauth.password ?? true)
 
     console.log(
-      `[fn:invitations] getInvitationDetailsFn: OK - passwordEnabled=${passwordEnabled}, requiresPasswordSetup=${requiresPasswordSetup}`
+      `[fn:invitations] getInvitationDetailsFn: OK - passwordEnabled=${passwordEnabled}, isExistingUser=${isExistingUser}`
     )
 
     return {
@@ -102,7 +98,6 @@ export const getInvitationDetailsFn = createServerFn({ method: 'GET' })
         inviterName: inv.inviter?.name ?? null,
       },
       passwordEnabled,
-      requiresPasswordSetup,
     }
   })
 

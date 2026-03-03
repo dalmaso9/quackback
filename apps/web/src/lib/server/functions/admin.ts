@@ -57,6 +57,9 @@ import { sendInvitationEmail } from '@quackback/email'
 import { getBaseUrl } from '@/lib/server/config'
 import { getAuth, getMagicLinkToken } from '@/lib/server/auth'
 
+/** Invitation expiry duration — 7 days in milliseconds */
+const INVITATION_EXPIRY_MS = 7 * 24 * 60 * 60 * 1000
+
 /**
  * Server functions for admin data fetching.
  * All functions require authentication and team member role (admin or member).
@@ -771,7 +774,7 @@ export const sendInvitationFn = createServerFn({ method: 'POST' })
       }
 
       const invitationId = generateId('invite')
-      const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+      const expiresAt = new Date(Date.now() + INVITATION_EXPIRY_MS)
       const now = new Date()
 
       await db.insert(invitation).values({
@@ -882,7 +885,7 @@ export const resendInvitationFn = createServerFn({ method: 'POST' })
 
       await db
         .update(invitation)
-        .set({ lastSentAt: new Date() })
+        .set({ lastSentAt: new Date(), expiresAt: new Date(Date.now() + INVITATION_EXPIRY_MS) })
         .where(eq(invitation.id, invitationId))
 
       console.log(
