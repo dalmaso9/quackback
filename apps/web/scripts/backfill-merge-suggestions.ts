@@ -269,9 +269,9 @@ async function assessCandidates(
 ): Promise<Assessment[]> {
   if (candidates.length === 0) return []
 
-  let prompt = `## Source Post\nID: ${sourcePost.id}\nTitle: ${sourcePost.title}\nContent: ${truncate(sourcePost.content, 2000)}\n\n## Candidates\n`
+  let prompt = `## Post A\nID: ${sourcePost.id}\nTitle: ${sourcePost.title}\nContent: ${truncate(sourcePost.content, 2000)}\n\n## Posts to compare\n`
   for (const c of candidates) {
-    prompt += `\n### Candidate\nID: ${c.postId}\nTitle: ${c.title}\nContent: ${truncate(c.content, 2000)}\n`
+    prompt += `\n### Post B\nID: ${c.postId}\nTitle: ${c.title}\nContent: ${truncate(c.content, 2000)}\n`
   }
 
   const completion = await withRetry(() =>
