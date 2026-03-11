@@ -169,6 +169,26 @@ const LANGS: Record<string, LangConfig> = {
     ]),
     commentMarkers: ['//'],
   },
+  bash: {
+    keywords: new Set([
+      'curl',
+      'echo',
+      'export',
+      'if',
+      'then',
+      'else',
+      'fi',
+      'for',
+      'do',
+      'done',
+      'set',
+      'local',
+      'return',
+      'true',
+      'false',
+    ]),
+    commentMarkers: ['#'],
+  },
 }
 
 interface Token {
@@ -252,7 +272,7 @@ function tokenizeLine(line: string, lang: LangConfig): Token[] {
   return tokens
 }
 
-export type SyntaxLang = 'js' | 'python' | 'ruby' | 'php' | 'go'
+export type SyntaxLang = 'js' | 'python' | 'ruby' | 'php' | 'go' | 'bash'
 
 interface HighlightedCodeProps {
   code: string
