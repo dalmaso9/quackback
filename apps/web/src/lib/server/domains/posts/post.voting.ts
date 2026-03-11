@@ -236,6 +236,67 @@ export async function addVoteOnBehalf(
 }
 
 /**
+ * Remove a vote from a post (any source: proxy, integration, or direct)
+ *
+ * Used by admins to rescind any vote from the voter list.
+ * Does NOT remove the voter's subscription.
+ *
+ * @param postId - Post ID to remove vote from
+ * @param principalId - Principal ID of the voter whose vote to remove
+ * @returns Result containing whether a vote was removed and new count
+ */
+export async function removeVote(
+  postId: PostId,
+  principalId: PrincipalId
+): Promise<{ removed: boolean; voteCount: number }> {
+  const postUuid = toUuid(postId)
+  const principalUuid = toUuid(principalId)
+
+  const result = await db.execute<{
+    post_exists: boolean
+    deleted: boolean
+    vote_count: number
+  }>(sql`
+    WITH post_check AS (
+      SELECT id, vote_count FROM ${posts}
+      WHERE id = ${postUuid}::uuid AND deleted_at IS NULL
+    ),
+    deleted AS (
+      DELETE FROM ${votes}
+      WHERE post_id = ${postUuid}::uuid
+        AND principal_id = ${principalUuid}::uuid
+        AND EXISTS (SELECT 1 FROM post_check)
+      RETURNING id
+    ),
+    updated_post AS (
+      UPDATE ${posts}
+      SET vote_count = GREATEST(0, vote_count - 1)
+      WHERE id = ${postUuid}::uuid
+        AND EXISTS (SELECT 1 FROM deleted)
+      RETURNING vote_count
+    )
+    SELECT
+      EXISTS(SELECT 1 FROM post_check) as post_exists,
+      EXISTS(SELECT 1 FROM deleted) as deleted,
+      COALESCE((SELECT vote_count FROM updated_post), (SELECT vote_count FROM post_check), 0) as vote_count
+  `)
+
+  type RemoveVoteRow = {
+    post_exists: boolean
+    deleted: boolean
+    vote_count: number
+  }
+  const rows = getExecuteRows<RemoveVoteRow>(result)
+  const row = rows[0]
+
+  if (!row?.post_exists) {
+    throw new NotFoundError('POST_NOT_FOUND', `Post with ID ${postId} not found`)
+  }
+
+  return { removed: row.deleted, voteCount: row.vote_count ?? 0 }
+}
+
+/**
  * Get all voters for a post with their identity and source attribution.
  * Returns newest votes first.
  */

@@ -30,7 +30,7 @@ import { changeStatus } from '@/lib/server/domains/posts/post.status'
 import { softDeletePost, restorePost } from '@/lib/server/domains/posts/post.permissions'
 import { hasUserVoted } from '@/lib/server/domains/posts/post.public'
 import { getMergedPosts, getPostMergeInfo } from '@/lib/server/domains/posts/post.merge'
-import { getPostVoters, addVoteOnBehalf } from '@/lib/server/domains/posts/post.voting'
+import { getPostVoters, addVoteOnBehalf, removeVote } from '@/lib/server/domains/posts/post.voting'
 import { toIsoString, toIsoStringOrNull } from '@/lib/shared/utils'
 
 /**
@@ -510,6 +510,34 @@ export const proxyVoteFn = createServerFn({ method: 'POST' })
         postId,
         principalId: auth.principal.id,
         type: 'vote.proxy',
+        metadata: {
+          voterPrincipalId,
+          voterName: voter?.displayName ?? null,
+        },
+      })
+    }
+
+    return result
+  })
+
+/**
+ * Remove a vote: admin removes any user's vote from a post
+ */
+export const removeVoteFn = createServerFn({ method: 'POST' })
+  .inputValidator(z.object({ postId: z.string(), voterPrincipalId: z.string() }))
+  .handler(async ({ data }) => {
+    const auth = await requireAuth({ roles: ['admin', 'member'] })
+    const postId = data.postId as PostId
+    const voterPrincipalId = data.voterPrincipalId as PrincipalId
+
+    const result = await removeVote(postId, voterPrincipalId)
+
+    if (result.removed) {
+      const voter = await getMemberById(voterPrincipalId)
+      createActivity({
+        postId,
+        principalId: auth.principal.id,
+        type: 'vote.removed',
         metadata: {
           voterPrincipalId,
           voterName: voter?.displayName ?? null,

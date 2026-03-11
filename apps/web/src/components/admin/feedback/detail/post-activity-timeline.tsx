@@ -100,6 +100,13 @@ const ACTIVITY_CONFIG: Partial<Record<ActivityType, ActivityDisplayConfig>> = {
       ) : null
     },
   },
+  'vote.removed': {
+    icon: HandThumbUpIcon,
+    label: (m, a) => {
+      const voter = m.voterName as string | undefined
+      return voter ? `${actorLabel(a)} removed ${voter}'s vote` : `${actorLabel(a)} removed a vote`
+    },
+  },
   'post.deleted': {
     icon: TrashIcon,
     label: (_, a) => `${actorLabel(a)} deleted this post`,

@@ -14,6 +14,7 @@ import {
   deletePostFn,
   restorePostFn,
   proxyVoteFn,
+  removeVoteFn,
 } from '@/lib/server/functions/posts'
 import { toggleVoteFn } from '@/lib/server/functions/public-posts'
 import { inboxKeys } from '@/lib/client/hooks/use-inbox-query'
@@ -375,6 +376,29 @@ export function useProxyVote(postId: PostId) {
         voteCount: data.voteCount,
       }))
       // Refresh avatar stack
+      queryClient.invalidateQueries({ queryKey: ['inbox', 'voters', postId] })
+    },
+  })
+}
+
+// ============================================================================
+// Remove Vote Mutation (admin removes any user's vote)
+// ============================================================================
+
+export function useRemoveVote(postId: PostId) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (voterPrincipalId: PrincipalId) =>
+      removeVoteFn({ data: { postId, voterPrincipalId } }),
+    onSuccess: (data) => {
+      queryClient.setQueryData<PostDetails>(inboxKeys.detail(postId), (old) =>
+        old ? { ...old, voteCount: data.voteCount } : old
+      )
+      updatePostInLists(queryClient, postId, (post) => ({
+        ...post,
+        voteCount: data.voteCount,
+      }))
       queryClient.invalidateQueries({ queryKey: ['inbox', 'voters', postId] })
     },
   })

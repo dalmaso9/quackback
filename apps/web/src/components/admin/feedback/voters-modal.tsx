@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
+import { XMarkIcon } from '@heroicons/react/16/solid'
 import { BellIcon, BellSlashIcon } from '@heroicons/react/24/solid'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Avatar } from '@/components/ui/avatar'
@@ -17,6 +18,7 @@ import { SOURCE_TYPE_LABELS, SourceTypeIcon } from '@/components/admin/feedback/
 import { adminQueries } from '@/lib/client/queries/admin'
 import { fetchPostVotersFn } from '@/lib/server/functions/posts'
 import { useUpdateVoterSubscription } from '@/lib/client/mutations/admin-subscriptions'
+import { useRemoveVote } from '@/lib/client/mutations/posts'
 import type { PostId, PrincipalId } from '@quackback/ids'
 import type { SubscriptionLevel } from '@/lib/server/domains/subscriptions/subscription.types'
 
@@ -77,6 +79,7 @@ export function VotersModal({
   }, [primaryVoters, additionalVoters, additionalPostIds.length])
 
   const updateSubscription = useUpdateVoterSubscription(postId)
+  const removeVote = useRemoveVote(postId)
 
   const summary = useMemo(() => {
     if (!voters) return null
@@ -112,7 +115,7 @@ export function VotersModal({
               {voters.map((voter) => {
                 const isAnonymous = !voter.email && !voter.displayName
                 return (
-                  <div key={voter.principalId} className="flex items-center gap-3">
+                  <div key={voter.principalId} className="group flex items-center gap-3">
                     <Avatar
                       src={voter.avatarUrl}
                       name={voter.displayName}
@@ -124,18 +127,34 @@ export function VotersModal({
                       </p>
                       <VoterSourceLine voter={voter} />
                     </div>
-                    {readonly ? null : isAnonymous ? (
-                      <span className="text-xs text-muted-foreground">—</span>
-                    ) : (
-                      <SubscriptionBadge
-                        level={voter.subscriptionLevel}
-                        onChangeLevel={(level) =>
-                          updateSubscription.mutate({
-                            principalId: voter.principalId as PrincipalId,
-                            level,
-                          })
-                        }
-                      />
+                    {readonly ? null : (
+                      <div className="flex items-center gap-1.5">
+                        {additionalPostIds.length === 0 && (
+                          <button
+                            className="hidden group-hover:flex items-center justify-center h-5 w-5 rounded text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+                            onClick={() => removeVote.mutate(voter.principalId as PrincipalId)}
+                            disabled={
+                              removeVote.isPending && removeVote.variables === voter.principalId
+                            }
+                            aria-label="Remove vote"
+                          >
+                            <XMarkIcon className="h-3.5 w-3.5" />
+                          </button>
+                        )}
+                        {isAnonymous ? (
+                          <span className="text-xs text-muted-foreground">—</span>
+                        ) : (
+                          <SubscriptionBadge
+                            level={voter.subscriptionLevel}
+                            onChangeLevel={(level) =>
+                              updateSubscription.mutate({
+                                principalId: voter.principalId as PrincipalId,
+                                level,
+                              })
+                            }
+                          />
+                        )}
+                      </div>
                     )}
                   </div>
                 )
