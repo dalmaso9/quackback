@@ -1,7 +1,12 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { ChevronUpIcon, MagnifyingGlassIcon, Squares2X2Icon } from '@heroicons/react/24/solid'
+import {
+  ChevronUpIcon,
+  MagnifyingGlassIcon,
+  Squares2X2Icon,
+  XMarkIcon,
+} from '@heroicons/react/24/solid'
 import { LightBulbIcon } from '@heroicons/react/24/outline'
 import { cn } from '@/lib/shared/utils'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -56,7 +61,7 @@ export function WidgetHome({
   onBoardChange,
   onSubmitNew,
 }: WidgetHomeProps) {
-  const { isIdentified, widgetFetch } = useWidgetAuth()
+  const { isIdentified, widgetFetch, closeWidget } = useWidgetAuth()
   const inputRef = useRef<HTMLInputElement>(null)
 
   // Search state
@@ -262,19 +267,29 @@ export function WidgetHome({
 
   return (
     <div className="flex flex-col h-full">
-      {/* Search input */}
+      {/* Search input + close */}
       <div className="px-3 pt-3 pb-1 shrink-0">
-        <div className="relative">
-          <MagnifyingGlassIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50" />
-          <input
-            ref={inputRef}
-            type="text"
-            value={searchQuery}
-            onChange={(e) => onSearchQueryChange(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="What's on your mind?"
-            className="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-border bg-muted/30 text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-background transition-colors"
-          />
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1 min-w-0">
+            <MagnifyingGlassIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/50" />
+            <input
+              ref={inputRef}
+              type="text"
+              value={searchQuery}
+              onChange={(e) => onSearchQueryChange(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="What's on your mind?"
+              className="w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-border bg-muted/30 text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-background transition-colors"
+            />
+          </div>
+          <button
+            type="button"
+            onClick={closeWidget}
+            className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-muted transition-colors shrink-0"
+            aria-label="Close feedback widget"
+          >
+            <XMarkIcon className="w-4 h-4 text-muted-foreground" />
+          </button>
         </div>
 
         {/* Board selector */}

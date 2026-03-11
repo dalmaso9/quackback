@@ -47,9 +47,7 @@ export const Route = createFileRoute('/widget/')({
           slug: b.slug,
         })),
       defaultBoard: search.board,
-      orgName: settings?.name ?? '',
       orgSlug: settings?.slug ?? '',
-      logoUrl: settings?.brandingData?.logoUrl ?? null,
     }
   },
   component: WidgetPage,
@@ -66,7 +64,7 @@ interface SuccessPost {
 }
 
 function WidgetPage() {
-  const { posts, statuses, boards, defaultBoard, orgName, orgSlug, logoUrl } = Route.useLoaderData()
+  const { posts, statuses, boards, defaultBoard, orgSlug } = Route.useLoaderData()
   const { isIdentified, closeWidget } = useWidgetAuth()
 
   const [view, setView] = useState<WidgetView>('home')
@@ -109,17 +107,10 @@ function WidgetPage() {
   }, [view, countdown, closeWidget])
 
   // Shell props based on view
-  const shellTitle = view === 'new-post' ? 'New idea' : undefined
   const shellOnBack = view === 'new-post' ? handleBack : undefined
 
   return (
-    <WidgetShell
-      orgName={orgName}
-      orgSlug={orgSlug}
-      logoUrl={logoUrl}
-      title={shellTitle}
-      onBack={shellOnBack}
-    >
+    <WidgetShell orgSlug={orgSlug} onBack={shellOnBack}>
       {view === 'home' && (
         <WidgetHome
           initialPosts={posts}
