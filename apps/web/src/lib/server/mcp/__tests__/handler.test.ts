@@ -103,6 +103,8 @@ vi.mock('@/lib/server/domains/posts/post.service', () => ({
 
 vi.mock('@/lib/server/domains/posts/post.voting', () => ({
   voteOnPost: vi.fn().mockResolvedValue({ voted: true, voteCount: 6 }),
+  addVoteOnBehalf: vi.fn().mockResolvedValue({ voted: true, voteCount: 7 }),
+  removeVote: vi.fn().mockResolvedValue({ removed: true, voteCount: 4 }),
 }))
 
 vi.mock('@/lib/server/domains/posts/post.merge', () => ({
@@ -550,6 +552,7 @@ describe('MCP HTTP Handler', () => {
       expect(toolNames).toContain('get_details')
       expect(toolNames).toContain('triage_post')
       expect(toolNames).toContain('vote_post')
+      expect(toolNames).toContain('proxy_vote')
       expect(toolNames).toContain('add_comment')
       expect(toolNames).toContain('create_post')
       expect(toolNames).toContain('create_changelog')
@@ -563,7 +566,7 @@ describe('MCP HTTP Handler', () => {
       expect(toolNames).toContain('unmerge_post')
       expect(toolNames).toContain('delete_post')
       expect(toolNames).toContain('restore_post')
-      expect(toolNames).toHaveLength(22)
+      expect(toolNames).toHaveLength(23)
     })
 
     it('should handle resources/list request', async () => {
@@ -810,6 +813,85 @@ describe('MCP HTTP Handler', () => {
       const text = JSON.parse(body.result.content[0].text)
       expect(text.voted).toBe(true)
       expect(text.voteCount).toBe(6)
+    })
+
+    // ── proxy_vote tool ─────────────────────────────────────────────────
+
+    it('should handle tools/call for proxy_vote (add)', async () => {
+      const handleMcpRequest = await initializeSession()
+
+      const response = await handleMcpRequest(
+        mcpRequest(
+          jsonRpcRequest('tools/call', {
+            name: 'proxy_vote',
+            arguments: {
+              postId: 'post_test',
+              voterPrincipalId: 'principal_voter',
+            },
+          })
+        )
+      )
+
+      expect(response.status).toBe(200)
+      const body = (await response.json()) as {
+        result: { content: Array<{ text: string }> }
+      }
+      const text = JSON.parse(body.result.content[0].text)
+      expect(text.voted).toBe(true)
+      expect(text.voteCount).toBe(7)
+      expect(text.voterPrincipalId).toBe('principal_voter')
+    })
+
+    it('should handle tools/call for proxy_vote (remove)', async () => {
+      const handleMcpRequest = await initializeSession()
+
+      const response = await handleMcpRequest(
+        mcpRequest(
+          jsonRpcRequest('tools/call', {
+            name: 'proxy_vote',
+            arguments: {
+              action: 'remove',
+              postId: 'post_test',
+              voterPrincipalId: 'principal_voter',
+            },
+          })
+        )
+      )
+
+      expect(response.status).toBe(200)
+      const body = (await response.json()) as {
+        result: { content: Array<{ text: string }> }
+      }
+      const text = JSON.parse(body.result.content[0].text)
+      expect(text.removed).toBe(true)
+      expect(text.voteCount).toBe(4)
+      expect(text.voterPrincipalId).toBe('principal_voter')
+    })
+
+    it('should handle proxy_vote with source attribution', async () => {
+      const handleMcpRequest = await initializeSession()
+
+      const response = await handleMcpRequest(
+        mcpRequest(
+          jsonRpcRequest('tools/call', {
+            name: 'proxy_vote',
+            arguments: {
+              postId: 'post_test',
+              voterPrincipalId: 'principal_voter',
+              sourceType: 'zendesk',
+              sourceExternalUrl: 'https://zendesk.com/ticket/123',
+            },
+          })
+        )
+      )
+
+      expect(response.status).toBe(200)
+      const body = (await response.json()) as {
+        result: { content: Array<{ text: string }> }
+      }
+      const text = JSON.parse(body.result.content[0].text)
+      expect(text.voted).toBe(true)
+      expect(text.voteCount).toBe(7)
     })
 
     // ── add_comment tool ────────────────────────────────────────────────

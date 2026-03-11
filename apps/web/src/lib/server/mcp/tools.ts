@@ -1,11 +1,12 @@
 /**
  * MCP Tools for Quackback
  *
- * 22 tools calling domain services directly (no HTTP self-loop):
+ * 23 tools calling domain services directly (no HTTP self-loop):
  * - search: Unified search across posts and changelogs
  * - get_details: Get full details for any entity by TypeID
  * - triage_post: Update post status, tags, and owner
  * - vote_post: Toggle vote on a post
+ * - proxy_vote: Add or remove a vote on behalf of another user
  * - add_comment: Post a comment on a post
  * - create_post: Submit new feedback
  * - delete_post: Soft-delete a post
@@ -35,10 +36,10 @@ import {
   getCommentsWithReplies,
 } from '@/lib/server/domains/posts/post.query'
 import { createPost, updatePost } from '@/lib/server/domains/posts/post.service'
-import { voteOnPost } from '@/lib/server/domains/posts/post.voting'
+import { voteOnPost, addVoteOnBehalf, removeVote } from '@/lib/server/domains/posts/post.voting'
 import { mergePost, unmergePost, getMergedPosts } from '@/lib/server/domains/posts/post.merge'
 import { softDeletePost, restorePost } from '@/lib/server/domains/posts/post.permissions'
-import { getActivityForPost } from '@/lib/server/domains/activity/activity.service'
+import { getActivityForPost, createActivity } from '@/lib/server/domains/activity/activity.service'
 import {
   acceptCreateSuggestion,
   acceptVoteSuggestion,
@@ -243,6 +244,17 @@ const votePostSchema = {
   postId: z.string().describe('Post TypeID to vote on'),
 }
 
+const proxyVoteSchema = {
+  action: z
+    .enum(['add', 'remove'])
+    .default('add')
+    .describe('Whether to add or remove the proxy vote'),
+  postId: z.string().describe('Post TypeID to vote on'),
+  voterPrincipalId: z.string().describe('Principal TypeID of the user to vote on behalf of'),
+  sourceType: z.string().optional().describe('Attribution source type (e.g. "zendesk", "slack")'),
+  sourceExternalUrl: z.string().optional().describe('URL linking to the originating record'),
+}
+
 const createChangelogSchema = {
   title: z.string().max(200).describe('Changelog entry title'),
   content: z
@@ -402,6 +414,14 @@ type CreatePostArgs = {
 }
 
 type VotePostArgs = { postId: string }
+
+type ProxyVoteArgs = {
+  action: 'add' | 'remove'
+  postId: string
+  voterPrincipalId: string
+  sourceType?: string
+  sourceExternalUrl?: string
+}
 
 type CreateChangelogArgs = {
   title: string
@@ -615,6 +635,75 @@ Examples:
 
         return jsonResult({
           postId: args.postId,
+          voted: result.voted,
+          voteCount: result.voteCount,
+        })
+      } catch (err) {
+        return errorResult(err)
+      }
+    }
+  )
+
+  // proxy_vote
+  server.tool(
+    'proxy_vote',
+    `Add or remove a vote on behalf of another user. Requires team role.
+
+Examples:
+- Add proxy vote: proxy_vote({ postId: "post_01abc...", voterPrincipalId: "principal_01xyz..." })
+- Add with attribution: proxy_vote({ postId: "post_01abc...", voterPrincipalId: "principal_01xyz...", sourceType: "zendesk", sourceExternalUrl: "https://..." })
+- Remove vote: proxy_vote({ action: "remove", postId: "post_01abc...", voterPrincipalId: "principal_01xyz..." })`,
+    proxyVoteSchema,
+    WRITE,
+    async (args: ProxyVoteArgs): Promise<CallToolResult> => {
+      const scopeDenied = requireScope(auth, 'write:feedback')
+      if (scopeDenied) return scopeDenied
+      const roleDenied = requireTeamRole(auth)
+      if (roleDenied) return roleDenied
+      try {
+        if (args.action === 'remove') {
+          const result = await removeVote(
+            args.postId as PostId,
+            args.voterPrincipalId as PrincipalId
+          )
+          if (result.removed) {
+            createActivity({
+              postId: args.postId as PostId,
+              principalId: auth.principalId,
+              type: 'vote.removed',
+              metadata: { voterPrincipalId: args.voterPrincipalId },
+            })
+          }
+          return jsonResult({
+            postId: args.postId,
+            voterPrincipalId: args.voterPrincipalId,
+            removed: result.removed,
+            voteCount: result.voteCount,
+          })
+        }
+
+        const source = args.sourceType
+          ? { type: args.sourceType, externalUrl: args.sourceExternalUrl ?? '' }
+          : { type: 'proxy', externalUrl: '' }
+
+        const result = await addVoteOnBehalf(
+          args.postId as PostId,
+          args.voterPrincipalId as PrincipalId,
+          source,
+          null,
+          auth.principalId
+        )
+        if (result.voted) {
+          createActivity({
+            postId: args.postId as PostId,
+            principalId: auth.principalId,
+            type: 'vote.proxy',
+            metadata: { voterPrincipalId: args.voterPrincipalId },
+          })
+        }
+        return jsonResult({
+          postId: args.postId,
+          voterPrincipalId: args.voterPrincipalId,
           voted: result.voted,
           voteCount: result.voteCount,
         })
