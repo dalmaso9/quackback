@@ -7,6 +7,7 @@ import {
   magicLink,
   jwt,
   genericOAuth,
+  bearer,
 } from 'better-auth/plugins'
 import { oauthProvider } from '@better-auth/oauth-provider'
 import { tanstackStartCookies } from 'better-auth/tanstack-start'
@@ -230,7 +231,12 @@ async function createAuth() {
                 userId,
                 role: 'user', // Always 'user' - team access via invitations only
                 type: isAnonymous ? 'anonymous' : 'user',
-                displayName: isAnonymous ? null : user.name,
+                displayName: isAnonymous
+                  ? await (async () => {
+                      const { generateAnonymousName } = await import('@/lib/shared/anonymous-names')
+                      return generateAnonymousName(user.id)
+                    })()
+                  : user.name,
                 avatarUrl: isAnonymous ? null : (user.image ?? null),
                 avatarKey: isAnonymous
                   ? null
@@ -344,18 +350,190 @@ async function createAuth() {
       // Anonymous authentication plugin — enables voting without sign-up
       anonymous({
         emailDomainName: 'anon.quackback.io',
-        disableDeleteAnonymousUser: true, // we handle cleanup ourselves
-        async onLinkAccount({ anonymousUser }) {
-          // When anonymous user signs up with real credentials,
-          // update their principal from anonymous → user
+        disableDeleteAnonymousUser: true, // we handle cleanup ourselves to avoid cascade-deleting sessions
+        async onLinkAccount({ anonymousUser, newUser }) {
           const anonUserId = anonymousUser.user.id as ReturnType<typeof generateId<'user'>>
-          await db
-            .update(principalTable)
-            .set({ type: 'user' })
-            .where(eq(principalTable.userId, anonUserId))
-          console.log(`[auth] Linked anonymous account: userId=${anonUserId} → type=user`)
+          const newUserId = newUser.user.id as ReturnType<typeof generateId<'user'>>
+
+          // Check if the new user is a freshly created account or an existing one
+          const [existingPrincipal, anonPrincipal] = await Promise.all([
+            db.query.principal.findFirst({ where: eq(principalTable.userId, newUserId) }),
+            db.query.principal.findFirst({ where: eq(principalTable.userId, anonUserId) }),
+          ])
+          const isExistingUser = existingPrincipal && existingPrincipal.type !== 'anonymous'
+
+          if (isExistingUser) {
+            // SIGN-IN to existing account: transfer anonymous activity to the existing user,
+            // then clean up the anonymous user.
+            const {
+              votes: votesTable,
+              comments: commentsTable,
+              posts: postsTable,
+              postSubscriptions,
+              inAppNotifications,
+              and: andOp,
+              inArray,
+            } = await import('@/lib/server/db')
+            if (anonPrincipal) {
+              await db.transaction(async (tx) => {
+                // Delete anonymous votes that conflict with existing user's votes (same post)
+                const existingVotedPostIds = await tx
+                  .select({ postId: votesTable.postId })
+                  .from(votesTable)
+                  .where(eq(votesTable.principalId, existingPrincipal.id))
+                if (existingVotedPostIds.length > 0) {
+                  await tx.delete(votesTable).where(
+                    andOp(
+                      eq(votesTable.principalId, anonPrincipal.id),
+                      inArray(
+                        votesTable.postId,
+                        existingVotedPostIds.map((v) => v.postId)
+                      )
+                    )
+                  )
+                }
+                // Get comment IDs that belong to the anonymous principal (before transfer)
+                // so we can clean up stale notifications about them
+                const anonCommentIds = await tx
+                  .select({ id: commentsTable.id })
+                  .from(commentsTable)
+                  .where(eq(commentsTable.principalId, anonPrincipal.id))
+
+                // Transfer remaining anonymous votes, comments, posts to the existing principal
+                await Promise.all([
+                  tx
+                    .update(votesTable)
+                    .set({ principalId: existingPrincipal.id })
+                    .where(eq(votesTable.principalId, anonPrincipal.id)),
+                  tx
+                    .update(commentsTable)
+                    .set({ principalId: existingPrincipal.id })
+                    .where(eq(commentsTable.principalId, anonPrincipal.id)),
+                  tx
+                    .update(postsTable)
+                    .set({ principalId: existingPrincipal.id })
+                    .where(eq(postsTable.principalId, anonPrincipal.id)),
+                ])
+
+                if (anonCommentIds.length > 0) {
+                  const anonCIds = anonCommentIds.map((c) => c.id)
+                  const realName = newUser.user.name || 'User'
+
+                  // Delete self-notifications (where the recipient is the user who just logged in)
+                  await tx
+                    .delete(inAppNotifications)
+                    .where(
+                      andOp(
+                        eq(inAppNotifications.principalId, existingPrincipal.id),
+                        inArray(inAppNotifications.commentId, anonCIds)
+                      )
+                    )
+
+                  // Update remaining notifications: replace anonymous name with real name in title
+                  const anonDisplayName = anonPrincipal.displayName || 'Anonymous'
+                  const { sql } = await import('@/lib/server/db')
+                  await tx
+                    .update(inAppNotifications)
+                    .set({
+                      title: sql`REPLACE(${inAppNotifications.title}, ${anonDisplayName}, ${realName})`,
+                    })
+                    .where(inArray(inAppNotifications.commentId, anonCIds))
+                }
+                // Transfer subscriptions and notifications to existing principal
+                // (delete conflicts first for subscriptions which have a unique constraint)
+                const existingSubPostIds = await tx
+                  .select({ postId: postSubscriptions.postId })
+                  .from(postSubscriptions)
+                  .where(eq(postSubscriptions.principalId, existingPrincipal.id))
+                if (existingSubPostIds.length > 0) {
+                  await tx.delete(postSubscriptions).where(
+                    andOp(
+                      eq(postSubscriptions.principalId, anonPrincipal.id),
+                      inArray(
+                        postSubscriptions.postId,
+                        existingSubPostIds.map((s) => s.postId)
+                      )
+                    )
+                  )
+                }
+                await Promise.all([
+                  tx
+                    .update(postSubscriptions)
+                    .set({ principalId: existingPrincipal.id })
+                    .where(eq(postSubscriptions.principalId, anonPrincipal.id)),
+                  tx
+                    .update(inAppNotifications)
+                    .set({ principalId: existingPrincipal.id })
+                    .where(eq(inAppNotifications.principalId, anonPrincipal.id)),
+                ])
+                // Delete the anonymous principal, sessions, and user (atomically)
+                await tx.delete(principalTable).where(eq(principalTable.id, anonPrincipal.id))
+                await Promise.all([
+                  tx.delete(sessionTable).where(eq(sessionTable.userId, anonUserId)),
+                  tx.delete(userTable).where(eq(userTable.id, anonUserId)),
+                ])
+              })
+            }
+
+            console.log(
+              `[auth] Linked anonymous to existing: anonUserId=${anonUserId} → existingUserId=${newUserId}`
+            )
+          } else {
+            // SIGN-UP (new account): keep the anonymous user, absorb the new user into it.
+            // This preserves sessions, principal, votes, comments on the same userId.
+            const newImage =
+              ((newUser.user as Record<string, unknown>).image as string | null) ?? null
+
+            await db.transaction(async (tx) => {
+              // Move account+session refs to anon user (before deleting new user)
+              await Promise.all([
+                tx
+                  .update(accountTable)
+                  .set({ userId: anonUserId })
+                  .where(eq(accountTable.userId, newUserId)),
+                tx
+                  .update(sessionTable)
+                  .set({ userId: anonUserId })
+                  .where(eq(sessionTable.userId, newUserId)),
+              ])
+              // Delete the new user (frees the email for the anon user update)
+              if (existingPrincipal) {
+                await tx.delete(principalTable).where(eq(principalTable.id, existingPrincipal.id))
+              }
+              await tx.delete(userTable).where(eq(userTable.id, newUserId))
+              // Update the anon user with real identity + upgrade principal
+              await Promise.all([
+                tx
+                  .update(userTable)
+                  .set({
+                    name: newUser.user.name,
+                    email: newUser.user.email,
+                    emailVerified: true,
+                    isAnonymous: false,
+                    image: newImage,
+                  })
+                  .where(eq(userTable.id, anonUserId)),
+                tx
+                  .update(principalTable)
+                  .set({
+                    type: 'user',
+                    displayName: newUser.user.name || anonymousUser.user.name,
+                    avatarUrl: newImage,
+                  })
+                  .where(eq(principalTable.userId, anonUserId)),
+              ])
+            })
+
+            console.log(
+              `[auth] Linked anonymous to new account: kept anonUserId=${anonUserId}, deleted newUserId=${newUserId}`
+            )
+          }
         },
       }),
+
+      // Bearer token plugin — converts Authorization: Bearer headers to session lookups.
+      // Used by the widget iframe which can't set cookies in cross-origin contexts.
+      bearer(),
 
       // TanStack Start cookie management plugin (must be last)
       tanstackStartCookies(),

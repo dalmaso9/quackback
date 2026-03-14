@@ -22,6 +22,7 @@ interface WidgetNewPostFormProps {
     statusId: string | null
     board: { id: string; name: string; slug: string }
   }) => void
+  anonymousPostingEnabled?: boolean
 }
 
 export function WidgetNewPostForm({
@@ -29,8 +30,10 @@ export function WidgetNewPostForm({
   prefilledTitle,
   selectedBoardSlug,
   onSuccess,
+  anonymousPostingEnabled = false,
 }: WidgetNewPostFormProps) {
-  const { isIdentified, user, widgetFetch } = useWidgetAuth()
+  const { isIdentified, user } = useWidgetAuth()
+  const canPost = isIdentified || anonymousPostingEnabled
 
   const defaultBoard = selectedBoardSlug
     ? boards.find((b) => b.slug === selectedBoardSlug)
@@ -57,7 +60,7 @@ export function WidgetNewPostForm({
     return () => clearTimeout(timer)
   }, [prefilledTitle])
 
-  if (!isIdentified) {
+  if (!canPost) {
     return (
       <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
         <p className="text-sm font-medium text-foreground">Sign in to submit your idea</p>
@@ -76,19 +79,20 @@ export function WidgetNewPostForm({
     setError(null)
 
     try {
-      const res = await widgetFetch('/api/widget/posts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ boardId, title: title.trim(), content: content.trim() }),
+      const { getWidgetAuthHeaders } = await import('@/lib/client/widget-auth')
+      const { createPublicPostFn } = await import('@/lib/server/functions/public-posts')
+      const result = await createPublicPostFn({
+        data: { boardId, title: title.trim(), content: content.trim() },
+        headers: getWidgetAuthHeaders(),
       })
 
-      const json = await res.json()
-      if (!res.ok) {
-        setError(json.error?.message || 'Failed to create post')
-        return
-      }
-
-      onSuccess(json.data)
+      onSuccess({
+        id: result.id,
+        title: result.title,
+        voteCount: 0,
+        statusId: result.statusId ?? null,
+        board: result.board,
+      })
     } catch {
       setError('Network error. Please try again.')
     } finally {
@@ -158,7 +162,9 @@ export function WidgetNewPostForm({
       </ScrollArea>
 
       <div className="px-4 py-3 border-t border-border bg-muted/30 flex items-center justify-between shrink-0">
-        <span className="text-xs text-muted-foreground truncate">Posting as {user?.email}</span>
+        <span className="text-xs text-muted-foreground truncate">
+          {user ? `Posting as ${user.name || user.email}` : 'Posting anonymously'}
+        </span>
         <button
           type="submit"
           disabled={!title.trim() || isSubmitting}

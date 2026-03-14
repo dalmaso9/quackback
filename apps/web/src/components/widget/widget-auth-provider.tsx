@@ -9,6 +9,8 @@ import {
   useState,
   type ReactNode,
 } from 'react'
+import { setWidgetToken, getWidgetToken, clearWidgetToken } from '@/lib/client/widget-auth'
+import { authClient } from '@/lib/server/auth/client'
 
 interface WidgetUser {
   id: string
@@ -20,7 +22,8 @@ interface WidgetUser {
 interface WidgetAuthContextValue {
   user: WidgetUser | null
   isIdentified: boolean
-  widgetFetch: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>
+  /** Ensures a session exists (identified or anonymous). Returns true if ready. */
+  ensureSession: () => Promise<boolean>
   closeWidget: () => void
 }
 
@@ -34,25 +37,55 @@ export function useWidgetAuth(): WidgetAuthContextValue {
 
 export function WidgetAuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<WidgetUser | null>(null)
-  const tokenRef = useRef<string | null>(null)
-
   const isIdentified = user !== null
+  const sessionReadyRef = useRef(false)
 
-  const widgetFetch = useCallback(
-    async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
-      const token = tokenRef.current
-      if (!token) return fetch(input, init)
+  // On mount, check if we already have a stored token (from previous session)
+  useEffect(() => {
+    if (getWidgetToken()) {
+      sessionReadyRef.current = true
+    }
+  }, [])
 
-      const request = new Request(input, init)
-      if (new URL(request.url).origin === window.location.origin) {
-        const headers = new Headers(request.headers)
-        headers.set('Authorization', `Bearer ${token}`)
-        return fetch(new Request(request, { headers }))
+  /** Store token and notify parent SDK for cross-page persistence */
+  const storeToken = useCallback((token: string) => {
+    setWidgetToken(token)
+    sessionReadyRef.current = true
+    // Tell parent SDK to persist the token in first-party localStorage
+    window.parent.postMessage({ type: 'quackback:token', token }, '*')
+  }, [])
+
+  /**
+   * Ensure a session exists. For identified users, this is already done via identify().
+   * For anonymous users, creates an anonymous session lazily on first action.
+   * Returns true if a session is ready, false if creation failed.
+   */
+  const sessionPromiseRef = useRef<Promise<boolean> | null>(null)
+  const ensureSession = useCallback(async (): Promise<boolean> => {
+    if (sessionReadyRef.current) return true
+    // Prevent concurrent anonymous session creation
+    if (sessionPromiseRef.current) return sessionPromiseRef.current
+
+    const p = (async () => {
+      try {
+        const { data, error } = await authClient.signIn.anonymous({
+          fetchOptions: {
+            onSuccess: (ctx) => {
+              const token = ctx.response.headers.get('set-auth-token')
+              if (token) storeToken(token)
+            },
+          },
+        })
+        return !error && !!data
+      } catch {
+        return false
+      } finally {
+        sessionPromiseRef.current = null
       }
-      return fetch(input, init)
-    },
-    []
-  )
+    })()
+    sessionPromiseRef.current = p
+    return p
+  }, [storeToken])
 
   const closeWidget = useCallback(() => {
     window.parent.postMessage({ type: 'quackback:close' }, '*')
@@ -81,7 +114,7 @@ export function WidgetAuthProvider({ children }: { children: ReactNode }) {
         }
 
         const result = await response.json()
-        tokenRef.current = result.sessionToken
+        storeToken(result.sessionToken)
         setUser(result.user)
 
         window.parent.postMessage(
@@ -105,7 +138,8 @@ export function WidgetAuthProvider({ children }: { children: ReactNode }) {
 
       if (msg.type === 'quackback:identify') {
         if (msg.data === null) {
-          tokenRef.current = null
+          clearWidgetToken()
+          sessionReadyRef.current = false
           setUser(null)
           window.parent.postMessage(
             { type: 'quackback:identify-result', success: true, user: null },
@@ -116,16 +150,22 @@ export function WidgetAuthProvider({ children }: { children: ReactNode }) {
           handleIdentify(msg.data as Record<string, unknown>)
         }
       }
+
+      // Restore token from parent SDK (persisted in parent's first-party localStorage)
+      if (msg.type === 'quackback:restore-token' && typeof msg.token === 'string') {
+        setWidgetToken(msg.token)
+        sessionReadyRef.current = true
+      }
     }
 
     window.addEventListener('message', handleMessage)
     window.parent.postMessage({ type: 'quackback:ready' }, '*')
 
     return () => window.removeEventListener('message', handleMessage)
-  }, [])
+  }, [storeToken])
 
   return (
-    <WidgetAuthContext.Provider value={{ user, isIdentified, widgetFetch, closeWidget }}>
+    <WidgetAuthContext.Provider value={{ user, isIdentified, ensureSession, closeWidget }}>
       {children}
     </WidgetAuthContext.Provider>
   )
