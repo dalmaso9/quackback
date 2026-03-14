@@ -152,6 +152,8 @@ export function WidgetAuthProvider({ children }: { children: ReactNode }) {
           )
           return
         }
+        // Clear any previous identified user since this is now an anonymous session
+        setUser(null)
         window.parent.postMessage(
           { type: 'quackback:identify-result', success: true, user: null },
           '*'

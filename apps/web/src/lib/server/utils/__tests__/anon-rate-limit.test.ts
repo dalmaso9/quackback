@@ -28,9 +28,8 @@ vi.mock('@/lib/server/db', async () => {
         return chain
       },
     },
-    votes: { principalId: 'principal_id', createdAt: 'created_at' },
     principal: { id: 'principal_id', type: 'type', userId: 'user_id' },
-    session: { userId: 'user_id', ipAddress: 'ip_address' },
+    session: { userId: 'user_id', ipAddress: 'ip_address', createdAt: 'created_at' },
     eq: vi.fn(),
     and: vi.fn(),
     sql: realSql,
@@ -44,28 +43,28 @@ describe('checkAnonVoteRateLimit', () => {
     vi.clearAllMocks()
   })
 
-  it('returns true when vote count is under the limit', async () => {
+  it('returns true when session count is under the limit', async () => {
     mockWhere.mockResolvedValue([{ count: 10 }])
 
     const result = await checkAnonVoteRateLimit('1.2.3.4')
     expect(result).toBe(true)
   })
 
-  it('returns true when vote count is zero', async () => {
+  it('returns true when session count is zero', async () => {
     mockWhere.mockResolvedValue([{ count: 0 }])
 
     const result = await checkAnonVoteRateLimit('1.2.3.4')
     expect(result).toBe(true)
   })
 
-  it('returns false when vote count reaches the limit (50)', async () => {
+  it('returns false when session count reaches the limit (50)', async () => {
     mockWhere.mockResolvedValue([{ count: 50 }])
 
     const result = await checkAnonVoteRateLimit('1.2.3.4')
     expect(result).toBe(false)
   })
 
-  it('returns false when vote count exceeds the limit', async () => {
+  it('returns false when session count exceeds the limit', async () => {
     mockWhere.mockResolvedValue([{ count: 100 }])
 
     const result = await checkAnonVoteRateLimit('1.2.3.4')
