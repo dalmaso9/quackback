@@ -89,10 +89,17 @@ import type {
 // Helpers
 // ============================================================================
 
-/** Wrap a data object as a successful MCP tool result. */
+/** Wrap a data object as a successful MCP tool result (pretty-printed, for single-entity responses). */
 function jsonResult(data: unknown): CallToolResult {
   return {
     content: [{ type: 'text', text: JSON.stringify(data, null, 2) }],
+  }
+}
+
+/** Wrap a data object as a compact MCP tool result (no pretty-print, for list responses). */
+function compactJsonResult(data: unknown): CallToolResult {
+  return {
+    content: [{ type: 'text', text: JSON.stringify(data) }],
   }
 }
 
@@ -1429,11 +1436,15 @@ async function searchPosts(args: SearchArgs): Promise<CallToolResult> {
   const lastItem = result.items[result.items.length - 1]
   const nextCursor = result.hasMore && lastItem ? encodeSearchCursor('posts', lastItem.id) : null
 
-  return jsonResult({
+  return compactJsonResult({
     posts: result.items.map((p) => ({
       id: p.id,
       title: p.title,
-      content: p.content,
+      excerpt: p.content
+        ? p.content.length > 200
+          ? p.content.slice(0, 200) + '...'
+          : p.content
+        : '',
       voteCount: p.voteCount,
       commentCount: p.commentCount,
       boardId: p.boardId,
@@ -1442,7 +1453,7 @@ async function searchPosts(args: SearchArgs): Promise<CallToolResult> {
       authorName: p.authorName,
       ownerPrincipalId: p.ownerPrincipalId,
       tags: p.tags?.map((t) => ({ id: t.id, name: t.name })),
-      summaryJson: p.summaryJson ?? null,
+      summary: p.summaryJson?.summary ?? null,
       canonicalPostId: p.canonicalPostId ?? null,
       isCommentsLocked: p.isCommentsLocked,
       createdAt: p.createdAt,
@@ -1480,11 +1491,15 @@ async function searchChangelogs(args: SearchArgs): Promise<CallToolResult> {
   const nextCursor =
     result.hasMore && lastItem ? encodeSearchCursor('changelogs', lastItem.id) : null
 
-  return jsonResult({
+  return compactJsonResult({
     changelogs: result.items.map((c) => ({
       id: c.id,
       title: c.title,
-      content: c.content,
+      excerpt: c.content
+        ? c.content.length > 200
+          ? c.content.slice(0, 200) + '...'
+          : c.content
+        : '',
       status: c.status,
       authorName: c.author?.name ?? null,
       linkedPosts: c.linkedPosts.map((p) => ({

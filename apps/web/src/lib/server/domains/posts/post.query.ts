@@ -31,6 +31,7 @@ import { NotFoundError } from '@/lib/shared/errors'
 import { buildCommentTree, toStatusChange, type CommentTreeNode } from '@/lib/shared'
 import type {
   PostWithDetails,
+  PostListItem,
   InboxPostListParams,
   InboxPostListResult,
   PostForExport,
@@ -370,6 +371,28 @@ export async function listInboxPosts(params: InboxPostListParams): Promise<Inbox
 
   // Fetch limit+1 to determine hasMore without a COUNT query
   const rawPosts = await db.query.posts.findMany({
+    columns: {
+      id: true,
+      boardId: true,
+      title: true,
+      content: true,
+      contentJson: true,
+      principalId: true,
+      statusId: true,
+      ownerPrincipalId: true,
+      voteCount: true,
+      commentCount: true,
+      pinnedCommentId: true,
+      createdAt: true,
+      updatedAt: true,
+      deletedAt: true,
+      isCommentsLocked: true,
+      moderationState: true,
+      canonicalPostId: true,
+      mergedAt: true,
+      summaryJson: true,
+      summaryUpdatedAt: true,
+    },
     where: whereClause,
     orderBy: orderByMap[sort],
     limit: limit + 1,
@@ -395,13 +418,15 @@ export async function listInboxPosts(params: InboxPostListParams): Promise<Inbox
 
   // Transform to PostListItem format
   // Use denormalized commentCount field (maintained by comment.service.ts)
+  // Cast needed: columns selection omits heavy fields (embedding, searchVector, etc.)
+  // that no caller reads from list items, but PostListItem extends the full Post type.
   const items = sliced.map((post) => ({
     ...post,
     board: post.board,
     tags: post.tags.map((pt) => pt.tag),
     commentCount: post.commentCount,
     authorName: post.author?.displayName ?? null,
-  }))
+  })) as unknown as PostListItem[]
 
   const lastItem = items[items.length - 1]
   const nextCursor = hasMore && lastItem ? lastItem.id : null
