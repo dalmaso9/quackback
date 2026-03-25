@@ -50,6 +50,7 @@ export const Route = createFileRoute('/widget')({
       customCss,
       googleFontsUrl: getGoogleFontsUrl(brandingConfig),
       portalUser,
+      hmacRequired: settings?.publicWidgetConfig?.hmacRequired ?? false,
     }
   },
   head: () => ({ meta: [] }),
@@ -57,10 +58,10 @@ export const Route = createFileRoute('/widget')({
 })
 
 function WidgetLayout() {
-  const { themeStyles, customCss, googleFontsUrl, portalUser } = Route.useLoaderData()
+  const { themeStyles, customCss, googleFontsUrl, portalUser, hmacRequired } = Route.useLoaderData()
 
   return (
-    <WidgetAuthProvider portalUser={portalUser}>
+    <WidgetAuthProvider portalUser={portalUser} hmacRequired={hmacRequired}>
       {googleFontsUrl && <link rel="stylesheet" href={googleFontsUrl} />}
       {themeStyles && <style dangerouslySetInnerHTML={{ __html: themeStyles }} />}
       {customCss && <style dangerouslySetInnerHTML={{ __html: customCss }} />}

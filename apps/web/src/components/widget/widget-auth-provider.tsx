@@ -50,10 +50,16 @@ export function useWidgetAuth(): WidgetAuthContextValue {
 interface WidgetAuthProviderProps {
   /** Portal user identity — if set, the widget exchanges for a bearer token on mount */
   portalUser?: WidgetUser | null
+  /** When true, skip portal user hydration (identify endpoint requires HMAC hash) */
+  hmacRequired?: boolean
   children: ReactNode
 }
 
-export function WidgetAuthProvider({ portalUser, children }: WidgetAuthProviderProps) {
+export function WidgetAuthProvider({
+  portalUser,
+  hmacRequired,
+  children,
+}: WidgetAuthProviderProps) {
   const queryClient = useQueryClient()
   const [user, setUser] = useState<WidgetUser | null>(null)
   const [sessionVersion, setSessionVersion] = useState(0)
@@ -150,7 +156,7 @@ export function WidgetAuthProvider({ portalUser, children }: WidgetAuthProviderP
   // This runs once — subsequent SDK identify() calls will override it.
   const portalHydratedRef = useRef(false)
   useEffect(() => {
-    if (portalUser && !portalHydratedRef.current && !sessionReadyRef.current) {
+    if (portalUser && !hmacRequired && !portalHydratedRef.current && !sessionReadyRef.current) {
       portalHydratedRef.current = true
       identifyWithEmail(portalUser.email, portalUser.name)
     }
