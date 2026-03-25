@@ -59,7 +59,6 @@ export function WidgetNewPostForm({
     )
   }
 
-  // Show email/name fields when user isn't identified and HMAC is off
   const needsEmail = !isIdentified && !hmacRequired && !anonymousPostingEnabled
 
   const defaultBoard = selectedBoardSlug
@@ -77,7 +76,6 @@ export function WidgetNewPostForm({
   const descriptionRef = useRef<HTMLTextAreaElement>(null)
   const titleRef = useRef<HTMLInputElement>(null)
 
-  // Auto-focus: description if title is pre-filled, otherwise title
   useEffect(() => {
     const timer = setTimeout(() => {
       if (prefilledTitle) {
@@ -98,7 +96,6 @@ export function WidgetNewPostForm({
     setError(null)
 
     try {
-      // If user needs to identify via email, do it first
       if (needsEmail) {
         const identified = await identifyWithEmail(email.trim(), name.trim() || undefined)
         if (!identified) {
@@ -107,7 +104,6 @@ export function WidgetNewPostForm({
           return
         }
       } else if (!isIdentified) {
-        // Anonymous posting — ensure session exists
         const ok = await ensureSession()
         if (!ok) {
           setError('Could not create session. Please try again.')
@@ -149,38 +145,32 @@ export function WidgetNewPostForm({
     }
   }
 
-  const inputClass =
-    'w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary'
-
   const isValid = title.trim() && (!needsEmail || email.trim())
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col h-full">
-      <ScrollArea className="flex-1 min-h-0 px-4 py-3 space-y-3">
-        {boards.length > 1 && (
-          <div>
-            <label htmlFor="widget-board" className="text-xs font-medium text-muted-foreground">
-              Board
-            </label>
-            <Select value={boardId} onValueChange={setBoardId}>
-              <SelectTrigger className="mt-1 w-full">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {boards.map((b) => (
-                  <SelectItem key={b.id} value={b.id}>
-                    {b.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        )}
+      <ScrollArea className="flex-1 min-h-0">
+        <div className="px-4 pt-1 pb-3">
+          {/* Board selector — inline like portal */}
+          {boards.length > 1 && (
+            <div className="flex items-center pb-2">
+              <span className="text-[11px] text-muted-foreground/70">Posting to</span>
+              <Select value={boardId} onValueChange={setBoardId}>
+                <SelectTrigger className="border-0 bg-transparent shadow-none h-auto py-0 px-1 text-[11px] font-medium text-foreground hover:text-foreground/80 focus-visible:ring-0 w-auto gap-1">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent align="start">
+                  {boards.map((b) => (
+                    <SelectItem key={b.id} value={b.id} className="text-xs">
+                      {b.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
 
-        <div>
-          <label htmlFor="widget-title" className="text-xs font-medium text-muted-foreground">
-            Title
-          </label>
+          {/* Title — borderless, prominent */}
           <input
             ref={titleRef}
             id="widget-title"
@@ -189,14 +179,10 @@ export function WidgetNewPostForm({
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             maxLength={200}
-            className={`mt-1 ${inputClass}`}
+            className="w-full bg-transparent text-sm font-semibold text-foreground placeholder:text-muted-foreground/50 placeholder:font-normal border-0 outline-none caret-primary py-1"
           />
-        </div>
 
-        <div>
-          <label htmlFor="widget-details" className="text-xs font-medium text-muted-foreground">
-            Details (optional)
-          </label>
+          {/* Description — borderless, subtle */}
           <textarea
             ref={descriptionRef}
             id="widget-details"
@@ -204,59 +190,66 @@ export function WidgetNewPostForm({
             value={content}
             onChange={(e) => setContent(e.target.value)}
             maxLength={10000}
-            rows={4}
-            className={`mt-1 ${inputClass} resize-none`}
+            rows={3}
+            className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 border-0 outline-none caret-primary resize-none mt-1 leading-relaxed"
           />
+
+          {/* Email/name — integrated with a subtle divider */}
+          {needsEmail && (
+            <div className="mt-2 pt-2.5 border-t border-border/40 space-y-1.5">
+              <div className="relative">
+                <input
+                  id="widget-email"
+                  type="email"
+                  required
+                  placeholder="Your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full bg-muted/30 rounded-md px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 border-0 outline-none focus:bg-muted/50 focus:ring-1 focus:ring-primary/20 transition-colors"
+                />
+              </div>
+              <input
+                id="widget-name"
+                type="text"
+                placeholder="Your name (optional)"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full bg-muted/30 rounded-md px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 border-0 outline-none focus:bg-muted/50 focus:ring-1 focus:ring-primary/20 transition-colors"
+              />
+              <p className="text-[10px] text-muted-foreground/50 px-0.5">
+                We&apos;ll notify you of updates to your idea.
+              </p>
+            </div>
+          )}
+
+          {error && (
+            <div className="mt-2 rounded-md bg-destructive/10 px-3 py-2 text-xs text-destructive">
+              {error}
+            </div>
+          )}
         </div>
-
-        {needsEmail && (
-          <div className="rounded-lg border border-border/50 bg-muted/20 p-3 space-y-2.5">
-            <p className="text-[11px] font-medium text-muted-foreground">About you</p>
-            <input
-              id="widget-email"
-              type="email"
-              required
-              placeholder="Email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className={inputClass}
-            />
-            <input
-              id="widget-name"
-              type="text"
-              placeholder="Name (optional)"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className={inputClass}
-            />
-            <p className="text-[10px] text-muted-foreground/60">
-              We&apos;ll notify you when there are updates.
-            </p>
-          </div>
-        )}
-
-        {error && <p className="text-xs text-destructive">{error}</p>}
       </ScrollArea>
 
-      <div className="px-4 py-3 border-t border-border bg-muted/30 flex items-center justify-between shrink-0">
-        <span className="flex items-center gap-1.5 text-xs text-muted-foreground truncate">
-          {(user || (needsEmail && email.trim())) && (
-            <span className="w-5 h-5 rounded-full bg-muted flex items-center justify-center text-[10px] font-medium text-muted-foreground shrink-0">
-              {(user?.name || name.trim() || email.trim() || '?').charAt(0).toUpperCase()}
-            </span>
+      <div className="px-4 py-2.5 border-t border-border/50 flex items-center justify-between shrink-0">
+        <span className="text-[11px] text-muted-foreground/70 truncate mr-2">
+          {user ? (
+            <>
+              <span className="text-foreground/80 font-medium">{user.name || user.email}</span>
+            </>
+          ) : needsEmail && email.trim() ? (
+            <span className="text-foreground/80 font-medium">{email.trim()}</span>
+          ) : needsEmail ? (
+            'Enter your email'
+          ) : (
+            'Anonymous'
           )}
-          {user
-            ? user.name || user.email
-            : needsEmail
-              ? email.trim() || 'Your email is required'
-              : 'Posting anonymously'}
         </span>
         <button
           type="submit"
           disabled={!isValid || isSubmitting}
-          className="px-4 py-1.5 text-xs font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-4 py-1.5 text-xs font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
         >
-          {isSubmitting ? 'Submitting...' : 'Submit idea'}
+          {isSubmitting ? 'Submitting...' : 'Submit'}
         </button>
       </div>
     </form>
