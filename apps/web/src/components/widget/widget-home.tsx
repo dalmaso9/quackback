@@ -1,10 +1,9 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Squares2X2Icon } from '@heroicons/react/24/solid'
-import { PencilIcon } from '@heroicons/react/24/solid'
+import { Squares2X2Icon, PencilIcon } from '@heroicons/react/24/solid'
 import { LightBulbIcon } from '@heroicons/react/24/outline'
-import { cn } from '@/lib/shared/utils'
+import { motion, AnimatePresence } from 'framer-motion'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import {
   Select,
@@ -84,11 +83,8 @@ export function WidgetHome({
   const canPost = isIdentified || anonymousPostingEnabled
   const needsEmail = !isIdentified && !hmacRequired && !anonymousPostingEnabled
 
-  // Title input — drives both search and create
   const [title, setTitle] = useState('')
   const [expanded, setExpanded] = useState(false)
-
-  // Create form state
   const [selectedBoardId, setSelectedBoardId] = useState(boards[0]?.id ?? '')
   const [content, setContent] = useState('')
   const [email, setEmail] = useState('')
@@ -96,7 +92,6 @@ export function WidgetHome({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  // Search state — driven by title
   const [searchResults, setSearchResults] = useState<SearchResult | null>(null)
   const [isSearching, setIsSearching] = useState(false)
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(null)
@@ -120,21 +115,18 @@ export function WidgetHome({
   // Debounced search driven by title
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current)
-
     const q = title.trim()
     if (!q) {
       setSearchResults(null)
       setIsSearching(false)
       return
     }
-
     const cached = searchCache.get(q)
     if (cached) {
       setSearchResults(cached)
       setIsSearching(false)
       return
     }
-
     setIsSearching(true)
     debounceRef.current = setTimeout(async () => {
       try {
@@ -150,7 +142,6 @@ export function WidgetHome({
         setIsSearching(false)
       }
     }, 300)
-
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current)
     }
@@ -242,38 +233,66 @@ export function WidgetHome({
     <form onSubmit={handleSubmit} className="flex flex-col h-full">
       <ScrollArea className="flex-1 min-h-0">
         <div className="px-3 pt-2 pb-3">
-          {/* Create card — portal-style expandable */}
-          <div className="rounded-lg border border-border bg-card overflow-hidden">
-            {/* Board selector — visible when expanded */}
-            {expanded && boards.length > 1 && (
-              <div className="flex items-center px-3 pt-2.5 pb-0.5">
-                <span className="text-[11px] text-muted-foreground mr-1">Posting to</span>
-                <Select value={selectedBoardId} onValueChange={setSelectedBoardId}>
-                  <SelectTrigger
-                    size="xs"
-                    className="border-0 bg-transparent shadow-none font-medium text-foreground hover:text-foreground/80 focus-visible:ring-0"
-                  >
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent align="start">
-                    {boards.map((b) => (
-                      <SelectItem key={b.id} value={b.id} className="text-xs py-1">
-                        {b.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
+          {/* Create card — portal-style with animations */}
+          <motion.div
+            className="rounded-lg border border-border bg-card overflow-hidden"
+            initial={false}
+            animate={{
+              boxShadow: expanded
+                ? '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)'
+                : '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+            }}
+            transition={{ duration: 0.2 }}
+          >
+            {/* Board selector — animates in when expanded */}
+            <AnimatePresence>
+              {expanded && boards.length > 1 && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="overflow-hidden"
+                >
+                  <div className="flex items-center px-3 pt-2.5 pb-0.5">
+                    <span className="text-[11px] text-muted-foreground mr-1">Posting to</span>
+                    <Select value={selectedBoardId} onValueChange={setSelectedBoardId}>
+                      <SelectTrigger
+                        size="xs"
+                        className="border-0 bg-transparent shadow-none font-medium text-foreground hover:text-foreground/80 focus-visible:ring-0"
+                      >
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent align="start">
+                        {boards.map((b) => (
+                          <SelectItem key={b.id} value={b.id} className="text-xs py-1">
+                            {b.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Icon + Title row */}
             <div className="flex items-center gap-2.5 px-3 py-2.5">
-              {!expanded && (
-                <div className="flex-shrink-0 w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center">
-                  <PencilIcon className="w-3.5 h-3.5 text-primary" />
-                </div>
-              )}
-              <input
+              <AnimatePresence>
+                {!expanded && (
+                  <motion.div
+                    initial={false}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8, width: 0, marginRight: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="flex-shrink-0 w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center"
+                  >
+                    <PencilIcon className="w-3.5 h-3.5 text-primary" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <motion.input
                 ref={inputRef}
                 type="text"
                 placeholder="What's your idea?"
@@ -285,223 +304,239 @@ export function WidgetHome({
                 onFocus={() => {
                   if (title && !expanded) setExpanded(true)
                 }}
-                className={cn(
-                  'flex-1 bg-transparent border-0 outline-none text-foreground placeholder:text-muted-foreground/50 placeholder:font-normal caret-primary',
-                  expanded ? 'text-base font-semibold' : 'text-sm'
-                )}
+                className="flex-1 bg-transparent border-0 outline-none text-foreground placeholder:text-muted-foreground/50 placeholder:font-normal caret-primary"
+                initial={false}
+                animate={{
+                  fontSize: expanded ? '1rem' : '0.875rem',
+                  fontWeight: expanded ? 600 : 400,
+                }}
+                transition={{ duration: 0.2 }}
               />
             </div>
 
-            {/* Expanded: details textarea */}
-            {expanded && (
-              <div className="px-3 pb-2">
-                <textarea
-                  placeholder="Add more details..."
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  maxLength={10000}
-                  rows={3}
-                  className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 border-0 outline-none caret-primary resize-none leading-relaxed"
-                />
-              </div>
-            )}
+            {/* Expanded content */}
+            <AnimatePresence>
+              {expanded && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+                  className="overflow-hidden"
+                >
+                  {/* Details textarea */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.2, delay: 0.1 }}
+                    className="px-3 pb-2"
+                  >
+                    <textarea
+                      placeholder="Add more details..."
+                      value={content}
+                      onChange={(e) => setContent(e.target.value)}
+                      maxLength={10000}
+                      rows={3}
+                      className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 border-0 outline-none caret-primary resize-none leading-relaxed"
+                    />
+                  </motion.div>
 
-            {/* Expanded: similar posts inside the card */}
-            {expanded &&
-              isTyping &&
-              !isSearching &&
-              searchResults &&
-              searchResults.posts.length > 0 && (
-                <div className="px-3 pb-2">
-                  <p className="text-[10px] font-medium text-muted-foreground/60 flex items-center gap-1 mb-1.5">
-                    <LightBulbIcon className="w-3 h-3" />
-                    Similar ideas
-                  </p>
-                  <div className="space-y-0.5">
-                    {searchResults.posts.slice(0, 3).map((post) => {
-                      const status = post.statusId ? (statusMap.get(post.statusId) ?? null) : null
-                      return (
-                        <div
-                          key={post.id}
-                          className="flex items-center gap-2 rounded-md hover:bg-muted/30 transition-colors px-1.5 py-1 cursor-pointer"
-                          onClick={() => onPostSelect?.(post.id)}
-                        >
-                          <div onClick={(e) => e.stopPropagation()} className="shrink-0">
-                            <WidgetVoteButton
-                              postId={post.id as PostId}
-                              voteCount={post.voteCount}
-                              onBeforeVote={canVote ? ensureSession : undefined}
-                              onAuthRequired={
-                                !canVote ? () => handleAuthRequired(post.id) : undefined
-                              }
-                            />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-xs font-medium text-foreground line-clamp-1">
-                              {post.title}
-                            </p>
-                            {status && (
-                              <span className="inline-flex items-center gap-0.5 text-[10px] text-muted-foreground">
-                                <span
-                                  className="size-1.5 rounded-full shrink-0"
-                                  style={{ backgroundColor: status.color }}
+                  {/* Similar posts inside expanded card */}
+                  {isTyping && !isSearching && searchResults && searchResults.posts.length > 0 && (
+                    <div className="px-3 pb-2">
+                      <p className="text-[10px] font-medium text-muted-foreground/60 flex items-center gap-1 mb-1.5">
+                        <LightBulbIcon className="w-3 h-3" />
+                        Similar ideas
+                      </p>
+                      <div className="space-y-0.5">
+                        {searchResults.posts.slice(0, 3).map((post) => {
+                          const status = post.statusId
+                            ? (statusMap.get(post.statusId) ?? null)
+                            : null
+                          return (
+                            <div
+                              key={post.id}
+                              className="flex items-center gap-2 rounded-md hover:bg-muted/30 transition-colors px-1.5 py-1 cursor-pointer"
+                              onClick={() => onPostSelect?.(post.id)}
+                            >
+                              <div onClick={(e) => e.stopPropagation()} className="shrink-0">
+                                <WidgetVoteButton
+                                  postId={post.id as PostId}
+                                  voteCount={post.voteCount}
+                                  onBeforeVote={canVote ? ensureSession : undefined}
+                                  onAuthRequired={
+                                    !canVote ? () => handleAuthRequired(post.id) : undefined
+                                  }
                                 />
-                                {status.name}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </div>
-              )}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-xs font-medium text-foreground line-clamp-1">
+                                  {post.title}
+                                </p>
+                                {status && (
+                                  <span className="inline-flex items-center gap-0.5 text-[10px] text-muted-foreground">
+                                    <span
+                                      className="size-1.5 rounded-full shrink-0"
+                                      style={{ backgroundColor: status.color }}
+                                    />
+                                    {status.name}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )}
 
-            {error && (
-              <div className="px-3 pb-2">
-                <div className="rounded-md bg-destructive/10 px-3 py-2 text-xs text-destructive">
-                  {error}
-                </div>
+                  {error && (
+                    <div className="px-3 pb-2">
+                      <div className="rounded-md bg-destructive/10 px-3 py-2 text-xs text-destructive">
+                        {error}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Footer */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.2, delay: 0.15 }}
+                    className="border-t border-border bg-muted/30"
+                  >
+                    {needsEmail && (
+                      <div className="px-3 pt-2 pb-1 flex gap-2">
+                        <input
+                          type="email"
+                          required
+                          placeholder="Your email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="flex-1 min-w-0 bg-background rounded-md border border-border/50 px-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground/50 outline-none focus:ring-1 focus:ring-primary/30 focus:border-primary/50 transition-colors"
+                        />
+                        <input
+                          type="text"
+                          placeholder="Name (optional)"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          className="w-[100px] bg-background rounded-md border border-border/50 px-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground/50 outline-none focus:ring-1 focus:ring-primary/30 focus:border-primary/50 transition-colors"
+                        />
+                      </div>
+                    )}
+                    <div className="flex items-center justify-between px-3 py-2">
+                      <p className="text-[11px] text-muted-foreground truncate mr-2">
+                        {user ? (
+                          <>
+                            Posting as{' '}
+                            <span className="font-medium text-foreground">
+                              {user.name || user.email}
+                            </span>
+                          </>
+                        ) : needsEmail ? (
+                          email.trim() ? (
+                            <>
+                              Posting as{' '}
+                              <span className="font-medium text-foreground">{email.trim()}</span>
+                            </>
+                          ) : (
+                            'Your email is required'
+                          )
+                        ) : (
+                          'Posting anonymously'
+                        )}
+                      </p>
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={collapseForm}
+                          className="px-2.5 py-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          disabled={!canSubmitForm || isSubmitting}
+                          className="px-3 py-1 text-[11px] font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+                        >
+                          {isSubmitting ? 'Submitting...' : 'Submit'}
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+
+          {/* Post list — always visible below the card */}
+          <div className="mt-2">
+            <p className="text-[11px] font-medium text-muted-foreground/60 uppercase tracking-wide px-1 py-1.5">
+              {isTyping
+                ? isSearching
+                  ? 'Searching...'
+                  : displayPosts.length > 0
+                    ? 'Similar ideas'
+                    : 'No matching ideas'
+                : 'Popular ideas'}
+            </p>
+
+            {!isTyping && displayPosts.length === 0 && (
+              <div className="flex flex-col items-center justify-center py-8 text-center">
+                <LightBulbIcon className="w-8 h-8 text-muted-foreground/30 mb-2" />
+                <p className="text-sm font-medium text-muted-foreground/70">No ideas yet</p>
+                <p className="text-xs text-muted-foreground/50 mt-0.5">
+                  Be the first to share one!
+                </p>
               </div>
             )}
 
-            {/* Expanded: footer with identity + submit */}
-            {expanded && (
-              <div className="border-t border-border bg-muted/30">
-                {needsEmail && (
-                  <div className="px-3 pt-2 pb-1 flex gap-2">
-                    <input
-                      type="email"
-                      required
-                      placeholder="Your email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="flex-1 min-w-0 bg-background rounded-md border border-border/50 px-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground/50 outline-none focus:ring-1 focus:ring-primary/30 focus:border-primary/50 transition-colors"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Name (optional)"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className="w-[100px] bg-background rounded-md border border-border/50 px-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground/50 outline-none focus:ring-1 focus:ring-primary/30 focus:border-primary/50 transition-colors"
-                    />
-                  </div>
-                )}
-                <div className="flex items-center justify-between px-3 py-2">
-                  <p className="text-[11px] text-muted-foreground truncate mr-2">
-                    {user ? (
-                      <>
-                        Posting as{' '}
-                        <span className="font-medium text-foreground">
-                          {user.name || user.email}
-                        </span>
-                      </>
-                    ) : needsEmail ? (
-                      email.trim() ? (
-                        <>
-                          Posting as{' '}
-                          <span className="font-medium text-foreground">{email.trim()}</span>
-                        </>
-                      ) : (
-                        'Your email is required'
-                      )
-                    ) : (
-                      'Posting anonymously'
-                    )}
-                  </p>
-                  <div className="flex items-center gap-1.5">
-                    <button
-                      type="button"
-                      onClick={collapseForm}
-                      className="px-2.5 py-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors"
+            {displayPosts.length > 0 && (
+              <div className="space-y-0.5">
+                {displayPosts.map((post) => {
+                  const status = post.statusId ? (statusMap.get(post.statusId) ?? null) : null
+                  return (
+                    <div
+                      key={post.id}
+                      className="flex items-center gap-2 rounded-lg hover:bg-muted/30 transition-colors px-2 py-1.5 cursor-pointer"
+                      onClick={() => onPostSelect?.(post.id)}
                     >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      disabled={!canSubmitForm || isSubmitting}
-                      className="px-3 py-1 text-[11px] font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
-                    >
-                      {isSubmitting ? 'Submitting...' : 'Submit'}
-                    </button>
-                  </div>
-                </div>
+                      <div onClick={(e) => e.stopPropagation()} className="shrink-0">
+                        <WidgetVoteButton
+                          postId={post.id as PostId}
+                          voteCount={post.voteCount}
+                          onBeforeVote={canVote ? ensureSession : undefined}
+                          onAuthRequired={!canVote ? () => handleAuthRequired(post.id) : undefined}
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-sm font-medium text-foreground line-clamp-1">
+                          {post.title}
+                        </h3>
+                        <div className="flex items-center gap-1.5 mt-0.5">
+                          {status && (
+                            <span className="inline-flex items-center gap-0.5 text-[10px] text-muted-foreground">
+                              <span
+                                className="size-1.5 rounded-full shrink-0"
+                                style={{ backgroundColor: status.color }}
+                              />
+                              {status.name}
+                            </span>
+                          )}
+                          {post.board && (
+                            <span className="inline-flex items-center gap-0.5 text-[10px] text-muted-foreground/60">
+                              <Squares2X2Icon className="h-2.5 w-2.5 text-muted-foreground/40" />
+                              {post.board.name}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
               </div>
             )}
           </div>
-
-          {/* Post list — below the card */}
-          {!expanded && (
-            <div className="mt-2">
-              <p className="text-[11px] font-medium text-muted-foreground/60 uppercase tracking-wide px-1 py-1.5">
-                {isTyping
-                  ? isSearching
-                    ? 'Searching...'
-                    : displayPosts.length > 0
-                      ? 'Similar ideas'
-                      : 'No matching ideas'
-                  : 'Popular ideas'}
-              </p>
-
-              {!isTyping && displayPosts.length === 0 && (
-                <div className="flex flex-col items-center justify-center py-8 text-center">
-                  <LightBulbIcon className="w-8 h-8 text-muted-foreground/30 mb-2" />
-                  <p className="text-sm font-medium text-muted-foreground/70">No ideas yet</p>
-                  <p className="text-xs text-muted-foreground/50 mt-0.5">
-                    Be the first to share one!
-                  </p>
-                </div>
-              )}
-
-              {displayPosts.length > 0 && (
-                <div className="space-y-0.5">
-                  {displayPosts.map((post) => {
-                    const status = post.statusId ? (statusMap.get(post.statusId) ?? null) : null
-                    return (
-                      <div
-                        key={post.id}
-                        className="flex items-center gap-2 rounded-lg hover:bg-muted/30 transition-colors px-2 py-1.5 cursor-pointer"
-                        onClick={() => onPostSelect?.(post.id)}
-                      >
-                        <div onClick={(e) => e.stopPropagation()} className="shrink-0">
-                          <WidgetVoteButton
-                            postId={post.id as PostId}
-                            voteCount={post.voteCount}
-                            onBeforeVote={canVote ? ensureSession : undefined}
-                            onAuthRequired={
-                              !canVote ? () => handleAuthRequired(post.id) : undefined
-                            }
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="text-sm font-medium text-foreground line-clamp-1">
-                            {post.title}
-                          </h3>
-                          <div className="flex items-center gap-1.5 mt-0.5">
-                            {status && (
-                              <span className="inline-flex items-center gap-0.5 text-[10px] text-muted-foreground">
-                                <span
-                                  className="size-1.5 rounded-full shrink-0"
-                                  style={{ backgroundColor: status.color }}
-                                />
-                                {status.name}
-                              </span>
-                            )}
-                            {post.board && (
-                              <span className="inline-flex items-center gap-0.5 text-[10px] text-muted-foreground/60">
-                                <Squares2X2Icon className="h-2.5 w-2.5 text-muted-foreground/40" />
-                                {post.board.name}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-              )}
-            </div>
-          )}
         </div>
       </ScrollArea>
     </form>
