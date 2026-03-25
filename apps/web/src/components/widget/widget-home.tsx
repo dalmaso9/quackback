@@ -41,7 +41,6 @@ interface WidgetHomeProps {
   initialPosts: WidgetPost[]
   statuses: StatusInfo[]
   boards: BoardInfo[]
-  defaultBoard?: string
   onPostSelect?: (postId: string) => void
   onPostCreated?: (post: {
     id: string
@@ -59,6 +58,68 @@ interface SearchResult {
 }
 
 const searchCache = new Map<string, SearchResult>()
+
+const identityInputCls =
+  'bg-background rounded-md border border-border/50 px-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground/50 outline-none focus:ring-1 focus:ring-primary/30 focus:border-primary/50 transition-colors'
+
+// ── Shared post row used in both similar-posts and popular-ideas lists ──
+
+function WidgetPostRow({
+  post,
+  statusMap,
+  showBoard,
+  canVote,
+  ensureSession,
+  onAuthRequired,
+  onSelect,
+}: {
+  post: WidgetPost
+  statusMap: Map<string, StatusInfo>
+  showBoard?: boolean
+  canVote: boolean
+  ensureSession: () => Promise<boolean>
+  onAuthRequired?: () => void
+  onSelect?: () => void
+}) {
+  const status = post.statusId ? (statusMap.get(post.statusId) ?? null) : null
+  return (
+    <div
+      className="flex items-center gap-2 rounded-lg hover:bg-muted/30 transition-colors px-2 py-1.5 cursor-pointer"
+      onClick={onSelect}
+    >
+      <div onClick={(e) => e.stopPropagation()} className="shrink-0">
+        <WidgetVoteButton
+          postId={post.id as PostId}
+          voteCount={post.voteCount}
+          onBeforeVote={canVote ? ensureSession : undefined}
+          onAuthRequired={!canVote ? onAuthRequired : undefined}
+        />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-medium text-foreground line-clamp-1">{post.title}</p>
+        <div className="flex items-center gap-1.5 mt-0.5">
+          {status && (
+            <span className="inline-flex items-center gap-0.5 text-[10px] text-muted-foreground">
+              <span
+                className="size-1.5 rounded-full shrink-0"
+                style={{ backgroundColor: status.color }}
+              />
+              {status.name}
+            </span>
+          )}
+          {showBoard && post.board && (
+            <span className="inline-flex items-center gap-0.5 text-[10px] text-muted-foreground/60">
+              <Squares2X2Icon className="h-2.5 w-2.5 text-muted-foreground/40" />
+              {post.board.name}
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── Main component ──
 
 export function WidgetHome({
   initialPosts,
@@ -112,7 +173,6 @@ export function WidgetHome({
     [hmacRequired, onPostSelect]
   )
 
-  // Debounced search driven by title
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current)
     const q = title.trim()
@@ -128,15 +188,17 @@ export function WidgetHome({
       return
     }
     setIsSearching(true)
+    const controller = new AbortController()
     debounceRef.current = setTimeout(async () => {
       try {
         const params = new URLSearchParams({ q, limit: '5' })
-        const res = await fetch(`/api/widget/search?${params}`)
+        const res = await fetch(`/api/widget/search?${params}`, { signal: controller.signal })
         const json = await res.json()
         const result: SearchResult = { posts: json.data?.posts ?? [] }
         searchCache.set(q, result)
         setSearchResults(result)
-      } catch {
+      } catch (err) {
+        if (err instanceof Error && err.name === 'AbortError') return
         setSearchResults({ posts: [] })
       } finally {
         setIsSearching(false)
@@ -144,6 +206,7 @@ export function WidgetHome({
     }, 300)
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current)
+      controller.abort()
     }
   }, [title])
 
@@ -190,8 +253,10 @@ export function WidgetHome({
         }
       }
 
-      const { getWidgetAuthHeaders } = await import('@/lib/client/widget-auth')
-      const { createPublicPostFn } = await import('@/lib/server/functions/public-posts')
+      const [{ getWidgetAuthHeaders }, { createPublicPostFn }] = await Promise.all([
+        import('@/lib/client/widget-auth'),
+        import('@/lib/server/functions/public-posts'),
+      ])
       const result = await createPublicPostFn({
         data: {
           boardId: selectedBoardId,
@@ -225,14 +290,12 @@ export function WidgetHome({
     }
   }
 
-  const isTyping = title.trim().length > 0
   const canSubmitForm = title.trim() && (!needsEmail || email.trim()) && (canPost || needsEmail)
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col h-full">
       <ScrollArea className="flex-1 min-h-0">
         <div className="px-3 pt-2 pb-3">
-          {/* Create card — portal-style with animations */}
           <motion.div
             className="rounded-lg border border-border bg-card overflow-hidden"
             initial={false}
@@ -243,7 +306,6 @@ export function WidgetHome({
             }}
             transition={{ duration: 0.2 }}
           >
-            {/* Board selector — animates in when expanded */}
             <AnimatePresence>
               {expanded && boards.length > 1 && (
                 <motion.div
@@ -275,7 +337,6 @@ export function WidgetHome({
               )}
             </AnimatePresence>
 
-            {/* Icon + Title row */}
             <div className="flex items-center gap-2.5 px-3 py-2.5">
               <AnimatePresence>
                 {!expanded && (
@@ -313,7 +374,6 @@ export function WidgetHome({
               />
             </div>
 
-            {/* Expanded content */}
             <AnimatePresence>
               {expanded && (
                 <motion.div
@@ -323,7 +383,6 @@ export function WidgetHome({
                   transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
                   className="overflow-hidden"
                 >
-                  {/* Details textarea */}
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -340,51 +399,24 @@ export function WidgetHome({
                     />
                   </motion.div>
 
-                  {/* Similar posts inside expanded card */}
-                  {isTyping && !isSearching && searchResults && searchResults.posts.length > 0 && (
+                  {!isSearching && searchResults && searchResults.posts.length > 0 && (
                     <div className="px-3 pb-2">
                       <p className="text-[10px] font-medium text-muted-foreground/60 flex items-center gap-1 mb-1.5">
                         <LightBulbIcon className="w-3 h-3" />
                         Similar ideas
                       </p>
                       <div className="space-y-0.5">
-                        {searchResults.posts.slice(0, 3).map((post) => {
-                          const status = post.statusId
-                            ? (statusMap.get(post.statusId) ?? null)
-                            : null
-                          return (
-                            <div
-                              key={post.id}
-                              className="flex items-center gap-2 rounded-md hover:bg-muted/30 transition-colors px-1.5 py-1 cursor-pointer"
-                              onClick={() => onPostSelect?.(post.id)}
-                            >
-                              <div onClick={(e) => e.stopPropagation()} className="shrink-0">
-                                <WidgetVoteButton
-                                  postId={post.id as PostId}
-                                  voteCount={post.voteCount}
-                                  onBeforeVote={canVote ? ensureSession : undefined}
-                                  onAuthRequired={
-                                    !canVote ? () => handleAuthRequired(post.id) : undefined
-                                  }
-                                />
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <p className="text-xs font-medium text-foreground line-clamp-1">
-                                  {post.title}
-                                </p>
-                                {status && (
-                                  <span className="inline-flex items-center gap-0.5 text-[10px] text-muted-foreground">
-                                    <span
-                                      className="size-1.5 rounded-full shrink-0"
-                                      style={{ backgroundColor: status.color }}
-                                    />
-                                    {status.name}
-                                  </span>
-                                )}
-                              </div>
-                            </div>
-                          )
-                        })}
+                        {searchResults.posts.slice(0, 3).map((post) => (
+                          <WidgetPostRow
+                            key={post.id}
+                            post={post}
+                            statusMap={statusMap}
+                            canVote={canVote}
+                            ensureSession={ensureSession}
+                            onAuthRequired={() => handleAuthRequired(post.id)}
+                            onSelect={() => onPostSelect?.(post.id)}
+                          />
+                        ))}
                       </div>
                     </div>
                   )}
@@ -397,7 +429,6 @@ export function WidgetHome({
                     </div>
                   )}
 
-                  {/* Footer */}
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -412,14 +443,14 @@ export function WidgetHome({
                           placeholder="Your email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="flex-1 min-w-0 bg-background rounded-md border border-border/50 px-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground/50 outline-none focus:ring-1 focus:ring-primary/30 focus:border-primary/50 transition-colors"
+                          className={`flex-1 min-w-0 ${identityInputCls}`}
                         />
                         <input
                           type="text"
                           placeholder="Name (optional)"
                           value={name}
                           onChange={(e) => setName(e.target.value)}
-                          className="w-[100px] bg-background rounded-md border border-border/50 px-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground/50 outline-none focus:ring-1 focus:ring-primary/30 focus:border-primary/50 transition-colors"
+                          className={`w-[100px] ${identityInputCls}`}
                         />
                       </div>
                     )}
@@ -468,7 +499,7 @@ export function WidgetHome({
             </AnimatePresence>
           </motion.div>
 
-          {/* Post list — always shows popular ideas, unaffected by search */}
+          {/* Popular ideas — unaffected by search */}
           <div className="mt-2">
             <p className="text-[11px] font-medium text-muted-foreground/60 uppercase tracking-wide px-1 py-1.5">
               Popular ideas
@@ -486,47 +517,18 @@ export function WidgetHome({
 
             {initialPosts.length > 0 && (
               <div className="space-y-0.5">
-                {initialPosts.map((post) => {
-                  const status = post.statusId ? (statusMap.get(post.statusId) ?? null) : null
-                  return (
-                    <div
-                      key={post.id}
-                      className="flex items-center gap-2 rounded-lg hover:bg-muted/30 transition-colors px-2 py-1.5 cursor-pointer"
-                      onClick={() => onPostSelect?.(post.id)}
-                    >
-                      <div onClick={(e) => e.stopPropagation()} className="shrink-0">
-                        <WidgetVoteButton
-                          postId={post.id as PostId}
-                          voteCount={post.voteCount}
-                          onBeforeVote={canVote ? ensureSession : undefined}
-                          onAuthRequired={!canVote ? () => handleAuthRequired(post.id) : undefined}
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-sm font-medium text-foreground line-clamp-1">
-                          {post.title}
-                        </h3>
-                        <div className="flex items-center gap-1.5 mt-0.5">
-                          {status && (
-                            <span className="inline-flex items-center gap-0.5 text-[10px] text-muted-foreground">
-                              <span
-                                className="size-1.5 rounded-full shrink-0"
-                                style={{ backgroundColor: status.color }}
-                              />
-                              {status.name}
-                            </span>
-                          )}
-                          {post.board && (
-                            <span className="inline-flex items-center gap-0.5 text-[10px] text-muted-foreground/60">
-                              <Squares2X2Icon className="h-2.5 w-2.5 text-muted-foreground/40" />
-                              {post.board.name}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  )
-                })}
+                {initialPosts.map((post) => (
+                  <WidgetPostRow
+                    key={post.id}
+                    post={post}
+                    statusMap={statusMap}
+                    showBoard
+                    canVote={canVote}
+                    ensureSession={ensureSession}
+                    onAuthRequired={() => handleAuthRequired(post.id)}
+                    onSelect={() => onPostSelect?.(post.id)}
+                  />
+                ))}
               </div>
             )}
           </div>

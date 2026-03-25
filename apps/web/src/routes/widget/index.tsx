@@ -58,7 +58,6 @@ export const Route = createFileRoute('/widget/')({
           name: b.name,
           slug: b.slug,
         })),
-      defaultBoard: search.board,
       orgSlug: settings?.slug ?? '',
       features: {
         anonymousVoting: settings?.publicPortalConfig?.features?.anonymousVoting ?? true,
@@ -85,7 +84,7 @@ interface SuccessPost {
 }
 
 function WidgetPage() {
-  const { posts, statuses, boards, defaultBoard, orgSlug, features, tabs } = Route.useLoaderData()
+  const { posts, statuses, boards, orgSlug, features, tabs } = Route.useLoaderData()
   const { isIdentified, ensureSession } = useWidgetAuth()
   const canVote = isIdentified || features.anonymousVoting
 
@@ -187,7 +186,6 @@ function WidgetPage() {
           initialPosts={allPosts}
           statuses={statuses}
           boards={boards}
-          defaultBoard={defaultBoard}
           onPostSelect={handlePostSelect}
           onPostCreated={handlePostCreated}
           anonymousVotingEnabled={features.anonymousVoting}
