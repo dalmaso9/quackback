@@ -3,7 +3,7 @@
  * Queries database to determine all targets for an event.
  */
 
-import type { PostId, PrincipalId, UserId, WebhookId } from '@quackback/ids'
+import type { PostId, PrincipalId, UserId, WebhookId } from '@featurepool/ids'
 import {
   db,
   integrations,
@@ -521,7 +521,7 @@ async function getChangelogSubscriberTargets(
   const linkedPosts = await db.query.changelogEntryPosts.findMany({
     where: eqOp(
       changelogEntryPosts.changelogEntryId,
-      changelogId as import('@quackback/ids').ChangelogId
+      changelogId as import('@featurepool/ids').ChangelogId
     ),
     columns: { postId: true },
   })

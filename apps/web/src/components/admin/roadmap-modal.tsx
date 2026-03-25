@@ -32,7 +32,7 @@ import {
   type TagId,
   type RoadmapId,
   type CommentId,
-} from '@quackback/ids'
+} from '@featurepool/ids'
 import type { PostDetails, CurrentUser } from '@/components/admin/feedback/inbox-types'
 import type { PublicPostDetailView } from '@/lib/client/queries/portal-detail'
 

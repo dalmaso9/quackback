@@ -33,7 +33,7 @@ import {
   InviteLinkRow,
 } from '@/components/admin/settings/team/pending-invitations'
 import { MemberActions } from '@/components/admin/settings/team/member-actions'
-import type { UserId, PrincipalId } from '@quackback/ids'
+import type { UserId, PrincipalId } from '@featurepool/ids'
 import { isAdmin } from '@/lib/shared/roles'
 
 // Discriminated union: each row is either a member or an invitation

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { boardIdSchema, statusIdSchema, tagIdsSchema } from '@quackback/ids/zod'
+import { boardIdSchema, statusIdSchema, tagIdsSchema } from '@featurepool/ids/zod'
 
 /**
  * TipTap mark schema - validates mark types and their attributes

@@ -23,7 +23,7 @@ import {
   toPortalComments,
   getInitialContentJson,
 } from '@/components/admin/feedback/detail/post-utils'
-import type { PostId, CommentId } from '@quackback/ids'
+import type { PostId, CommentId } from '@featurepool/ids'
 import type { PostDetails } from '@/components/admin/feedback/inbox-types'
 import type { PublicCommentView } from '@/lib/client/queries/portal-detail'
 

@@ -25,7 +25,7 @@ export function buildGitLabIssue(
   const author = post.authorName || post.authorEmail || 'Anonymous'
 
   const description = [
-    `> Submitted by **${author}** via [Quackback](${postUrl})`,
+    `> Submitted by **${author}** via [Featurepool](${postUrl})`,
     '',
     content,
     '',

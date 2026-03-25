@@ -7,7 +7,7 @@
 import { getOpenAI } from '@/lib/server/domains/ai/config'
 import { withRetry } from '@/lib/server/domains/ai/retry'
 import { stripCodeFences } from '@/lib/server/domains/ai/parse'
-import type { PostId } from '@quackback/ids'
+import type { PostId } from '@featurepool/ids'
 import type { MergeCandidate } from './merge-search.service'
 
 const ASSESSMENT_MODEL = 'google/gemini-3.1-flash-lite-preview'

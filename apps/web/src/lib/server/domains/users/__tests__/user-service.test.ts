@@ -9,7 +9,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import type { PrincipalId, UserId } from '@quackback/ids'
+import type { PrincipalId, UserId } from '@featurepool/ids'
 
 // --- Mock tracking ---
 
@@ -96,7 +96,7 @@ vi.mock('@/lib/server/db', () => ({
   userAttributeDefinitions: 'user_attribute_definitions',
 }))
 
-vi.mock('@quackback/ids', () => ({
+vi.mock('@featurepool/ids', () => ({
   generateId: vi.fn((prefix: string) => `${prefix}_generated123`),
 }))
 

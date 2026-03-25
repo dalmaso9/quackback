@@ -27,7 +27,7 @@ export function buildLinearIssueBody(
     '---',
     `**Submitted by:** ${author}`,
     `**Board:** ${post.boardSlug}`,
-    `[View in Quackback](${postUrl})`,
+    `[View in Featurepool](${postUrl})`,
   ].join('\n')
 
   return { title: post.title, description }

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import type { ApiKey } from '@/lib/server/domains/api-keys'
-import type { PrincipalId, ApiKeyId, UserId } from '@quackback/ids'
+import type { PrincipalId, ApiKeyId, UserId } from '@featurepool/ids'
 
 // ── Mocks ──────────────────────────────────────────────────────────────────────
 
@@ -24,8 +24,8 @@ vi.mock('@/lib/server/db', () => ({
   eq: vi.fn((_a: unknown, _b: unknown) => 'eq-condition'),
 }))
 
-// Mock getTypeIdPrefix from @quackback/ids — extract prefix from underscore-separated IDs
-vi.mock('@quackback/ids', async (importOriginal) => {
+// Mock getTypeIdPrefix from @featurepool/ids — extract prefix from underscore-separated IDs
+vi.mock('@featurepool/ids', async (importOriginal) => {
   const actual = (await importOriginal()) as Record<string, unknown>
   return {
     ...actual,
@@ -537,7 +537,7 @@ describe('MCP HTTP Handler', () => {
       const body = (await response.json()) as {
         result: { serverInfo: { name: string }; capabilities: { tools: unknown } }
       }
-      expect(body.result.serverInfo.name).toBe('quackback')
+      expect(body.result.serverInfo.name).toBe('featurepool')
       expect(body.result.capabilities.tools).toBeDefined()
     })
 
@@ -580,11 +580,11 @@ describe('MCP HTTP Handler', () => {
         result: { resources: Array<{ uri: string; name: string }> }
       }
       const uris = body.result.resources.map((r) => r.uri)
-      expect(uris).toContain('quackback://boards')
-      expect(uris).toContain('quackback://statuses')
-      expect(uris).toContain('quackback://tags')
-      expect(uris).toContain('quackback://roadmaps')
-      expect(uris).toContain('quackback://members')
+      expect(uris).toContain('featurepool://boards')
+      expect(uris).toContain('featurepool://statuses')
+      expect(uris).toContain('featurepool://tags')
+      expect(uris).toContain('featurepool://roadmaps')
+      expect(uris).toContain('featurepool://members')
       expect(uris).toHaveLength(5)
     })
 
@@ -1284,7 +1284,7 @@ describe('MCP HTTP Handler', () => {
       const response = await handleMcpRequest(
         mcpRequest(
           jsonRpcRequest('resources/read', {
-            uri: 'quackback://boards',
+            uri: 'featurepool://boards',
           })
         )
       )

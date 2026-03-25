@@ -28,7 +28,7 @@ export function buildShortcutStoryBody(
     '---',
     `**Submitted by:** ${author}`,
     `**Board:** ${post.boardSlug}`,
-    `[View in Quackback](${postUrl})`,
+    `[View in Featurepool](${postUrl})`,
   ].join('\n')
 
   // Shortcut story name has a 512 char max

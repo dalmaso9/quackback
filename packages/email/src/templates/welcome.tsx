@@ -18,22 +18,22 @@ interface WelcomeEmailProps {
   dashboardUrl: string
 }
 
-const LOGO_URL = 'https://quackback.io/logo.png'
+const LOGO_URL = 'https://featurepool.io/logo.png'
 
 export function WelcomeEmail({ name, workspaceName, dashboardUrl }: WelcomeEmailProps) {
   return (
     <Html>
       <Head />
-      <Preview>Welcome to {workspaceName} on Quackback</Preview>
+      <Preview>Welcome to {workspaceName} on Featurepool</Preview>
       <Body style={layout.main}>
         <Container style={layout.container}>
           {/* Logo */}
           <Section style={branding.logoContainer}>
-            <Img src={LOGO_URL} alt="Quackback" style={branding.logo} />
+            <Img src={LOGO_URL} alt="Featurepool" style={branding.logo} />
           </Section>
 
           {/* Content */}
-          <Heading style={typography.h1}>Welcome to Quackback!</Heading>
+          <Heading style={typography.h1}>Welcome to Featurepool!</Heading>
           <Text style={typography.text}>
             Hi {name}, your workspace <strong>{workspaceName}</strong> is ready. Start collecting
             and managing customer feedback today.
@@ -66,7 +66,7 @@ export function WelcomeEmail({ name, workspaceName, dashboardUrl }: WelcomeEmail
           <Text style={typography.footer}>
             Happy collecting!
             <br />
-            The Quackback Team
+            The Featurepool Team
           </Text>
         </Container>
       </Body>

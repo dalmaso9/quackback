@@ -18,7 +18,7 @@ export function logStartupBanner(): void {
   const lines = [
     '',
     '========================================',
-    `  Quackback v${__APP_VERSION__} (${__GIT_COMMIT__})`,
+    `  Featurepool v${__APP_VERSION__} (${__GIT_COMMIT__})`,
     '========================================',
     `  Environment: ${env}`,
     `  Runtime:     ${runtime}`,
@@ -112,8 +112,8 @@ export function logStartupBanner(): void {
     })
     .catch((err) => console.error('[Startup] Failed to init merge suggestion sweep:', err))
 
-  // Ensure quackback feedback source exists (idempotent, creates on first startup)
-  import('./domains/feedback/sources/quackback.source')
-    .then(({ ensureQuackbackFeedbackSource }) => ensureQuackbackFeedbackSource())
-    .catch((err) => console.error('[Startup] Failed to ensure quackback feedback source:', err))
+  // Ensure featurepool feedback source exists (idempotent, creates on first startup)
+  import('./domains/feedback/sources/featurepool.source')
+    .then(({ ensureFeaturepoolFeedbackSource }) => ensureFeaturepoolFeedbackSource())
+    .catch((err) => console.error('[Startup] Failed to ensure featurepool feedback source:', err))
 }

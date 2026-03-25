@@ -11,4 +11,4 @@ ALTER TABLE "user" ALTER COLUMN "email" DROP NOT NULL;
 CREATE UNIQUE INDEX "user_email_idx" ON "user" ("email") WHERE "email" IS NOT NULL;
 
 -- 4. Nullify existing synthetic emails
-UPDATE "user" SET "email" = NULL WHERE "email" LIKE '%@external.quackback.io';
+UPDATE "user" SET "email" = NULL WHERE "email" LIKE '%@external.featurepool.io';

@@ -12,7 +12,7 @@ import {
   validateOptionalTypeId,
   validateTypeIdArray,
 } from '@/lib/server/domains/api/validation'
-import type { PostId, StatusId, TagId, PrincipalId } from '@quackback/ids'
+import type { PostId, StatusId, TagId, PrincipalId } from '@featurepool/ids'
 import type { MergedPostSummary } from '@/lib/server/domains/posts/post.types'
 
 // Input validation schema

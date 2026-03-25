@@ -9,8 +9,8 @@
  */
 
 import { db, eq, and, inArray, isNull, sql, asc, segments, userSegments } from '@/lib/server/db'
-import type { SegmentId, PrincipalId } from '@quackback/ids'
-import { createId, fromUuid } from '@quackback/ids'
+import type { SegmentId, PrincipalId } from '@featurepool/ids'
+import { createId, fromUuid } from '@featurepool/ids'
 import { NotFoundError, ValidationError, ForbiddenError } from '@/lib/shared/errors'
 import type {
   Segment,

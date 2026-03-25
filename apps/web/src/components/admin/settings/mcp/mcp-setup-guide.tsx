@@ -68,17 +68,17 @@ interface McpSetupGuideProps {
 // ——————————————————————————————————————————————————
 
 function claudeCodeOAuthConfig(url: string) {
-  return JSON.stringify({ mcpServers: { quackback: { type: 'http', url } } }, null, 2)
+  return JSON.stringify({ mcpServers: { featurepool: { type: 'http', url } } }, null, 2)
 }
 
 function claudeCodeApiKeyConfig(url: string) {
   return JSON.stringify(
     {
       mcpServers: {
-        quackback: {
+        featurepool: {
           type: 'http',
           url,
-          headers: { Authorization: 'Bearer ${QUACKBACK_API_KEY}' },
+          headers: { Authorization: 'Bearer ${FEATUREPOOL_API_KEY}' },
         },
       },
     },
@@ -91,9 +91,9 @@ function cursorConfig(url: string) {
   return JSON.stringify(
     {
       mcpServers: {
-        quackback: {
+        featurepool: {
           url,
-          headers: { Authorization: 'Bearer ${env:QUACKBACK_API_KEY}' },
+          headers: { Authorization: 'Bearer ${env:FEATUREPOOL_API_KEY}' },
         },
       },
     },
@@ -108,16 +108,16 @@ function vscodeConfig(url: string) {
       inputs: [
         {
           type: 'promptString',
-          id: 'quackback-api-key',
-          description: 'Quackback API Key (qb_...)',
+          id: 'featurepool-api-key',
+          description: 'Featurepool API Key (qb_...)',
           password: true,
         },
       ],
       servers: {
-        quackback: {
+        featurepool: {
           type: 'http',
           url,
-          headers: { Authorization: 'Bearer ${input:quackback-api-key}' },
+          headers: { Authorization: 'Bearer ${input:featurepool-api-key}' },
         },
       },
     },
@@ -130,9 +130,9 @@ function windsurfConfig(url: string) {
   return JSON.stringify(
     {
       mcpServers: {
-        quackback: {
+        featurepool: {
           serverUrl: url,
-          headers: { Authorization: 'Bearer ${env:QUACKBACK_API_KEY}' },
+          headers: { Authorization: 'Bearer ${env:FEATUREPOOL_API_KEY}' },
         },
       },
     },
@@ -145,7 +145,7 @@ function claudeDesktopOAuthConfig(url: string) {
   return JSON.stringify(
     {
       mcpServers: {
-        quackback: { command: 'npx', args: ['mcp-remote@latest', '--http', url] },
+        featurepool: { command: 'npx', args: ['mcp-remote@latest', '--http', url] },
       },
     },
     null,
@@ -157,7 +157,7 @@ function claudeDesktopApiKeyConfig(url: string) {
   return JSON.stringify(
     {
       mcpServers: {
-        quackback: {
+        featurepool: {
           command: 'npx',
           args: [
             'mcp-remote@latest',
@@ -205,7 +205,7 @@ const CLIENTS: ClientDef[] = [
     label: 'Cursor',
     filename: '.cursor/mcp.json',
     lang: 'js',
-    note: 'Set QUACKBACK_API_KEY in your environment. OAuth is not supported.',
+    note: 'Set FEATUREPOOL_API_KEY in your environment. OAuth is not supported.',
     code: cursorConfig,
   },
   {
@@ -221,7 +221,7 @@ const CLIENTS: ClientDef[] = [
     label: 'Windsurf',
     filename: '~/.codeium/windsurf/mcp_config.json',
     lang: 'js',
-    note: 'Set QUACKBACK_API_KEY in your environment. Uses "serverUrl" not "url". OAuth is not supported.',
+    note: 'Set FEATUREPOOL_API_KEY in your environment. Uses "serverUrl" not "url". OAuth is not supported.',
     code: windsurfConfig,
   },
   {
@@ -431,7 +431,7 @@ export function McpSetupGuide({ endpointUrl }: McpSetupGuideProps) {
                 {MCP_TOOLS.length} tools available
               </span>
               <a
-                href="https://www.quackback.io/docs/mcp/reference"
+                href="https://www.featurepool.io/docs/mcp/reference"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 text-[11px] text-primary hover:underline"

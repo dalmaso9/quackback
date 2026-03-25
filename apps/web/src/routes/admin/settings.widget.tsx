@@ -273,7 +273,7 @@ export async function POST() {
   }
 
   const hash = crypto
-    .createHmac("sha256", process.env.QUACKBACK_WIDGET_SECRET!)
+    .createHmac("sha256", process.env.FEATUREPOOL_WIDGET_SECRET!)
     .update(session.user.id)
     .digest("hex");
 
@@ -290,7 +290,7 @@ export async function POST() {
 app.post("/api/widget-hash", (req, res) => {
   // req.user set by your auth middleware
   const hash = crypto
-    .createHmac("sha256", process.env.QUACKBACK_WIDGET_SECRET)
+    .createHmac("sha256", process.env.FEATUREPOOL_WIDGET_SECRET)
     .update(req.user.id)
     .digest("hex");
 
@@ -310,7 +310,7 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def widget_hash(request):
     digest = hmac.new(
-        settings.QUACKBACK_WIDGET_SECRET.encode(),
+        settings.FEATUREPOOL_WIDGET_SECRET.encode(),
         str(request.user.id).encode(),
         hashlib.sha256,
     ).hexdigest()
@@ -327,7 +327,7 @@ def widget_hash(request):
   def identify_hash
     digest = OpenSSL::HMAC.hexdigest(
       "sha256",
-      ENV["QUACKBACK_WIDGET_SECRET"],
+      ENV["FEATUREPOOL_WIDGET_SECRET"],
       current_user.id.to_s,
     )
     render json: { hash: digest }
@@ -348,7 +348,7 @@ class WidgetController extends Controller
         $hash = hash_hmac(
             "sha256",
             $request->user()->id,
-            config("services.quackback.widget_secret"),
+            config("services.featurepool.widget_secret"),
         );
         return response()->json(["hash" => $hash]);
     }
@@ -364,13 +364,13 @@ export function WidgetIdentify() {
 
   useEffect(() => {
     if (user) {
-      Quackback("identify", {
+      Featurepool("identify", {
         id: user.id,
         email: user.email,
         name: user.name,
       });
     } else {
-      Quackback("identify", { anonymous: true });
+      Featurepool("identify", { anonymous: true });
     }
   }, [user]);
 
@@ -388,7 +388,7 @@ export function WidgetIdentify() {
       fetch("/api/widget-hash", { method: "POST" })
         .then((res) => res.json())
         .then(({ hash }) => {
-          Quackback("identify", {
+          Featurepool("identify", {
             id: user.id,
             email: user.email,
             name: user.name,
@@ -396,7 +396,7 @@ export function WidgetIdentify() {
           });
         });
     } else {
-      Quackback("identify", { anonymous: true });
+      Featurepool("identify", { anonymous: true });
     }
   }, [user]);
 
@@ -438,13 +438,13 @@ function WidgetInstallation({
   const installSnippet = useMemo(
     () =>
       `<script>
-  (function(w,d){if(w.Quackback)return;w.Quackback=function(){
-  (w.Quackback.q=w.Quackback.q||[]).push(arguments)};
+  (function(w,d){if(w.Featurepool)return;w.Featurepool=function(){
+  (w.Featurepool.q=w.Featurepool.q||[]).push(arguments)};
   var s=d.createElement("script");s.async=true;
   s.src="${baseUrl}/api/widget/sdk.js";
   d.head.appendChild(s)})(window,document);
 
-  Quackback("init");
+  Featurepool("init");
 </script>`,
     [baseUrl]
   )

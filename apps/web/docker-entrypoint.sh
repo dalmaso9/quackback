@@ -2,7 +2,7 @@
 set -e
 
 echo "========================================"
-echo "  Quackback starting..."
+echo "  Featurepool starting..."
 echo "========================================"
 
 # Run database migrations
@@ -22,7 +22,7 @@ fi
 
 # Start the application
 echo ""
-echo "Starting Quackback server on port ${PORT:-3000}..."
+echo "Starting Featurepool server on port ${PORT:-3000}..."
 echo "========================================"
 cd /app
 exec bun .output/server/index.mjs

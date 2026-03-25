@@ -15,7 +15,7 @@ interface SigninCodeEmailProps {
   code: string
 }
 
-const LOGO_URL = 'https://quackback.io/logo.png'
+const LOGO_URL = 'https://featurepool.io/logo.png'
 
 export function SigninCodeEmail({ code }: SigninCodeEmailProps) {
   return (
@@ -26,7 +26,7 @@ export function SigninCodeEmail({ code }: SigninCodeEmailProps) {
         <Container style={layout.container}>
           {/* Logo */}
           <Section style={branding.logoContainer}>
-            <Img src={LOGO_URL} alt="Quackback" style={branding.logo} />
+            <Img src={LOGO_URL} alt="Featurepool" style={branding.logo} />
           </Section>
 
           {/* Content */}

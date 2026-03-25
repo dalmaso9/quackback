@@ -1,5 +1,5 @@
 /**
- * MCP Tools for Quackback
+ * MCP Tools for Featurepool
  *
  * 23 tools calling domain services directly (no HTTP self-loop):
  * - search: Unified search across posts and changelogs
@@ -69,7 +69,7 @@ import {
   addPostToRoadmap,
   removePostFromRoadmap,
 } from '@/lib/server/domains/roadmaps/roadmap.service'
-import { getTypeIdPrefix, isTypeId, isValidTypeId } from '@quackback/ids'
+import { getTypeIdPrefix, isTypeId, isValidTypeId } from '@featurepool/ids'
 import { isTeamMember } from '@/lib/shared/roles'
 import type { McpAuthContext, McpScope } from './types'
 import type {
@@ -83,7 +83,7 @@ import type {
   RoadmapId,
   FeedbackSuggestionId,
   MergeSuggestionId,
-} from '@quackback/ids'
+} from '@featurepool/ids'
 
 // ============================================================================
 // Helpers
@@ -244,7 +244,7 @@ const addCommentSchema = {
 }
 
 const createPostSchema = {
-  boardId: z.string().describe('Board TypeID (use quackback://boards resource to find IDs)'),
+  boardId: z.string().describe('Board TypeID (use featurepool://boards resource to find IDs)'),
   title: z.string().max(200).describe('Post title (max 200 characters)'),
   content: z.string().max(10000).optional().describe('Post content (max 10,000 characters)'),
   statusId: z.string().optional().describe('Initial status TypeID (defaults to board default)'),

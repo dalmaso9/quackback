@@ -12,7 +12,8 @@ export const trelloCatalog: IntegrationCatalogEntry = {
     },
     {
       label: 'Two-way status sync',
-      description: 'Moving cards between lists in Trello updates the feedback status in Quackback',
+      description:
+        'Moving cards between lists in Trello updates the feedback status in Featurepool',
     },
     {
       label: 'Rich descriptions',
@@ -24,5 +25,5 @@ export const trelloCatalog: IntegrationCatalogEntry = {
   settingsPath: '/admin/settings/integrations/trello',
   available: true,
   configurable: true,
-  docsUrl: 'https://www.quackback.io/docs/integrations/trello',
+  docsUrl: 'https://www.featurepool.io/docs/integrations/trello',
 }

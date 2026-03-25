@@ -1,6 +1,6 @@
 import { pgTable, text, timestamp, real, index, uniqueIndex } from 'drizzle-orm/pg-core'
 import { relations, sql } from 'drizzle-orm'
-import { typeIdWithDefault, typeIdColumn, typeIdColumnNullable } from '@quackback/ids/drizzle'
+import { typeIdWithDefault, typeIdColumn, typeIdColumnNullable } from '@featurepool/ids/drizzle'
 import { posts } from './posts'
 import { principal } from './auth'
 

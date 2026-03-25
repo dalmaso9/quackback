@@ -9,7 +9,7 @@ import { verifyApiKey, type ApiKey } from '@/lib/server/domains/api-keys'
 import { unauthorizedResponse, forbiddenResponse, rateLimitedResponse } from './responses'
 import { checkRateLimit, getClientIp } from './rate-limit'
 import { db, principal, eq } from '@/lib/server/db'
-import type { PrincipalId } from '@quackback/ids'
+import type { PrincipalId } from '@featurepool/ids'
 import { isAdmin, isTeamMember } from '@/lib/shared/roles'
 
 export type MemberRole = 'admin' | 'member' | 'user'

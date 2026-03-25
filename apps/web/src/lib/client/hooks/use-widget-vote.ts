@@ -11,7 +11,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { toggleVoteFn, getVotedPostsFn } from '@/lib/server/functions/public-posts'
 import { getWidgetAuthHeaders, hasWidgetToken } from '@/lib/client/widget-auth'
 import { voteCountKeys } from './use-post-vote'
-import type { PostId } from '@quackback/ids'
+import type { PostId } from '@featurepool/ids'
 
 /** Initial sessionVersion before any identify() call */
 export const INITIAL_SESSION_VERSION = 0
@@ -110,7 +110,7 @@ export function useWidgetVote({
       })
       window.parent.postMessage(
         {
-          type: 'quackback:event',
+          type: 'featurepool:event',
           name: 'vote',
           payload: { postId: id, voted: data.voted, voteCount: data.voteCount },
         },

@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Quackback - open-source customer feedback platform. Bun monorepo, TanStack Start, PostgreSQL + Drizzle, Tailwind v4 + shadcn/ui.
+Featurepool - open-source customer feedback platform. Bun monorepo, TanStack Start, PostgreSQL + Drizzle, Tailwind v4 + shadcn/ui.
 
 ## Commands
 
@@ -13,5 +13,5 @@ bun run test && bun run test:e2e && bun run lint && bun run typecheck
 
 ## Rules
 
-- Entity IDs are branded TypeIDs via `@quackback/ids`
+- Entity IDs are branded TypeIDs via `@featurepool/ids`
 - Never add co-author trailers to git commits

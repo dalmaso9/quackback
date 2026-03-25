@@ -105,7 +105,7 @@ function wrapDbError(operation: string, error: unknown): never {
 }
 
 async function getPortalPassthroughKeys(): Promise<string[]> {
-  const { isEmailConfigured } = await import('@quackback/email')
+  const { isEmailConfigured } = await import('@featurepool/email')
   return isEmailConfigured() ? ['email', 'password'] : ['password']
 }
 

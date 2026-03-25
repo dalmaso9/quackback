@@ -8,7 +8,7 @@
  * import { db, eq, and, posts } from '@/lib/server/db'
  */
 
-import { createDb, type Database as PostgresDatabase } from '@quackback/db/client'
+import { createDb, type Database as PostgresDatabase } from '@featurepool/db/client'
 import { config } from '@/lib/server/config'
 
 // Import drizzle-orm operators explicitly to work around Nitro bundler issues
@@ -234,10 +234,10 @@ export {
   // Client functions
   createDb,
   getMigrationDb,
-} from '@quackback/db'
+} from '@featurepool/db'
 
-// Re-export schema types not covered by @quackback/db/types
-export type { ServiceMetadata } from '@quackback/db'
+// Re-export schema types not covered by @featurepool/db/types
+export type { ServiceMetadata } from '@featurepool/db'
 
 // Re-export types (for client components that need types without side effects)
-export * from '@quackback/db/types'
+export * from '@featurepool/db/types'

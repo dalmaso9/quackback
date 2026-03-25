@@ -25,7 +25,7 @@ import {
   type Post,
   type TiptapContent,
 } from '@/lib/server/db'
-import { type PostId, type PrincipalId, type UserId, type TagId } from '@quackback/ids'
+import { type PostId, type PrincipalId, type UserId, type TagId } from '@featurepool/ids'
 import {
   dispatchPostCreated,
   dispatchPostStatusChanged,

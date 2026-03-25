@@ -10,7 +10,7 @@ import {
 import { listChangelogs, createChangelog } from '@/lib/server/domains/changelog'
 import { publishedAtToPublishState } from '@/lib/shared/schemas/changelog'
 import { db, principal, eq } from '@/lib/server/db'
-import type { PostId } from '@quackback/ids'
+import type { PostId } from '@featurepool/ids'
 
 // Input validation schema
 const createChangelogSchema = z.object({

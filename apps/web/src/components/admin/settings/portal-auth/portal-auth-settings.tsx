@@ -176,7 +176,7 @@ export function PortalAuthSettings({ initialConfig, credentialStatus }: PortalAu
                               <>
                                 Requires email to be configured (SMTP or Resend).{' '}
                                 <a
-                                  href="https://www.quackback.io/docs/auth/email-otp"
+                                  href="https://www.featurepool.io/docs/auth/email-otp"
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="underline"

@@ -6,7 +6,7 @@
  * leaking into the client bundle via TanStack Router's routeTree.
  */
 
-import type { PrincipalId, UserId } from '@quackback/ids'
+import type { PrincipalId, UserId } from '@featurepool/ids'
 import { getIntegration } from '.'
 import { verifyOAuthState } from '@/lib/server/auth/oauth-state'
 import { auth } from '@/lib/server/auth'
@@ -23,7 +23,7 @@ import {
   isValidTenantDomain,
 } from './oauth'
 
-const FALLBACK_URL = 'https://quackback.io'
+const FALLBACK_URL = 'https://featurepool.io'
 
 interface OAuthState {
   type: string

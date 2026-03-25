@@ -16,7 +16,7 @@ import {
   isNull,
   type Post,
 } from '@/lib/server/db'
-import { toUuid, type PostId, type PrincipalId, type StatusId, type UserId } from '@quackback/ids'
+import { toUuid, type PostId, type PrincipalId, type StatusId, type UserId } from '@featurepool/ids'
 import { getExecuteRows } from '@/lib/server/utils'
 import { NotFoundError, ValidationError, ForbiddenError } from '@/lib/shared/errors'
 import { isTeamMember } from '@/lib/shared/roles'

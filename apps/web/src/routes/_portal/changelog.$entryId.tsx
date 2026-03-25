@@ -3,7 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 import { publicChangelogQueries } from '@/lib/client/queries/changelog'
 import { ChangelogEntryDetail } from '@/components/portal/changelog'
 import { BackLink } from '@/components/ui/back-link'
-import type { ChangelogId } from '@quackback/ids'
+import type { ChangelogId } from '@featurepool/ids'
 
 export const Route = createFileRoute('/_portal/changelog/$entryId')({
   loader: async ({ context, params }) => {
@@ -21,7 +21,7 @@ export const Route = createFileRoute('/_portal/changelog/$entryId')({
     return {
       entryId,
       entryTitle: entry.title,
-      workspaceName: context.settings?.name ?? 'Quackback',
+      workspaceName: context.settings?.name ?? 'Featurepool',
       baseUrl: context.baseUrl ?? '',
     }
   },

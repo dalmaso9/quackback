@@ -11,7 +11,7 @@ import type { McpAuthContext } from './types'
 
 export function createMcpServer(auth: McpAuthContext): McpServer {
   const server = new McpServer({
-    name: 'quackback',
+    name: 'featurepool',
     version: '1.0.0',
   })
 
@@ -39,12 +39,12 @@ function scopeGated(auth: McpAuthContext, fn: ReadResourceCallback): ReadResourc
   }
 }
 
-/** Build a JSON resource result for a quackback:// URI. */
+/** Build a JSON resource result for a featurepool:// URI. */
 function jsonResource(name: string, data: unknown): Awaited<ReturnType<ReadResourceCallback>> {
   return {
     contents: [
       {
-        uri: `quackback://${name}`,
+        uri: `featurepool://${name}`,
         mimeType: 'application/json',
         text: JSON.stringify(data, null, 2),
       },
@@ -55,7 +55,7 @@ function jsonResource(name: string, data: unknown): Awaited<ReturnType<ReadResou
 function registerResources(server: McpServer, auth: McpAuthContext) {
   server.resource(
     'boards',
-    'quackback://boards',
+    'featurepool://boards',
     { description: 'List all boards' },
     scopeGated(auth, async () => {
       const { listBoards } = await import('@/lib/server/domains/boards/board.service')
@@ -69,7 +69,7 @@ function registerResources(server: McpServer, auth: McpAuthContext) {
 
   server.resource(
     'statuses',
-    'quackback://statuses',
+    'featurepool://statuses',
     { description: 'List all statuses' },
     scopeGated(auth, async () => {
       const { listStatuses } = await import('@/lib/server/domains/statuses/status.service')
@@ -83,7 +83,7 @@ function registerResources(server: McpServer, auth: McpAuthContext) {
 
   server.resource(
     'tags',
-    'quackback://tags',
+    'featurepool://tags',
     { description: 'List all tags' },
     scopeGated(auth, async () => {
       const { listTags } = await import('@/lib/server/domains/tags/tag.service')
@@ -97,7 +97,7 @@ function registerResources(server: McpServer, auth: McpAuthContext) {
 
   server.resource(
     'roadmaps',
-    'quackback://roadmaps',
+    'featurepool://roadmaps',
     { description: 'List all roadmaps' },
     scopeGated(auth, async () => {
       const { listRoadmaps } = await import('@/lib/server/domains/roadmaps/roadmap.service')
@@ -111,7 +111,7 @@ function registerResources(server: McpServer, auth: McpAuthContext) {
 
   server.resource(
     'members',
-    'quackback://members',
+    'featurepool://members',
     { description: 'List all team members (emails stripped)' },
     scopeGated(auth, async () => {
       const { listTeamMembers } = await import('@/lib/server/domains/principals/principal.service')

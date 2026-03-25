@@ -9,7 +9,7 @@ import {
   handleDomainError,
 } from '@/lib/server/domains/api/responses'
 import { validateTypeId } from '@/lib/server/domains/api/validation'
-import type { PrincipalId } from '@quackback/ids'
+import type { PrincipalId } from '@featurepool/ids'
 import { isTeamMember } from '@/lib/shared/roles'
 
 // Input validation schema for updating member role

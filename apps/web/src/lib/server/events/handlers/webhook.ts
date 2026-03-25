@@ -11,13 +11,13 @@ import dns from 'dns/promises'
 import type { HookHandler, HookResult } from '../hook-types'
 import type { EventData } from '../types'
 import type { WebhookTarget, WebhookConfig } from '../integrations/webhook/constants'
-import type { WebhookId } from '@quackback/ids'
+import type { WebhookId } from '@featurepool/ids'
 import { isRetryableError } from '../hook-utils'
 
 export type { WebhookTarget, WebhookConfig }
 
 const TIMEOUT_MS = 5_000 // 5s timeout for single attempt
-const USER_AGENT = 'Quackback-Webhook/1.0 (+https://quackback.io)'
+const USER_AGENT = 'Featurepool-Webhook/1.0 (+https://featurepool.io)'
 
 /**
  * Private IP ranges that should be blocked (SSRF protection).
@@ -115,9 +115,9 @@ export const webhookHook: HookHandler = {
     const headers = {
       'Content-Type': 'application/json',
       'User-Agent': USER_AGENT,
-      'X-Quackback-Signature': `sha256=${signature}`,
-      'X-Quackback-Timestamp': String(timestamp),
-      'X-Quackback-Event': event.type,
+      'X-Featurepool-Signature': `sha256=${signature}`,
+      'X-Featurepool-Timestamp': String(timestamp),
+      'X-Featurepool-Event': event.type,
     }
 
     try {

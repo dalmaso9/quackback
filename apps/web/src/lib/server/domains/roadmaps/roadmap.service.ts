@@ -25,7 +25,7 @@ import {
   userSegments,
   type Roadmap,
 } from '@/lib/server/db'
-import { toUuid, type RoadmapId, type PostId, type PrincipalId } from '@quackback/ids'
+import { toUuid, type RoadmapId, type PostId, type PrincipalId } from '@featurepool/ids'
 import { NotFoundError, ValidationError, ConflictError } from '@/lib/shared/errors'
 import { createActivity } from '@/lib/server/domains/activity/activity.service'
 import type {

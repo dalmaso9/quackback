@@ -17,18 +17,18 @@ interface PasswordResetEmailProps {
   resetLink: string
 }
 
-const LOGO_URL = 'https://quackback.io/logo.png'
+const LOGO_URL = 'https://featurepool.io/logo.png'
 
 export function PasswordResetEmail({ resetLink }: PasswordResetEmailProps) {
   return (
     <Html>
       <Head />
-      <Preview>Reset your Quackback password</Preview>
+      <Preview>Reset your Featurepool password</Preview>
       <Body style={layout.main}>
         <Container style={layout.container}>
           {/* Logo */}
           <Section style={branding.logoContainer}>
-            <Img src={LOGO_URL} alt="Quackback" style={branding.logo} />
+            <Img src={LOGO_URL} alt="Featurepool" style={branding.logo} />
           </Section>
 
           {/* Content */}

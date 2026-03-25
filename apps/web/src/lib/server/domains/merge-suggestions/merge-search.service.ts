@@ -6,7 +6,7 @@
  */
 
 import { db, posts, and, isNull, isNotNull, ne, desc, sql } from '@/lib/server/db'
-import type { PostId } from '@quackback/ids'
+import type { PostId } from '@featurepool/ids'
 
 export interface MergeCandidate {
   postId: PostId

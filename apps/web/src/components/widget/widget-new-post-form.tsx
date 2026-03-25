@@ -72,7 +72,7 @@ export function WidgetNewPostForm({
         <button
           type="button"
           onClick={() =>
-            window.parent.postMessage({ type: 'quackback:navigate', url: portalUrl }, '*')
+            window.parent.postMessage({ type: 'featurepool:navigate', url: portalUrl }, '*')
           }
           className="text-xs text-primary hover:text-primary/80 transition-colors mt-1"
         >

@@ -26,7 +26,7 @@ import {
   isNotNull,
 } from '@/lib/server/db'
 import { getPublicUrlOrNull } from '@/lib/server/storage/s3'
-import { toUuid, type PostId, type BoardId, type PrincipalId } from '@quackback/ids'
+import { toUuid, type PostId, type BoardId, type PrincipalId } from '@featurepool/ids'
 import { NotFoundError } from '@/lib/shared/errors'
 import { buildCommentTree, toStatusChange, type CommentTreeNode } from '@/lib/shared'
 import type {

@@ -21,7 +21,7 @@ interface ChangelogPublishedEmailProps {
   unsubscribeUrl: string
 }
 
-const LOGO_URL = 'https://quackback.io/logo.png'
+const LOGO_URL = 'https://featurepool.io/logo.png'
 
 export function ChangelogPublishedEmail({
   changelogTitle,
@@ -40,7 +40,7 @@ export function ChangelogPublishedEmail({
         <Container style={layout.container}>
           {/* Logo */}
           <Section style={branding.logoContainer}>
-            <Img src={LOGO_URL} alt="Quackback" style={branding.logo} />
+            <Img src={LOGO_URL} alt="Featurepool" style={branding.logo} />
           </Section>
 
           {/* Content */}

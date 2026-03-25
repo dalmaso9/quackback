@@ -12,7 +12,7 @@ import {
   validateOptionalTypeId,
   validateTypeIdArray,
 } from '@/lib/server/domains/api/validation'
-import type { BoardId, StatusId, TagId } from '@quackback/ids'
+import type { BoardId, StatusId, TagId } from '@featurepool/ids'
 
 // Input validation schemas
 const createPostSchema = z.object({
@@ -57,7 +57,7 @@ export const Route = createFileRoute('/api/v1/posts/')({
           const showDeleted = url.searchParams.get('showDeleted') === 'true'
 
           // Validate boardId filter if provided
-          const { isValidTypeId } = await import('@quackback/ids')
+          const { isValidTypeId } = await import('@featurepool/ids')
           const boardId =
             boardIdParam && isValidTypeId(boardIdParam, 'board')
               ? (boardIdParam as BoardId)

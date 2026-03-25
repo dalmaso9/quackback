@@ -23,7 +23,7 @@ interface NewCommentEmailProps {
   unsubscribeUrl: string
 }
 
-const LOGO_URL = 'https://quackback.io/logo.png'
+const LOGO_URL = 'https://featurepool.io/logo.png'
 
 export function NewCommentEmail({
   postTitle,
@@ -42,7 +42,7 @@ export function NewCommentEmail({
         <Container style={layout.container}>
           {/* Logo */}
           <Section style={branding.logoContainer}>
-            <Img src={LOGO_URL} alt="Quackback" style={branding.logo} />
+            <Img src={LOGO_URL} alt="Featurepool" style={branding.logo} />
           </Section>
 
           {/* Content */}

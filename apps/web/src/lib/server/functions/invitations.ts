@@ -1,8 +1,8 @@
 import { createServerFn } from '@tanstack/react-start'
 import { getRequestHeaders } from '@tanstack/react-start/server'
 import { z } from 'zod'
-import type { InviteId, PrincipalId, UserId } from '@quackback/ids'
-import { generateId } from '@quackback/ids'
+import type { InviteId, PrincipalId, UserId } from '@featurepool/ids'
+import { generateId } from '@featurepool/ids'
 import { db, invitation, principal, user, and, eq } from '@/lib/server/db'
 import { getPublicUrlOrNull } from '@/lib/server/storage/s3'
 import { getSession } from './auth'
@@ -94,7 +94,7 @@ export const getInvitationDetailsFn = createServerFn({ method: 'GET' })
         name: inv.name,
         email: inv.email,
         role: inv.role,
-        workspaceName: settings?.name ?? 'Quackback',
+        workspaceName: settings?.name ?? 'Featurepool',
         inviterName: inv.inviter?.name ?? null,
       },
       passwordEnabled,
@@ -286,7 +286,7 @@ export const getInviteBrandingFn = createServerFn({ method: 'GET' })
     ])
 
     return {
-      workspaceName: settings?.name ?? 'Quackback',
+      workspaceName: settings?.name ?? 'Featurepool',
       logoUrl: getPublicUrlOrNull(settings?.logoKey),
       inviterName: inv?.inviter?.name ?? null,
     }

@@ -9,7 +9,7 @@ import type { HookHandler, HookResult } from '../hook-types'
 import type { EventData } from '../types'
 import { analyzeSentiment, saveSentiment } from '@/lib/server/domains/sentiment'
 import { generatePostEmbedding } from '@/lib/server/domains/embeddings'
-import type { PostId } from '@quackback/ids'
+import type { PostId } from '@featurepool/ids'
 import { db, postTags, tags, eq } from '@/lib/server/db'
 
 /**

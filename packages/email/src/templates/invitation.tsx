@@ -20,7 +20,7 @@ interface InvitationEmailProps {
   inviteLink: string
 }
 
-const LOGO_URL = 'https://quackback.io/logo.png'
+const LOGO_URL = 'https://featurepool.io/logo.png'
 
 export function InvitationEmail({
   invitedByName,
@@ -31,12 +31,12 @@ export function InvitationEmail({
   return (
     <Html>
       <Head />
-      <Preview>Join {organizationName} on Quackback</Preview>
+      <Preview>Join {organizationName} on Featurepool</Preview>
       <Body style={layout.main}>
         <Container style={layout.container}>
           {/* Logo */}
           <Section style={branding.logoContainer}>
-            <Img src={LOGO_URL} alt="Quackback" style={branding.logo} />
+            <Img src={LOGO_URL} alt="Featurepool" style={branding.logo} />
           </Section>
 
           {/* Content */}
@@ -45,7 +45,7 @@ export function InvitationEmail({
           </Heading>
           <Text style={typography.text}>
             <strong>{invitedByName}</strong> has invited you to join{' '}
-            <strong>{organizationName}</strong> on Quackback.
+            <strong>{organizationName}</strong> on Featurepool.
           </Text>
 
           {/* CTA Button */}

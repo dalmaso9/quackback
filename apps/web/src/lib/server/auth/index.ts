@@ -11,7 +11,7 @@ import {
 } from 'better-auth/plugins'
 import { oauthProvider } from '@better-auth/oauth-provider'
 import { tanstackStartCookies } from 'better-auth/tanstack-start'
-import { generateId } from '@quackback/ids'
+import { generateId } from '@featurepool/ids'
 import { config } from '@/lib/server/config'
 
 /** Temporary storage for magic link tokens during invitation flow */
@@ -64,7 +64,7 @@ async function createAuth() {
     eq,
   } = await import('@/lib/server/db')
   const { sendSigninCodeEmail, sendPasswordResetEmail, isEmailConfigured } =
-    await import('@quackback/email')
+    await import('@featurepool/email')
   const { getPlatformCredentials } =
     await import('@/lib/server/domains/platform-credentials/platform-credential.service')
   const { getAllAuthProviders } = await import('./auth-providers')
@@ -300,7 +300,7 @@ async function createAuth() {
         allowDynamicClientRegistration: true,
         allowUnauthenticatedClientRegistration: true,
 
-        // Quackback-specific scopes
+        // Featurepool-specific scopes
         scopes: [
           'openid',
           'profile',
@@ -351,7 +351,7 @@ async function createAuth() {
 
       // Anonymous authentication plugin — enables voting without sign-up
       anonymous({
-        emailDomainName: 'anon.quackback.io',
+        emailDomainName: 'anon.featurepool.io',
         disableDeleteAnonymousUser: true, // we handle cleanup ourselves to avoid cascade-deleting sessions
         async onLinkAccount({ anonymousUser, newUser }) {
           const anonUserId = anonymousUser.user.id as ReturnType<typeof generateId<'user'>>

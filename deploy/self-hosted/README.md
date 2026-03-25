@@ -1,6 +1,6 @@
 # Self-Hosted Deployment
 
-Deploy Quackback on your own infrastructure with full control over your data.
+Deploy Featurepool on your own infrastructure with full control over your data.
 
 ## Table of Contents
 
@@ -22,8 +22,8 @@ Deploy Quackback on your own infrastructure with full control over your data.
 
 ```bash
 # Clone the repository
-git clone https://github.com/quackbackhq/quackback.git
-cd quackback
+git clone https://github.com/featurepoolhq/featurepool.git
+cd featurepool
 
 # Copy and configure environment
 cp .env.example .env
@@ -36,18 +36,18 @@ docker compose up -d
 docker compose logs -f
 ```
 
-Open http://localhost:3000 to access Quackback.
+Open http://localhost:3000 to access Featurepool.
 
 ### Using Docker Run
 
 ```bash
 docker run -d \
-  --name quackback \
+  --name featurepool \
   -p 3000:3000 \
-  -e DATABASE_URL="postgresql://user:pass@host:5432/quackback" \
+  -e DATABASE_URL="postgresql://user:pass@host:5432/featurepool" \
   -e SECRET_KEY="your-secret-key-at-least-32-chars" \
   -e BASE_URL="https://your-domain.com" \
-  ghcr.io/quackbackhq/quackback:latest
+  ghcr.io/featurepoolhq/featurepool:latest
 ```
 
 ---
@@ -67,13 +67,13 @@ Images are published to GitHub Container Registry:
 
 ```bash
 # Pull latest community edition
-docker pull ghcr.io/quackbackhq/quackback:latest
+docker pull ghcr.io/featurepoolhq/featurepool:latest
 
 # Pull specific version
-docker pull ghcr.io/quackbackhq/quackback:v1.0.0
+docker pull ghcr.io/featurepoolhq/featurepool:v1.0.0
 
 # Pull enterprise edition
-docker pull ghcr.io/quackbackhq/quackback:latest-enterprise
+docker pull ghcr.io/featurepoolhq/featurepool:latest-enterprise
 ```
 
 ---
@@ -82,11 +82,11 @@ docker pull ghcr.io/quackbackhq/quackback:latest-enterprise
 
 ### Required
 
-| Variable       | Description                     | Example                                           |
-| -------------- | ------------------------------- | ------------------------------------------------- |
-| `DATABASE_URL` | PostgreSQL connection string    | `postgresql://user:pass@localhost:5432/quackback` |
-| `SECRET_KEY`   | Auth encryption key (32+ chars) | `your-very-long-random-secret-key`                |
-| `BASE_URL`     | Public URL of your instance     | `https://feedback.yourcompany.com`                |
+| Variable       | Description                     | Example                                             |
+| -------------- | ------------------------------- | --------------------------------------------------- |
+| `DATABASE_URL` | PostgreSQL connection string    | `postgresql://user:pass@localhost:5432/featurepool` |
+| `SECRET_KEY`   | Auth encryption key (32+ chars) | `your-very-long-random-secret-key`                  |
+| `BASE_URL`     | Public URL of your instance     | `https://feedback.yourcompany.com`                  |
 
 ### Optional
 
@@ -120,16 +120,16 @@ docker pull ghcr.io/quackbackhq/quackback:latest-enterprise
 
 ## Database Setup
 
-Quackback requires PostgreSQL 13+.
+Featurepool requires PostgreSQL 13+.
 
 ### Create Database
 
 ```bash
 # Using psql
-createdb quackback
+createdb featurepool
 
 # Or via SQL
-psql -c "CREATE DATABASE quackback;"
+psql -c "CREATE DATABASE featurepool;"
 ```
 
 ### Run Migrations
@@ -141,17 +141,17 @@ Migrations run automatically on startup. To run manually:
 bun run db:migrate
 
 # Using Docker
-docker exec quackback bun run db:migrate
+docker exec featurepool bun run db:migrate
 ```
 
 ### Database Backups
 
 ```bash
 # Backup
-pg_dump -Fc quackback > quackback_backup.dump
+pg_dump -Fc featurepool > featurepool_backup.dump
 
 # Restore
-pg_restore -d quackback quackback_backup.dump
+pg_restore -d featurepool featurepool_backup.dump
 ```
 
 ---
@@ -168,8 +168,8 @@ pg_restore -d quackback quackback_backup.dump
 
 ```bash
 # Clone repository
-git clone https://github.com/quackbackhq/quackback.git
-cd quackback
+git clone https://github.com/featurepoolhq/featurepool.git
+cd featurepool
 
 # Install dependencies
 bun install
@@ -247,12 +247,12 @@ feedback.yourcompany.com {
 ```yaml
 # docker-compose.yml with Traefik labels
 services:
-  quackback:
-    image: ghcr.io/quackbackhq/quackback:latest
+  featurepool:
+    image: ghcr.io/featurepoolhq/featurepool:latest
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.quackback.rule=Host(`feedback.yourcompany.com`)'
-      - 'traefik.http.routers.quackback.tls.certresolver=letsencrypt'
+      - 'traefik.http.routers.featurepool.rule=Host(`feedback.yourcompany.com`)'
+      - 'traefik.http.routers.featurepool.tls.certresolver=letsencrypt'
 ```
 
 ---
@@ -269,17 +269,17 @@ Enterprise features require a license key:
 
 ```bash
 docker run -d \
-  --name quackback \
+  --name featurepool \
   -p 3000:3000 \
   -e DATABASE_URL="postgresql://..." \
   -e SECRET_KEY="..." \
-  -e QUACKBACK_LICENSE_KEY="your-license-key" \
-  ghcr.io/quackbackhq/quackback:latest-enterprise
+  -e FEATUREPOOL_LICENSE_KEY="your-license-key" \
+  ghcr.io/featurepoolhq/featurepool:latest-enterprise
 ```
 
 ### Obtaining a License
 
-Contact sales@quackback.io for enterprise licensing information.
+Contact sales@featurepool.io for enterprise licensing information.
 
 ---
 
@@ -301,14 +301,14 @@ docker compose up -d
 
 ```bash
 # Stop and remove old container
-docker stop quackback
-docker rm quackback
+docker stop featurepool
+docker rm featurepool
 
 # Pull new image
-docker pull ghcr.io/quackbackhq/quackback:latest
+docker pull ghcr.io/featurepoolhq/featurepool:latest
 
 # Start new container (same run command as before)
-docker run -d --name quackback ...
+docker run -d --name featurepool ...
 ```
 
 ### From Source
@@ -339,7 +339,7 @@ bun run start
 Check logs:
 
 ```bash
-docker logs quackback
+docker logs featurepool
 ```
 
 Common issues:
@@ -368,7 +368,7 @@ Check database permissions:
 
 ```sql
 -- User needs CREATE, ALTER, DROP permissions
-GRANT ALL PRIVILEGES ON DATABASE quackback TO your_user;
+GRANT ALL PRIVILEGES ON DATABASE featurepool TO your_user;
 ```
 
 ### Email Not Sending
@@ -397,7 +397,7 @@ curl -X POST 'https://api.resend.com/emails' \
 
 [![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/bcnu9a)
 
-Deploys Quackback + PostgreSQL (with pgvector) + S3-compatible storage bucket to Railway. After deploying:
+Deploys Featurepool + PostgreSQL (with pgvector) + S3-compatible storage bucket to Railway. After deploying:
 
 1. **Find your OTP code**: If email is not configured, login codes appear in Railway's deployment logs
 2. **Configure email** (recommended): Add SMTP or Resend API key in the service's environment variables
@@ -417,6 +417,6 @@ Coming soon:
 
 ## Support
 
-- **Documentation**: https://docs.quackback.io
-- **GitHub Issues**: https://github.com/quackbackhq/quackback/issues
-- **Discord**: https://discord.gg/quackback
+- **Documentation**: https://docs.featurepool.io
+- **GitHub Issues**: https://github.com/featurepoolhq/featurepool/issues
+- **Discord**: https://discord.gg/featurepool

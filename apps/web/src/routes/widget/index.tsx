@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { useState, useCallback, useEffect } from 'react'
 import { CheckCircleIcon, ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid'
 import { WidgetVoteButton } from '@/components/widget/widget-vote-button'
-import type { PostId } from '@quackback/ids'
+import type { PostId } from '@featurepool/ids'
 import { WidgetShell } from '@/components/widget/widget-shell'
 import { WidgetHome } from '@/components/widget/widget-home'
 import { WidgetNewPostForm } from '@/components/widget/widget-new-post-form'
@@ -94,12 +94,12 @@ function WidgetPage() {
   const [successPost, setSuccessPost] = useState<SuccessPost | null>(null)
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null)
 
-  // Listen for quackback:open messages from the SDK
+  // Listen for featurepool:open messages from the SDK
   useEffect(() => {
     function handleMessage(event: MessageEvent) {
       if (event.source !== window.parent) return
       const msg = event.data
-      if (!msg || typeof msg !== 'object' || msg.type !== 'quackback:open' || !msg.data) return
+      if (!msg || typeof msg !== 'object' || msg.type !== 'featurepool:open' || !msg.data) return
 
       const opts = msg.data as { view?: string; title?: string; board?: string }
       if (opts.view === 'new-post') {
@@ -222,7 +222,7 @@ function WidgetPage() {
                         !canVote
                           ? () => {
                               const url = `${window.location.origin}/b/${successPost.board.slug}/posts/${successPost.id}`
-                              window.parent.postMessage({ type: 'quackback:navigate', url }, '*')
+                              window.parent.postMessage({ type: 'featurepool:navigate', url }, '*')
                             }
                           : undefined
                       }
@@ -258,7 +258,7 @@ function WidgetPage() {
                     let url = `${window.location.origin}/b/${successPost.board.slug}/posts/${successPost.id}`
                     const ott = await generateOneTimeToken()
                     if (ott) url += `?ott=${encodeURIComponent(ott)}`
-                    window.parent.postMessage({ type: 'quackback:navigate', url }, '*')
+                    window.parent.postMessage({ type: 'featurepool:navigate', url }, '*')
                   }}
                   className="inline-flex items-center gap-1 text-[11px] text-muted-foreground/70 hover:text-muted-foreground transition-colors"
                 >

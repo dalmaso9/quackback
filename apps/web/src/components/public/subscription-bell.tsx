@@ -15,7 +15,7 @@ import {
   unsubscribeFromPostFn,
   updateSubscriptionLevelFn,
 } from '@/lib/server/functions/subscriptions'
-import type { PostId } from '@quackback/ids'
+import type { PostId } from '@featurepool/ids'
 import type { SubscriptionLevel } from '@/lib/server/domains/subscriptions/subscription.types'
 
 interface SubscriptionStatus {

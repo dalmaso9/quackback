@@ -332,7 +332,7 @@ describe.skipIf(SKIP_INTEGRATION)('API Integration Tests', () => {
     it('returns 404 for non-existent resource', async () => {
       if (skipIfNoServer()) return
 
-      const { createId } = await import('@quackback/ids')
+      const { createId } = await import('@featurepool/ids')
       const fakePostId = createId('post')
       const { status, data } = await api('GET', `/posts/${fakePostId}`)
       expect(status).toBe(404)
@@ -380,7 +380,7 @@ describe.skipIf(SKIP_INTEGRATION)('API Integration Tests', () => {
     it('cannot create post with non-existent boardId', async () => {
       if (skipIfNoServer()) return
 
-      const { createId } = await import('@quackback/ids')
+      const { createId } = await import('@featurepool/ids')
       const fakeBoardId = createId('board')
       const { status } = await api('POST', '/posts', {
         boardId: fakeBoardId,
@@ -393,7 +393,7 @@ describe.skipIf(SKIP_INTEGRATION)('API Integration Tests', () => {
     it('cannot create post with non-existent statusId', async () => {
       if (skipIfNoServer() || !testBoardId) return
 
-      const { createId } = await import('@quackback/ids')
+      const { createId } = await import('@featurepool/ids')
       const fakeStatusId = createId('status')
       const { status } = await api('POST', '/posts', {
         boardId: testBoardId,
@@ -407,7 +407,7 @@ describe.skipIf(SKIP_INTEGRATION)('API Integration Tests', () => {
     it('cannot create comment on non-existent post', async () => {
       if (skipIfNoServer()) return
 
-      const { createId } = await import('@quackback/ids')
+      const { createId } = await import('@featurepool/ids')
       const fakePostId = createId('post')
       const { status } = await api('POST', `/posts/${fakePostId}/comments`, {
         content: 'Test comment',

@@ -26,7 +26,7 @@ import {
   type TagId,
   type CommentId,
   type PrincipalId,
-} from '@quackback/ids'
+} from '@featurepool/ids'
 import { buildCommentTree, toStatusChange } from '@/lib/shared'
 import type {
   PublicPostListResult,
@@ -735,7 +735,7 @@ export async function getAllUserVotedPostIds(principalId: PrincipalId): Promise<
 }
 
 export async function getVotedPostIdsByUserId(
-  userId: import('@quackback/ids').UserId
+  userId: import('@featurepool/ids').UserId
 ): Promise<Set<PostId>> {
   const result = await db
     .select({ postId: votes.postId })
@@ -747,7 +747,7 @@ export async function getVotedPostIdsByUserId(
 
 export async function getBoardByPostId(
   postId: PostId
-): Promise<import('@quackback/db').Board | null> {
+): Promise<import('@featurepool/db').Board | null> {
   const post = await db.query.posts.findFirst({
     where: eq(posts.id, postId),
     with: { board: true },

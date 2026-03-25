@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query'
-import type { PrincipalId, RoadmapId, StatusId, BoardId } from '@quackback/ids'
+import type { PrincipalId, RoadmapId, StatusId, BoardId } from '@featurepool/ids'
 import {
   fetchPublicBoards,
   fetchPublicPosts,

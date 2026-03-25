@@ -4,7 +4,7 @@
  * Utilities for validating API request parameters.
  */
 
-import { isValidTypeId, type IdPrefix } from '@quackback/ids'
+import { isValidTypeId, type IdPrefix } from '@featurepool/ids'
 import { badRequestResponse } from './responses'
 
 /**

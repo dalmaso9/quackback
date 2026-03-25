@@ -58,7 +58,7 @@ import {
   type TagId,
   type RoadmapId,
   type CommentId,
-} from '@quackback/ids'
+} from '@featurepool/ids'
 import { useDeleteComment, useRestoreComment } from '@/lib/client/mutations/portal-comments'
 import type { PostDetails, CurrentUser } from '@/components/admin/feedback/inbox-types'
 import {

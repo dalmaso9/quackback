@@ -6,7 +6,7 @@
 
 import { db, eq, ne, and, or, sql, ilike, principal, user, type Principal } from '@/lib/server/db'
 import type { ServiceMetadata } from '@/lib/server/db'
-import type { PrincipalId, UserId } from '@quackback/ids'
+import type { PrincipalId, UserId } from '@featurepool/ids'
 import { InternalError, ForbiddenError, NotFoundError } from '@/lib/shared/errors'
 import { isTeamMember, isAdmin } from '@/lib/shared/roles'
 import type { TeamMember } from './principal.types'

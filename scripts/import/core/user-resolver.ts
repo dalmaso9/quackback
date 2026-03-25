@@ -5,10 +5,10 @@
  * with optional creation of new user+principal records.
  */
 
-import type { PrincipalId, UserId } from '@quackback/ids'
-import { createId } from '@quackback/ids'
-import type { Database } from '@quackback/db'
-import { user, principal, eq } from '@quackback/db'
+import type { PrincipalId, UserId } from '@featurepool/ids'
+import { createId } from '@featurepool/ids'
+import type { Database } from '@featurepool/db'
+import { user, principal, eq } from '@featurepool/db'
 
 export interface UserResolverOptions {
   /** Create new users for unknown emails */

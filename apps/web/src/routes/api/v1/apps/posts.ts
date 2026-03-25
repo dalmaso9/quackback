@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { withApiKeyAuth } from '@/lib/server/domains/api/auth'
 import { badRequestResponse, handleDomainError } from '@/lib/server/domains/api/responses'
 import { validateTypeId } from '@/lib/server/domains/api/validation'
-import type { BoardId, PostId } from '@quackback/ids'
+import type { BoardId, PostId } from '@featurepool/ids'
 import { appJsonResponse, preflightResponse } from '@/lib/server/integrations/apps/cors'
 
 const createPostSchema = z.object({

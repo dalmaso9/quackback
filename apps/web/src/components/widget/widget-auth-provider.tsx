@@ -92,12 +92,12 @@ export function WidgetAuthProvider({ children }: { children: ReactNode }) {
   }, [storeToken])
 
   const closeWidget = useCallback(() => {
-    window.parent.postMessage({ type: 'quackback:close' }, '*')
+    window.parent.postMessage({ type: 'featurepool:close' }, '*')
   }, [])
 
   const emitEvent = useCallback(
     <T extends WidgetEventName>(name: T, payload: WidgetEventMap[T]) => {
-      window.parent.postMessage({ type: 'quackback:event', name, payload }, '*')
+      window.parent.postMessage({ type: 'featurepool:event', name, payload }, '*')
     },
     []
   )
@@ -117,7 +117,7 @@ export function WidgetAuthProvider({ children }: { children: ReactNode }) {
           const err = await response.json().catch(() => ({ error: { code: 'NETWORK_ERROR' } }))
           window.parent.postMessage(
             {
-              type: 'quackback:identify-result',
+              type: 'featurepool:identify-result',
               success: false,
               error: err.error?.code || 'SERVER_ERROR',
             },
@@ -139,13 +139,13 @@ export function WidgetAuthProvider({ children }: { children: ReactNode }) {
         }
 
         window.parent.postMessage(
-          { type: 'quackback:identify-result', success: true, user: result.user },
+          { type: 'featurepool:identify-result', success: true, user: result.user },
           '*'
         )
-        window.parent.postMessage({ type: 'quackback:auth-change', user: result.user }, '*')
+        window.parent.postMessage({ type: 'featurepool:auth-change', user: result.user }, '*')
       } catch {
         window.parent.postMessage(
-          { type: 'quackback:identify-result', success: false, error: 'NETWORK_ERROR' },
+          { type: 'featurepool:identify-result', success: false, error: 'NETWORK_ERROR' },
           '*'
         )
       }
@@ -164,7 +164,7 @@ export function WidgetAuthProvider({ children }: { children: ReactNode }) {
         })
         if (error || !token) {
           window.parent.postMessage(
-            { type: 'quackback:identify-result', success: false, error: 'ANON_SESSION_FAILED' },
+            { type: 'featurepool:identify-result', success: false, error: 'ANON_SESSION_FAILED' },
             '*'
           )
           return
@@ -172,13 +172,13 @@ export function WidgetAuthProvider({ children }: { children: ReactNode }) {
         // Clear any previous identified user since this is now an anonymous session
         setUser(null)
         window.parent.postMessage(
-          { type: 'quackback:identify-result', success: true, user: null },
+          { type: 'featurepool:identify-result', success: true, user: null },
           '*'
         )
-        window.parent.postMessage({ type: 'quackback:auth-change', user: null }, '*')
+        window.parent.postMessage({ type: 'featurepool:auth-change', user: null }, '*')
       } catch {
         window.parent.postMessage(
-          { type: 'quackback:identify-result', success: false, error: 'NETWORK_ERROR' },
+          { type: 'featurepool:identify-result', success: false, error: 'NETWORK_ERROR' },
           '*'
         )
       }
@@ -190,12 +190,12 @@ export function WidgetAuthProvider({ children }: { children: ReactNode }) {
       const msg = event.data
       if (!msg || typeof msg !== 'object' || typeof msg.type !== 'string') return
 
-      if (msg.type === 'quackback:metadata' && msg.data && typeof msg.data === 'object') {
+      if (msg.type === 'featurepool:metadata' && msg.data && typeof msg.data === 'object') {
         setWidgetMetadata(msg.data as WidgetMetadata)
         return
       }
 
-      if (msg.type === 'quackback:identify') {
+      if (msg.type === 'featurepool:identify') {
         if (msg.data === null) {
           clearWidgetToken()
           sessionReadyRef.current = false
@@ -204,10 +204,10 @@ export function WidgetAuthProvider({ children }: { children: ReactNode }) {
           setSessionVersion(sessionVersionRef.current)
           setUser(null)
           window.parent.postMessage(
-            { type: 'quackback:identify-result', success: true, user: null },
+            { type: 'featurepool:identify-result', success: true, user: null },
             '*'
           )
-          window.parent.postMessage({ type: 'quackback:auth-change', user: null }, '*')
+          window.parent.postMessage({ type: 'featurepool:auth-change', user: null }, '*')
         } else if (msg.data?.anonymous === true) {
           handleAnonymousIdentify()
         } else if (msg.data && typeof msg.data === 'object') {
@@ -217,7 +217,7 @@ export function WidgetAuthProvider({ children }: { children: ReactNode }) {
     }
 
     window.addEventListener('message', handleMessage)
-    window.parent.postMessage({ type: 'quackback:ready' }, '*')
+    window.parent.postMessage({ type: 'featurepool:ready' }, '*')
 
     return () => window.removeEventListener('message', handleMessage)
   }, [storeToken])

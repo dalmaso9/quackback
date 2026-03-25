@@ -3,7 +3,7 @@ import type { IntegrationCatalogEntry } from '../types'
 export const zapierCatalog: IntegrationCatalogEntry = {
   id: 'zapier',
   name: 'Zapier',
-  description: 'Connect Quackback to 6,000+ apps with Zapier automations.',
+  description: 'Connect Featurepool to 6,000+ apps with Zapier automations.',
   category: 'automation',
   capabilities: [
     {
@@ -21,5 +21,5 @@ export const zapierCatalog: IntegrationCatalogEntry = {
   settingsPath: '/admin/settings/integrations/zapier',
   available: true,
   configurable: false,
-  docsUrl: 'https://www.quackback.io/docs/integrations/zapier',
+  docsUrl: 'https://www.featurepool.io/docs/integrations/zapier',
 }

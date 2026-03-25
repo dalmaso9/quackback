@@ -6,8 +6,8 @@ import {
   type UserId,
   type PrincipalId,
   type SegmentId,
-} from '@quackback/ids'
-import type { BoardId, TagId } from '@quackback/ids'
+} from '@featurepool/ids'
+import type { BoardId, TagId } from '@featurepool/ids'
 import {
   isOnboardingComplete as checkComplete,
   type BoardSettings,
@@ -53,8 +53,8 @@ import {
   updateUserAttribute,
   deleteUserAttribute,
 } from '@/lib/server/domains/user-attributes/user-attribute.service'
-import type { UserAttributeId } from '@quackback/ids'
-import { sendInvitationEmail } from '@quackback/email'
+import type { UserAttributeId } from '@featurepool/ids'
+import { sendInvitationEmail } from '@featurepool/email'
 import { getBaseUrl } from '@/lib/server/config'
 import { getAuth, getMagicLinkToken } from '@/lib/server/auth'
 

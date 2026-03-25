@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { createServerFn } from '@tanstack/react-start'
-import { type UserId, type PrincipalId } from '@quackback/ids'
+import { type UserId, type PrincipalId } from '@featurepool/ids'
 import { getSession } from './auth'
 import { requireAuth } from './auth-helpers'
 import { getCurrentUserRole } from './workspace'

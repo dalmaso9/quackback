@@ -53,7 +53,7 @@ export const Route = createFileRoute('/api/widget/sdk.js')({
 
         if (!widgetConfig.enabled) {
           return jsResponse(
-            '/* Quackback widget is disabled */ console.warn("Quackback: Widget is disabled for this workspace.");',
+            '/* Featurepool widget is disabled */ console.warn("Featurepool: Widget is disabled for this workspace.");',
             60
           )
         }

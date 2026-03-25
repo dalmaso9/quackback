@@ -15,7 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import type { BoardId } from '@quackback/ids'
+import type { BoardId } from '@featurepool/ids'
 
 interface Board {
   id: BoardId

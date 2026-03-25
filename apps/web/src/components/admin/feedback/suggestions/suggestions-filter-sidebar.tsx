@@ -37,7 +37,7 @@ export function SuggestionsFiltersSidebar({
     const seen = new Set<string>()
     const result: { sourceType: string; name: string }[] = []
     for (const s of sources) {
-      if (s.sourceType === 'quackback' || seen.has(s.sourceType)) continue
+      if (s.sourceType === 'featurepool' || seen.has(s.sourceType)) continue
       seen.add(s.sourceType)
       result.push({
         sourceType: s.sourceType,

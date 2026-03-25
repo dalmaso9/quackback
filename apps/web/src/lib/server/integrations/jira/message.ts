@@ -75,7 +75,7 @@ export function buildJiraIssueBody(
         content: [
           {
             type: 'text',
-            text: 'View in Quackback',
+            text: 'View in Featurepool',
             marks: [{ type: 'link', attrs: { href: postUrl } }],
           },
         ],

@@ -21,7 +21,7 @@ import type { PublicCommentView } from '@/lib/client/queries/portal-detail'
 import { cn, getInitials } from '@/lib/shared/utils'
 import { StatusBadge } from '@/components/ui/status-badge'
 import { CommentForm, type CreateCommentMutation } from './comment-form'
-import type { CommentId, PostId, PrincipalId } from '@quackback/ids'
+import type { CommentId, PostId, PrincipalId } from '@featurepool/ids'
 
 /**
  * Groups root-level comments so consecutive private comments are wrapped

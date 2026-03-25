@@ -1,8 +1,8 @@
 #!/usr/bin/env bun
 /**
- * Quackback Data Import CLI
+ * Featurepool Data Import CLI
  *
- * Import data from various sources into Quackback.
+ * Import data from various sources into Featurepool.
  *
  * Usage:
  *   bun scripts/import/cli.ts intermediate --posts posts.csv --board features
@@ -59,14 +59,14 @@ interface CliArgs {
   users?: string // Subdomain users export
   // Canny options
   apiKey?: string
-  // Quackback API options (for API-to-API mode)
-  quackbackUrl?: string
-  quackbackKey?: string
+  // Featurepool API options (for API-to-API mode)
+  featurepoolUrl?: string
+  featurepoolKey?: string
 }
 
 function printUsage(): void {
   console.log(`
-Quackback Data Import CLI
+Featurepool Data Import CLI
 
 Usage:
   bun scripts/import/cli.ts <command> [options]
@@ -124,22 +124,22 @@ Examples:
     --api-key YOUR_CANNY_API_KEY \\
     --dry-run --verbose
 
-  # Import from Canny via Quackback API (no DB needed)
+  # Import from Canny via Featurepool API (no DB needed)
   bun scripts/import/cli.ts canny \\
     --api-key YOUR_CANNY_API_KEY \\
-    --quackback-url https://app.quackback.io \\
-    --quackback-key qb_xxx \\
+    --featurepool-url https://app.featurepool.io \\
+    --featurepool-key qb_xxx \\
     --verbose
 
 Canny Options:
   --api-key <key>         Canny API key (or set CANNY_API_KEY env var)
-  --quackback-url <url>   Quackback API URL (enables API-to-API mode, no DB needed)
-  --quackback-key <key>   Quackback admin API key (or set QUACKBACK_API_KEY env var)
+  --featurepool-url <url>   Featurepool API URL (enables API-to-API mode, no DB needed)
+  --featurepool-key <key>   Featurepool admin API key (or set FEATUREPOOL_API_KEY env var)
 
 Environment:
   DATABASE_URL        PostgreSQL connection string (required unless using API mode)
   CANNY_API_KEY       Canny API key (alternative to --api-key flag)
-  QUACKBACK_API_KEY   Quackback API key (alternative to --quackback-key flag)
+  FEATUREPOOL_API_KEY   Featurepool API key (alternative to --featurepool-key flag)
 `)
 }
 
@@ -234,11 +234,11 @@ function parseArgs(args: string[]): CliArgs {
       case '--api-key':
         result.apiKey = getNextArg(i++, '--api-key')
         break
-      case '--quackback-url':
-        result.quackbackUrl = getNextArg(i++, '--quackback-url')
+      case '--featurepool-url':
+        result.featurepoolUrl = getNextArg(i++, '--featurepool-url')
         break
-      case '--quackback-key':
-        result.quackbackKey = getNextArg(i++, '--quackback-key')
+      case '--featurepool-key':
+        result.featurepoolKey = getNextArg(i++, '--featurepool-key')
         break
       case '--help':
       case '-h':
@@ -381,25 +381,25 @@ async function runCannyImport(args: CliArgs): Promise<void> {
   }
 
   // Check if API-to-API mode
-  const quackbackUrl = args.quackbackUrl
-  const quackbackKey = args.quackbackKey ?? process.env.QUACKBACK_API_KEY
+  const featurepoolUrl = args.featurepoolUrl
+  const featurepoolKey = args.featurepoolKey ?? process.env.FEATUREPOOL_API_KEY
 
-  if (quackbackUrl) {
-    if (!quackbackKey) {
+  if (featurepoolUrl) {
+    if (!featurepoolKey) {
       console.error(
-        'Error: --quackback-key is required when using --quackback-url (or set QUACKBACK_API_KEY env var)'
+        'Error: --featurepool-key is required when using --featurepool-url (or set FEATUREPOOL_API_KEY env var)'
       )
       process.exit(1)
     }
 
-    console.log('🔄 Running Canny import via Quackback API...')
-    console.log(`   Quackback URL: ${quackbackUrl}`)
+    console.log('🔄 Running Canny import via Featurepool API...')
+    console.log(`   Featurepool URL: ${featurepoolUrl}`)
 
     try {
       const result = await runApiImport({
         cannyApiKey: apiKey,
-        quackbackUrl,
-        quackbackKey,
+        featurepoolUrl,
+        featurepoolKey,
         dryRun: args.dryRun,
         verbose: args.verbose,
       })

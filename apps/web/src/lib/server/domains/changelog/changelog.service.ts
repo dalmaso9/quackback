@@ -29,7 +29,7 @@ import {
   inArray,
   sql,
 } from '@/lib/server/db'
-import type { BoardId, ChangelogId, PrincipalId, PostId, StatusId } from '@quackback/ids'
+import type { BoardId, ChangelogId, PrincipalId, PostId, StatusId } from '@featurepool/ids'
 import { NotFoundError, ValidationError } from '@/lib/shared/errors'
 import { buildEventActor, dispatchChangelogPublished } from '@/lib/server/events/dispatch'
 import { scheduleDispatch, cancelScheduledDispatch } from '@/lib/server/events/scheduler'

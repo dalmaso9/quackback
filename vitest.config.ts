@@ -18,7 +18,7 @@ export default defineConfig({
       enabled: false,
     },
     env: {
-      DATABASE_URL: 'postgresql://postgres:password@localhost:5432/quackback_test',
+      DATABASE_URL: 'postgresql://postgres:password@localhost:5432/featurepool_test',
     },
   },
   esbuild: {
@@ -31,10 +31,10 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@quackback/db/client': path.resolve(__dirname, './packages/db/src/client.ts'),
-      '@quackback/db/schema': path.resolve(__dirname, './packages/db/src/schema/index.ts'),
-      '@quackback/db/types': path.resolve(__dirname, './packages/db/src/types.ts'),
-      '@quackback/db': path.resolve(__dirname, './packages/db/index.ts'),
+      '@featurepool/db/client': path.resolve(__dirname, './packages/db/src/client.ts'),
+      '@featurepool/db/schema': path.resolve(__dirname, './packages/db/src/schema/index.ts'),
+      '@featurepool/db/types': path.resolve(__dirname, './packages/db/src/types.ts'),
+      '@featurepool/db': path.resolve(__dirname, './packages/db/index.ts'),
       // Path alias for apps/web (matches tsconfig.json baseUrl: "./src" + "@/*": ["./*"])
       '@': path.resolve(__dirname, './apps/web/src'),
     },

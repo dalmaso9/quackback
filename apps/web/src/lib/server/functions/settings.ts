@@ -6,7 +6,7 @@ import {
   type BrandingConfig,
   type UpdatePortalConfigInput,
 } from '@/lib/server/domains/settings'
-import { userIdSchema, type UserId } from '@quackback/ids'
+import { userIdSchema, type UserId } from '@featurepool/ids'
 import {
   getBrandingConfig,
   getPortalConfig,

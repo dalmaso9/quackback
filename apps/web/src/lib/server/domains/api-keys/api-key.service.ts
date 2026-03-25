@@ -6,7 +6,7 @@
  */
 
 import { db, apiKeys, principal, eq, and, isNull } from '@/lib/server/db'
-import type { PrincipalId, TypeId } from '@quackback/ids'
+import type { PrincipalId, TypeId } from '@featurepool/ids'
 import { NotFoundError, ValidationError } from '@/lib/shared/errors'
 import { isAdmin } from '@/lib/shared/roles'
 import { createHash, randomBytes, timingSafeEqual } from 'crypto'

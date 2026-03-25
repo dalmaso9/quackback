@@ -7,7 +7,7 @@ import { db, principal, eq } from '@/lib/server/db'
 import { config } from '@/lib/server/config'
 import type { Session } from './auth'
 import type { TenantSettings } from '@/lib/server/domains/settings'
-import type { SessionId, UserId } from '@quackback/ids'
+import type { SessionId, UserId } from '@featurepool/ids'
 
 export interface BootstrapData {
   baseUrl: string

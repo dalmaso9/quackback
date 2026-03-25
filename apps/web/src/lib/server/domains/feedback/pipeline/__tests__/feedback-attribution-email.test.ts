@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import type { PrincipalId, PostId } from '@quackback/ids'
+import type { PrincipalId, PostId } from '@featurepool/ids'
 
 const mockPrincipalFindFirst = vi.fn()
 const mockUserFindFirst = vi.fn()
@@ -37,7 +37,7 @@ vi.mock('@/lib/server/domains/subscriptions/subscription.service', () => ({
 
 const mockSendEmail = vi.fn().mockResolvedValue({ sent: true })
 
-vi.mock('@quackback/email', () => ({
+vi.mock('@featurepool/email', () => ({
   sendFeedbackLinkedEmail: (...args: unknown[]) => mockSendEmail(...args),
 }))
 
@@ -84,7 +84,7 @@ describe('sendFeedbackAttributionEmail', () => {
   it('should skip synthetic emails', async () => {
     mockPrincipalFindFirst.mockResolvedValueOnce({ userId: 'user_1' })
     mockUserFindFirst.mockResolvedValueOnce({
-      email: 'intercom+abc123@external.quackback.io',
+      email: 'intercom+abc123@external.featurepool.io',
       name: null,
     })
 

@@ -7,7 +7,7 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { fetchBoards, fetchBoard } from '@/lib/server/functions/boards'
-import type { BoardId } from '@quackback/ids'
+import type { BoardId } from '@featurepool/ids'
 
 // ============================================================================
 // Query Key Factory

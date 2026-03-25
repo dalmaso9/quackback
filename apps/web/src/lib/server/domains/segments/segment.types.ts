@@ -2,7 +2,7 @@
  * Segment domain types
  */
 
-import type { SegmentId } from '@quackback/ids'
+import type { SegmentId } from '@featurepool/ids'
 import type { SegmentRules, EvaluationSchedule, SegmentWeightConfig } from '@/lib/server/db'
 
 // ============================================

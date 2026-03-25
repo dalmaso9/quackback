@@ -38,12 +38,12 @@ function ApiKeysPage() {
       <PageHeader
         icon={KeyIcon}
         title="API Keys"
-        description="Manage API keys for programmatic access to Quackback"
+        description="Manage API keys for programmatic access to Featurepool"
       />
 
       <SettingsCard
         title="API Keys"
-        description="Create and manage API keys to authenticate with the Quackback REST API. Keys are shown only once when created."
+        description="Create and manage API keys to authenticate with the Featurepool REST API. Keys are shown only once when created."
       >
         <ApiKeysSettings apiKeys={apiKeysQuery.data} />
       </SettingsCard>

@@ -12,7 +12,7 @@
 
 import { Queue, Worker, UnrecoverableError } from 'bullmq'
 import { config } from '@/lib/server/config'
-import type { SegmentId } from '@quackback/ids'
+import type { SegmentId } from '@featurepool/ids'
 import type { EvaluationSchedule } from '@/lib/server/db'
 
 // ============================================================================

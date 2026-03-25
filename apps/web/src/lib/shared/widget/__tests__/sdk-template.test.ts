@@ -36,7 +36,7 @@ describe('buildWidgetSDK', () => {
   it('should handle identify command', () => {
     const result = buildWidgetSDK('https://feedback.acme.com')
     expect(result).toContain('"identify"')
-    expect(result).toContain('"quackback:identify"')
+    expect(result).toContain('"featurepool:identify"')
   })
 
   it('should handle open/close/destroy commands', () => {
@@ -48,8 +48,8 @@ describe('buildWidgetSDK', () => {
 
   it('should replay the command queue on initialization', () => {
     const result = buildWidgetSDK('https://feedback.acme.com')
-    expect(result).toContain('window.Quackback')
-    expect(result).toContain('Quackback.q')
+    expect(result).toContain('window.Featurepool')
+    expect(result).toContain('Featurepool.q')
   })
 
   it('should set correct iframe sandbox attributes', () => {
@@ -62,12 +62,12 @@ describe('buildWidgetSDK', () => {
     expect(result).toContain('event.origin !== BASE_URL')
   })
 
-  it('should handle postMessage types with quackback namespace', () => {
+  it('should handle postMessage types with featurepool namespace', () => {
     const result = buildWidgetSDK('https://feedback.acme.com')
-    expect(result).toContain('"quackback:ready"')
-    expect(result).toContain('"quackback:close"')
-    expect(result).toContain('"quackback:navigate"')
-    expect(result).toContain('"quackback:identify-result"')
+    expect(result).toContain('"featurepool:ready"')
+    expect(result).toContain('"featurepool:close"')
+    expect(result).toContain('"featurepool:navigate"')
+    expect(result).toContain('"featurepool:identify-result"')
   })
 
   it('should escape special characters in base URL', () => {

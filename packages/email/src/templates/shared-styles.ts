@@ -1,5 +1,5 @@
 /**
- * Shared email styles for Quackback emails
+ * Shared email styles for Featurepool emails
  *
  * Ensures consistent branding across all email templates.
  * Colors are derived from the app's design system.

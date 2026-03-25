@@ -27,8 +27,8 @@ import OpenAI from 'openai'
 import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 import { eq, and, isNull, sql, count } from 'drizzle-orm'
-import { posts, postSentiment, postTags, tags } from '@quackback/db/schema'
-import { generateId, type PostId } from '@quackback/ids'
+import { posts, postSentiment, postTags, tags } from '@featurepool/db/schema'
+import { generateId, type PostId } from '@featurepool/ids'
 
 // Configuration
 const BATCH_SIZE = 10
@@ -450,7 +450,7 @@ async function backfillEmbeddings(
 
 // Main
 async function main() {
-  console.log('🦆 Quackback AI Backfill\n')
+  console.log('🦆 Featurepool AI Backfill\n')
   console.log('Configuration:')
   console.log(`  Mode: ${dryRun ? 'DRY RUN (no changes)' : 'LIVE'}`)
   console.log(`  Sentiment: ${embeddingsOnly ? 'Skip' : 'Process'}`)

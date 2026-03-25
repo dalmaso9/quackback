@@ -61,10 +61,10 @@ describe('quality-gate.service', () => {
     expect(result.extract).toBe(false)
   })
 
-  it('should auto-pass quackback source with 15+ words', async () => {
+  it('should auto-pass featurepool source with 15+ words', async () => {
     const { shouldExtract } = await import('../quality-gate.service')
     const longText = 'word '.repeat(20).trim()
-    const result = await shouldExtract(makeItem(longText, 'quackback'))
+    const result = await shouldExtract(makeItem(longText, 'featurepool'))
     expect(result.extract).toBe(true)
     expect(result.tier).toBe(2)
     expect(result.reason).toContain('high-intent')

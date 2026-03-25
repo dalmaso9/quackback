@@ -8,7 +8,7 @@
 
 import { randomUUID } from 'crypto'
 
-import type { BoardId, ChangelogId, CommentId, PostId, PrincipalId, UserId } from '@quackback/ids'
+import type { BoardId, ChangelogId, CommentId, PostId, PrincipalId, UserId } from '@featurepool/ids'
 
 import { processEvent } from './process'
 import type { EventActor, EventData, EventPostRef } from './types.js'

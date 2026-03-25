@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-const CHANNEL_NAME = 'quackback-auth'
+const CHANNEL_NAME = 'featurepool-auth'
 
 // ============================================================================
 // Types

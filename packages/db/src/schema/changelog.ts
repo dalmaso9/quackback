@@ -1,6 +1,6 @@
 import { pgTable, text, timestamp, index, uniqueIndex, jsonb } from 'drizzle-orm/pg-core'
 import { relations } from 'drizzle-orm'
-import { typeIdWithDefault, typeIdColumn, typeIdColumnNullable } from '@quackback/ids/drizzle'
+import { typeIdWithDefault, typeIdColumn, typeIdColumnNullable } from '@featurepool/ids/drizzle'
 import { principal } from './auth'
 import { posts } from './posts'
 import type { TiptapContent } from '../types'

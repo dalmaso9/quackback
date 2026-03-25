@@ -1,4 +1,4 @@
-import type { BoardId } from '@quackback/ids'
+import type { BoardId } from '@featurepool/ids'
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useKeyboardSubmit } from '@/lib/client/hooks/use-keyboard-submit'
 import { useRouter, useRouteContext } from '@tanstack/react-router'

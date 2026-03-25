@@ -1,7 +1,7 @@
 /**
  * Slack interactivity handler.
  *
- * Handles message shortcuts ("Send to Quackback") and view submissions.
+ * Handles message shortcuts ("Send to Featurepool") and view submissions.
  */
 
 import { WebClient } from '@slack/web-api'
@@ -12,7 +12,7 @@ import { getBaseUrl } from '@/lib/server/config'
 import { decryptSecrets } from '../encryption'
 import { ingestRawFeedback } from '@/lib/server/domains/feedback/ingestion/feedback-ingest.service'
 import { verifySlackSignature } from './verify'
-import type { FeedbackSourceId, IntegrationId } from '@quackback/ids'
+import type { FeedbackSourceId, IntegrationId } from '@featurepool/ids'
 
 interface SlackInteractionPayload {
   type: string
@@ -31,8 +31,8 @@ interface SlackInteractionPayload {
   }
 }
 
-const CALLBACK_ID_MESSAGE_ACTION = 'quackback_send_feedback'
-const CALLBACK_ID_MODAL = 'quackback_send_feedback_modal'
+const CALLBACK_ID_MESSAGE_ACTION = 'featurepool_send_feedback'
+const CALLBACK_ID_MODAL = 'featurepool_send_feedback_modal'
 
 /**
  * Main entry point for Slack interactivity requests.
@@ -147,7 +147,7 @@ async function handleMessageAction(
         type: 'modal',
         callback_id: CALLBACK_ID_MODAL,
         private_metadata: privateMetadata,
-        title: { type: 'plain_text', text: 'Send to Quackback' },
+        title: { type: 'plain_text', text: 'Send to Featurepool' },
         submit: { type: 'plain_text', text: 'Send' },
         close: { type: 'plain_text', text: 'Cancel' },
         blocks,
@@ -239,13 +239,13 @@ async function handleViewSubmission(
         const baseUrl = getBaseUrl()
         const incomingUrl = `${baseUrl}/admin/feedback/incoming`
         const snippet = details.length > 80 ? details.slice(0, 77) + '...' : details
-        const fallbackText = `Feedback sent to Quackback: ${snippet}`
+        const fallbackText = `Feedback sent to Featurepool: ${snippet}`
         const confirmationBlocks = [
           {
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `*Feedback sent to Quackback*\n${snippet}`,
+              text: `*Feedback sent to Featurepool*\n${snippet}`,
             },
           },
           {
@@ -253,7 +253,7 @@ async function handleViewSubmission(
             elements: [
               {
                 type: 'mrkdwn',
-                text: `From *#${channelName}* · <${incomingUrl}|View in Quackback>`,
+                text: `From *#${channelName}* · <${incomingUrl}|View in Featurepool>`,
               },
             ],
           },

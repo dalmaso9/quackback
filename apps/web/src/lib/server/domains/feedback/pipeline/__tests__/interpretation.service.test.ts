@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import type { FeedbackSignalId, RawFeedbackItemId } from '@quackback/ids'
+import type { FeedbackSignalId, RawFeedbackItemId } from '@featurepool/ids'
 
 // --- Mock tracking ---
 const updateSetCalls: unknown[][] = []
@@ -129,11 +129,11 @@ describe('interpretation.service', () => {
     urgency: 'medium',
   }
 
-  it('should only embed for quackback post (no suggestions)', async () => {
+  it('should only embed for featurepool post (no suggestions)', async () => {
     mockSignalFindFirst.mockResolvedValueOnce(baseSignal)
     mockEmbedSignal.mockResolvedValueOnce(mockEmbedding)
     mockRawItemFindFirst.mockResolvedValueOnce({
-      sourceType: 'quackback',
+      sourceType: 'featurepool',
       externalId: 'post:post_src',
       content: { text: 'test' },
     })
@@ -143,16 +143,16 @@ describe('interpretation.service', () => {
     const { interpretSignal } = await import('../interpretation.service')
     await interpretSignal(signalId)
 
-    // Quackback posts only get embedded — duplicate detection handled by merge_suggestions system
+    // Featurepool posts only get embedded — duplicate detection handled by merge_suggestions system
     expect(mockEmbedSignal).toHaveBeenCalledWith(signalId, rawItemId)
     expect(mockFindSimilarPosts).not.toHaveBeenCalled()
     expect(mockCreatePostSuggestion).not.toHaveBeenCalled()
 
-    // Should log skipped_quackback pipeline event
+    // Should log skipped_featurepool pipeline event
     const { logPipelineEvent } = await import('../pipeline-log')
     expect(logPipelineEvent).toHaveBeenCalledWith(
       expect.objectContaining({
-        eventType: 'interpretation.skipped_quackback',
+        eventType: 'interpretation.skipped_featurepool',
         rawFeedbackItemId: rawItemId,
         signalId,
         detail: {},
@@ -368,7 +368,7 @@ describe('interpretation.service', () => {
     mockSignalFindFirst.mockResolvedValueOnce(baseSignal)
     mockEmbedSignal.mockResolvedValueOnce(mockEmbedding)
     mockRawItemFindFirst.mockResolvedValueOnce({
-      sourceType: 'quackback',
+      sourceType: 'featurepool',
       externalId: 'post:post_1',
       content: { text: 'test' },
     })
@@ -388,7 +388,7 @@ describe('interpretation.service', () => {
     mockSignalFindFirst.mockResolvedValueOnce(baseSignal)
     mockEmbedSignal.mockResolvedValueOnce(mockEmbedding)
     mockRawItemFindFirst.mockResolvedValueOnce({
-      sourceType: 'quackback',
+      sourceType: 'featurepool',
       externalId: 'post:post_1',
       content: { text: 'test' },
     })

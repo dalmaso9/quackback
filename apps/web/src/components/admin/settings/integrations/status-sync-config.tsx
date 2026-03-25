@@ -55,7 +55,7 @@ export function StatusSyncConfig({
   const [copied, setCopied] = useState(false)
 
   const statusesQuery = useSuspenseQuery(adminQueries.statuses())
-  const quackbackStatuses = statusesQuery.data
+  const featurepoolStatuses = statusesQuery.data
 
   const enableSync = useEnableStatusSync()
   const disableSync = useDisableStatusSync()
@@ -71,8 +71,8 @@ export function StatusSyncConfig({
     }
   }
 
-  const handleMappingChange = (externalStatusName: string, quackbackStatusId: string) => {
-    const value = quackbackStatusId === IGNORE_VALUE ? null : quackbackStatusId
+  const handleMappingChange = (externalStatusName: string, featurepoolStatusId: string) => {
+    const value = featurepoolStatusId === IGNORE_VALUE ? null : featurepoolStatusId
     const newMappings = { ...mappings, [externalStatusName]: value }
     setMappings(newMappings)
     updateMappings.mutate({ integrationId, statusMappings: newMappings })
@@ -136,7 +136,7 @@ export function StatusSyncConfig({
           <div>
             <Label className="text-base font-medium">Status mapping</Label>
             <p className="text-sm text-muted-foreground">
-              Map external statuses to Quackback statuses. Unmapped statuses are ignored.
+              Map external statuses to Featurepool statuses. Unmapped statuses are ignored.
             </p>
           </div>
 
@@ -159,7 +159,7 @@ export function StatusSyncConfig({
                     <SelectItem value={IGNORE_VALUE}>
                       <span className="text-muted-foreground">Ignore</span>
                     </SelectItem>
-                    {quackbackStatuses.map((status) => (
+                    {featurepoolStatuses.map((status) => (
                       <SelectItem key={status.id} value={status.id}>
                         {status.name}
                       </SelectItem>

@@ -7,7 +7,7 @@ import { cn } from '@/lib/shared/utils'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { WidgetVoteButton } from './widget-vote-button'
 import { useWidgetAuth } from './widget-auth-provider'
-import type { PostId } from '@quackback/ids'
+import type { PostId } from '@featurepool/ids'
 
 interface WidgetPost {
   id: string
@@ -71,7 +71,7 @@ export function WidgetHome({
     const url = slug
       ? `${window.location.origin}/b/${slug}/posts/${post.id}`
       : `${window.location.origin}`
-    window.parent.postMessage({ type: 'quackback:navigate', url }, '*')
+    window.parent.postMessage({ type: 'featurepool:navigate', url }, '*')
   }, [])
 
   // Search state

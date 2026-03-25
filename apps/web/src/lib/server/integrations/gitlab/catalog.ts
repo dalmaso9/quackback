@@ -12,7 +12,8 @@ export const gitlabCatalog: IntegrationCatalogEntry = {
     },
     {
       label: 'Two-way status sync',
-      description: 'Closing or reopening issues in GitLab updates the feedback status in Quackback',
+      description:
+        'Closing or reopening issues in GitLab updates the feedback status in Featurepool',
     },
     {
       label: 'Rich descriptions',
@@ -24,5 +25,5 @@ export const gitlabCatalog: IntegrationCatalogEntry = {
   settingsPath: '/admin/settings/integrations/gitlab',
   available: true,
   configurable: true,
-  docsUrl: 'https://www.quackback.io/docs/integrations/gitlab',
+  docsUrl: 'https://www.featurepool.io/docs/integrations/gitlab',
 }

@@ -14,7 +14,7 @@ import {
   deleteChangelog,
 } from '@/lib/server/domains/changelog/changelog.service'
 import type { PublishState } from '@/lib/shared/schemas/changelog'
-import type { ChangelogId } from '@quackback/ids'
+import type { ChangelogId } from '@featurepool/ids'
 
 // Input validation schema
 const updateChangelogSchema = z.object({

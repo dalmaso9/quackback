@@ -21,7 +21,7 @@ import { createPostSuggestion, createVoteSuggestion } from './suggestion.service
 import { logPipelineEvent } from './pipeline-log'
 import { buildSuggestionPrompt } from './prompts/suggestion.prompt'
 import type { SuggestionGenerationResult } from '../types'
-import type { FeedbackSignalId, RawFeedbackItemId, BoardId, PostId } from '@quackback/ids'
+import type { FeedbackSignalId, RawFeedbackItemId, BoardId, PostId } from '@featurepool/ids'
 
 const SUGGESTION_MODEL = 'google/gemini-3.1-flash-lite-preview'
 
@@ -74,7 +74,7 @@ export async function interpretSignal(
     const signalEmbedding = await embedSignal(signalId, signal.rawFeedbackItemId)
 
     // Step 2: For external sources, check similarity and generate create_post suggestions.
-    // Quackback posts only need embedding — duplicate detection is handled by the
+    // Featurepool posts only need embedding — duplicate detection is handled by the
     // separate merge_suggestions system.
     const rawItem = await db.query.rawFeedbackItems.findFirst({
       where: eq(rawFeedbackItems.id, signal.rawFeedbackItemId),
@@ -85,16 +85,16 @@ export async function interpretSignal(
       throw new UnrecoverableError(`Raw item ${signal.rawFeedbackItemId} not found`)
     }
 
-    const isQuackback = rawItem.sourceType === 'quackback'
+    const isFeaturepool = rawItem.sourceType === 'featurepool'
 
     // Extract user-provided boardId from context metadata (e.g. Slack shortcut board selection)
     const contextMetadata = (rawItem.contextEnvelope as Record<string, unknown> | null)
       ?.metadata as Record<string, unknown> | undefined
     const userProvidedBoardId = contextMetadata?.boardId as string | undefined
 
-    if (isQuackback) {
+    if (isFeaturepool) {
       await logPipelineEvent({
-        eventType: 'interpretation.skipped_quackback',
+        eventType: 'interpretation.skipped_featurepool',
         rawFeedbackItemId: signal.rawFeedbackItemId,
         signalId,
         detail: {},

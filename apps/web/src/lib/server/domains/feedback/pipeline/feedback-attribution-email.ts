@@ -9,8 +9,8 @@
 import { db, eq, principal, user, posts } from '@/lib/server/db'
 import { getBaseUrl } from '@/lib/server/config'
 import { generateUnsubscribeToken } from '@/lib/server/domains/subscriptions/subscription.service'
-import { sendFeedbackLinkedEmail } from '@quackback/email'
-import type { PrincipalId, PostId } from '@quackback/ids'
+import { sendFeedbackLinkedEmail } from '@featurepool/email'
+import type { PrincipalId, PostId } from '@featurepool/ids'
 
 export async function sendFeedbackAttributionEmail(
   principalId: PrincipalId,
@@ -59,7 +59,7 @@ export async function sendFeedbackAttributionEmail(
     const workspace = await db.query.settings.findFirst({
       columns: { name: true },
     })
-    const workspaceName = workspace?.name ?? 'Quackback'
+    const workspaceName = workspace?.name ?? 'Featurepool'
 
     // Build post URL
     const baseUrl = getBaseUrl()

@@ -85,7 +85,7 @@ function AccountStep() {
       <div className="overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-b from-card/90 to-card/70 backdrop-blur-sm">
         <div className="p-8">
           <div className="mb-6 text-center">
-            <h1 className="text-2xl font-bold">Welcome to Quackback</h1>
+            <h1 className="text-2xl font-bold">Welcome to Featurepool</h1>
             <p className="mt-2 text-muted-foreground">Create your account to get started</p>
           </div>
 

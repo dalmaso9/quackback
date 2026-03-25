@@ -10,7 +10,7 @@ import {
   and,
   sql,
 } from '@/lib/server/db'
-import type { IntegrationId, BoardId } from '@quackback/ids'
+import type { IntegrationId, BoardId } from '@featurepool/ids'
 import { cacheDel, CACHE_KEYS } from '@/lib/server/redis'
 
 // ============================================

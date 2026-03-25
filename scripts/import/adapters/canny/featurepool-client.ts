@@ -1,11 +1,11 @@
 /**
- * Quackback API HTTP client for imports
+ * Featurepool API HTTP client for imports
  *
  * Handles authentication, import mode header, rate limiting awareness,
  * and retry with exponential backoff.
  */
 
-interface QuackbackClientOptions {
+interface FeaturepoolClientOptions {
   baseUrl: string
   apiKey: string
   /** Enable import mode (suppresses side effects, higher rate limit) */
@@ -19,14 +19,14 @@ interface ApiResponse<T = unknown> {
   pagination?: { cursor: string | null; hasMore: boolean }
 }
 
-export class QuackbackClient {
+export class FeaturepoolClient {
   private baseUrl: string
   private apiKey: string
   private importMode: boolean
   private delayMs: number
   private lastRequestAt = 0
 
-  constructor(options: QuackbackClientOptions) {
+  constructor(options: FeaturepoolClientOptions) {
     // Strip trailing slash
     this.baseUrl = options.baseUrl.replace(/\/+$/, '')
     this.apiKey = options.apiKey
@@ -35,14 +35,14 @@ export class QuackbackClient {
   }
 
   /**
-   * Make a POST request to the Quackback API
+   * Make a POST request to the Featurepool API
    */
   async post<T>(path: string, body: Record<string, unknown> = {}): Promise<T> {
     return this.request<T>('POST', path, body)
   }
 
   /**
-   * Make a GET request to the Quackback API
+   * Make a GET request to the Featurepool API
    */
   async get<T>(path: string, params?: Record<string, string>): Promise<T> {
     const url = new URL(`${this.baseUrl}${path}`)
@@ -122,7 +122,7 @@ export class QuackbackClient {
 
       if (!response.ok) {
         const text = await response.text()
-        throw new Error(`Quackback API error ${response.status} on ${method} ${path}: ${text}`)
+        throw new Error(`Featurepool API error ${response.status} on ${method} ${path}: ${text}`)
       }
 
       return (await response.json()) as T

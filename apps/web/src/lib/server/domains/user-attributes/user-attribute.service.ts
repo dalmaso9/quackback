@@ -1,6 +1,6 @@
 import { db, eq, asc, userAttributeDefinitions } from '@/lib/server/db'
-import type { UserAttributeId } from '@quackback/ids'
-import { createId } from '@quackback/ids'
+import type { UserAttributeId } from '@featurepool/ids'
+import { createId } from '@featurepool/ids'
 import { NotFoundError, ValidationError, ConflictError, InternalError } from '@/lib/shared/errors'
 import type {
   UserAttribute,

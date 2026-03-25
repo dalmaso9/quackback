@@ -28,7 +28,7 @@ import {
 } from '@/components/admin/segments/segment-utils'
 import { ConfirmDialog } from '@/components/shared/confirm-dialog'
 import type { PortalUserListResultView } from '@/lib/server/domains/users'
-import type { PrincipalId, SegmentId } from '@quackback/ids'
+import type { PrincipalId, SegmentId } from '@featurepool/ids'
 import type { SegmentCondition } from '@/lib/shared/db-types'
 
 interface UsersContainerProps {

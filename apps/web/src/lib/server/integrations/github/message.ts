@@ -29,7 +29,7 @@ export function buildGitHubIssueBody(
     `**Submitted by:** ${author}`,
     `**Board:** ${post.boardSlug}`,
     '',
-    `[View in Quackback](${postUrl})`,
+    `[View in Featurepool](${postUrl})`,
   ].join('\n')
 
   return { title: post.title, body }

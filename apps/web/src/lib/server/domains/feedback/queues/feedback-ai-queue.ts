@@ -7,7 +7,7 @@
 import { Queue, Worker, UnrecoverableError } from 'bullmq'
 import { config } from '@/lib/server/config'
 import type { FeedbackAiJob } from '../types'
-import type { RawFeedbackItemId, FeedbackSignalId } from '@quackback/ids'
+import type { RawFeedbackItemId, FeedbackSignalId } from '@featurepool/ids'
 
 const QUEUE_NAME = '{feedback-ai}'
 const CONCURRENCY = 1

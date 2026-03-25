@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import type { PostId, PrincipalId } from '@quackback/ids'
+import type { PostId, PrincipalId } from '@featurepool/ids'
 
 // --- Mock tracking ---
 const mockPostsFindFirst = vi.fn()
@@ -75,8 +75,8 @@ vi.mock('./post.public', () => ({
   hasUserVoted: vi.fn(),
 }))
 
-vi.mock('@quackback/ids', async (importOriginal) => {
-  const original = await importOriginal<typeof import('@quackback/ids')>()
+vi.mock('@featurepool/ids', async (importOriginal) => {
+  const original = await importOriginal<typeof import('@featurepool/ids')>()
   return {
     ...original,
     toUuid: vi.fn((id: string) => id),

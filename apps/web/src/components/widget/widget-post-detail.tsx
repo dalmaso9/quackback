@@ -15,7 +15,7 @@ import type { PublicPostDetailView } from '@/lib/client/queries/portal-detail'
 import { WidgetVoteButton } from './widget-vote-button'
 import { WidgetCommentList } from './widget-comment-list'
 import { useWidgetAuth } from './widget-auth-provider'
-import type { PostId } from '@quackback/ids'
+import type { PostId } from '@featurepool/ids'
 
 interface StatusInfo {
   id: string
@@ -72,7 +72,7 @@ export function WidgetPostDetail({
     // Generate a one-time token to transfer the session to the portal
     const ott = await generateOneTimeToken()
     if (ott) url += `?ott=${encodeURIComponent(ott)}`
-    window.parent.postMessage({ type: 'quackback:navigate', url }, '*')
+    window.parent.postMessage({ type: 'featurepool:navigate', url }, '*')
   }, [post])
 
   /** Submit a comment (root or reply). Used by both the top form and inline reply forms. */

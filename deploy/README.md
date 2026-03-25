@@ -1,37 +1,37 @@
-# Quackback Deployment
+# Featurepool Deployment
 
-This directory contains deployment configurations for Quackback.
+This directory contains deployment configurations for Featurepool.
 
 ## Deployment Options
 
 | Option                                     | For                          | Infrastructure       |
 | ------------------------------------------ | ---------------------------- | -------------------- |
 | **[Self-Hosted](./self-hosted/README.md)** | Community & Enterprise users | Docker, Bun, any VPS |
-| **[Cloud](./cloud/README.md)**             | Quackback team only          | Cloudflare Workers   |
+| **[Cloud](./cloud/README.md)**             | Featurepool team only        | Cloudflare Workers   |
 
 ---
 
 ## Self-Hosted (Recommended for most users)
 
-Deploy Quackback on your own infrastructure with full control over your data.
+Deploy Featurepool on your own infrastructure with full control over your data.
 
 ### Quick Start with Docker
 
 ```bash
 docker run -d \
-  --name quackback \
+  --name featurepool \
   -p 3000:3000 \
-  -e DATABASE_URL="postgresql://user:pass@host:5432/quackback" \
+  -e DATABASE_URL="postgresql://user:pass@host:5432/featurepool" \
   -e SECRET_KEY="your-secret-32-chars-minimum" \
   -e BASE_URL="https://your-domain.com" \
-  ghcr.io/quackbackhq/quackback:latest
+  ghcr.io/featurepoolhq/featurepool:latest
 ```
 
 ### With Docker Compose
 
 ```bash
-git clone https://github.com/quackbackhq/quackback.git
-cd quackback
+git clone https://github.com/featurepoolhq/featurepool.git
+cd featurepool
 cp .env.example .env
 # Edit .env with your settings
 docker compose up -d
@@ -41,11 +41,11 @@ See the [Self-Hosted Guide](./self-hosted/README.md) for complete documentation.
 
 ---
 
-## Quackback Cloud (Internal)
+## Featurepool Cloud (Internal)
 
-The `cloud/` directory contains Cloudflare Workers deployment configuration for Quackback Cloud (app.quackback.io).
+The `cloud/` directory contains Cloudflare Workers deployment configuration for Featurepool Cloud (app.featurepool.io).
 
-> **Note**: This is used internally by the Quackback team. Self-hosted users should ignore this directory.
+> **Note**: This is used internally by the Featurepool team. Self-hosted users should ignore this directory.
 
 See the [Cloud Deployment Guide](./cloud/README.md) for internal documentation.
 
@@ -56,7 +56,7 @@ See the [Cloud Deployment Guide](./cloud/README.md) for internal documentation.
 ```
 deploy/
 ├── README.md              # This file
-├── cloud/                 # Quackback Cloud (Cloudflare Workers)
+├── cloud/                 # Featurepool Cloud (Cloudflare Workers)
 │   ├── README.md          # Cloud deployment guide
 │   ├── wrangler.jsonc     # Base wrangler config
 │   ├── wrangler.dev.jsonc # Development environment
@@ -71,7 +71,7 @@ deploy/
 
 ## Build Variants
 
-Quackback supports different build configurations:
+Featurepool supports different build configurations:
 
 | Command                           | Edition     | EE Features | Target     |
 | --------------------------------- | ----------- | ----------- | ---------- |
@@ -94,4 +94,4 @@ The build target is controlled by `EDITION` environment variable:
 - **Core**: AGPL-3.0 (open source)
 - **Enterprise Features**: Proprietary (requires license key)
 
-Enterprise features include SSO/SAML, SCIM, and Audit Logs. Contact sales@quackback.io for licensing.
+Enterprise features include SSO/SAML, SCIM, and Audit Logs. Contact sales@featurepool.io for licensing.

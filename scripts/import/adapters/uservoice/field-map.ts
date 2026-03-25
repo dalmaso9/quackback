@@ -1,7 +1,7 @@
 /**
  * UserVoice field mappings
  *
- * Maps UserVoice export values to Quackback equivalents.
+ * Maps UserVoice export values to Featurepool equivalents.
  */
 
 const STATUS_MAP: Record<string, string> = {

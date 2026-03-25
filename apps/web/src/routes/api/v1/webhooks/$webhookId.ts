@@ -10,7 +10,7 @@ import {
 import { validateTypeId, validateTypeIdArray } from '@/lib/server/domains/api/validation'
 import { WEBHOOK_EVENTS } from '@/lib/server/events/integrations/webhook/constants'
 import { toWebhookResponse } from '@/lib/server/domains/api/webhooks'
-import type { WebhookId } from '@quackback/ids'
+import type { WebhookId } from '@featurepool/ids'
 
 // Input validation schema
 const updateWebhookSchema = z.object({

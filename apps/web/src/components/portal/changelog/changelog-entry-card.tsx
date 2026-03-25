@@ -2,7 +2,7 @@
 
 import { Link } from '@tanstack/react-router'
 import { LinkIcon } from '@heroicons/react/24/outline'
-import type { ChangelogId, PostId } from '@quackback/ids'
+import type { ChangelogId, PostId } from '@featurepool/ids'
 import { cn } from '@/lib/shared/utils'
 
 interface ChangelogEntryCardProps {

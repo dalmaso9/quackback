@@ -59,7 +59,7 @@ export function WidgetShell({ orgSlug, onBack, children }: WidgetShellProps) {
 
       <div className="px-4 py-1.5 border-t border-border text-center shrink-0">
         <a
-          href={`https://quackback.io?utm_campaign=${encodeURIComponent(orgSlug || 'unknown')}&utm_content=widget&utm_medium=referral&utm_source=powered-by`}
+          href={`https://featurepool.io?utm_campaign=${encodeURIComponent(orgSlug || 'unknown')}&utm_content=widget&utm_medium=referral&utm_source=powered-by`}
           target="_blank"
           className="inline-flex items-center gap-1 text-[10px] text-muted-foreground/60 hover:text-muted-foreground transition-colors"
         >
@@ -71,7 +71,7 @@ export function WidgetShell({ orgSlug, onBack, children }: WidgetShellProps) {
             className="opacity-60"
             aria-hidden="true"
           />
-          Powered by Quackback
+          Powered by Featurepool
         </a>
       </div>
     </div>

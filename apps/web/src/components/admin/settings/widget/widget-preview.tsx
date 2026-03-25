@@ -58,7 +58,7 @@ export function WidgetPreview({ position }: WidgetPreviewProps) {
           <div className="px-2.5 py-1 border-t border-border text-center shrink-0">
             <span className="inline-flex items-center gap-0.5 text-[8px] text-muted-foreground/60">
               <img src="/logo.png" alt="" width={10} height={10} className="opacity-60" />
-              Powered by Quackback
+              Powered by Featurepool
             </span>
           </div>
         </div>

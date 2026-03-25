@@ -7,7 +7,7 @@ import {
   sendStatusChangeEmail,
   sendNewCommentEmail,
   sendChangelogPublishedEmail,
-} from '@quackback/email'
+} from '@featurepool/email'
 import type { HookHandler, HookResult, EmailTarget, EmailConfig } from '../hook-types'
 import type { EventData } from '../types'
 import { isRetryableError } from '../hook-utils'

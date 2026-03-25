@@ -1,12 +1,12 @@
 /**
  * API-based Canny importer
  *
- * Imports Canny data into Quackback purely via the REST API,
- * requiring only a Canny API key and a Quackback API key.
+ * Imports Canny data into Featurepool purely via the REST API,
+ * requiring only a Canny API key and a Featurepool API key.
  * No database access needed.
  */
 
-import { QuackbackClient } from './quackback-client'
+import { FeaturepoolClient } from './featurepool-client'
 import { convertCanny, printStats } from './adapter'
 import type { IntermediateData, ImportResult, ImportError } from '../../schema/types'
 import { Progress } from '../../core/progress'
@@ -14,10 +14,10 @@ import { Progress } from '../../core/progress'
 export interface ApiImportOptions {
   /** Canny API key */
   cannyApiKey: string
-  /** Quackback API base URL (e.g., https://app.quackback.io) */
-  quackbackUrl: string
-  /** Quackback admin API key */
-  quackbackKey: string
+  /** Featurepool API base URL (e.g., https://app.featurepool.io) */
+  featurepoolUrl: string
+  /** Featurepool admin API key */
+  featurepoolKey: string
   /** Validate only, don't insert */
   dryRun?: boolean
   /** Verbose output */
@@ -25,16 +25,16 @@ export interface ApiImportOptions {
 }
 
 interface IdMap {
-  /** External Canny ID → Quackback post ID */
+  /** External Canny ID → Featurepool post ID */
   posts: Map<string, string>
-  /** External Canny comment ID → Quackback comment ID */
+  /** External Canny comment ID → Featurepool comment ID */
   comments: Map<string, string>
-  /** Email → Quackback principal ID */
+  /** Email → Featurepool principal ID */
   users: Map<string, string>
 }
 
 /**
- * Run a full Canny → Quackback import via API
+ * Run a full Canny → Featurepool import via API
  */
 export async function runApiImport(options: ApiImportOptions): Promise<ImportResult> {
   const progress = new Progress(options.verbose ?? false)
@@ -65,17 +65,17 @@ export async function runApiImport(options: ApiImportOptions): Promise<ImportRes
   const { data } = cannyResult
 
   if (options.dryRun) {
-    progress.info('[DRY RUN] Skipping Quackback API calls')
+    progress.info('[DRY RUN] Skipping Featurepool API calls')
     logDryRunSummary(data, progress)
     result.duration = Date.now() - startTime
     progress.summary(result)
     return result
   }
 
-  // Step 2: Create Quackback client
-  const qb = new QuackbackClient({
-    baseUrl: options.quackbackUrl,
-    apiKey: options.quackbackKey,
+  // Step 2: Create Featurepool client
+  const qb = new FeaturepoolClient({
+    baseUrl: options.featurepoolUrl,
+    apiKey: options.featurepoolKey,
     importMode: true,
   })
 

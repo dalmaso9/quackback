@@ -3,7 +3,7 @@
  */
 
 import type { PostRoadmap } from '@/lib/server/db'
-import type { PostId, RoadmapId, StatusId, BoardId, TagId, SegmentId } from '@quackback/ids'
+import type { PostId, RoadmapId, StatusId, BoardId, TagId, SegmentId } from '@featurepool/ids'
 
 /**
  * Input for creating a new roadmap

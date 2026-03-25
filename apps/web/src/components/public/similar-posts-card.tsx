@@ -7,7 +7,7 @@ import { CompactPostCard } from '@/components/shared/compact-post-card'
 import { VoteButton } from '@/components/public/vote-button'
 import type { MatchStrength, SimilarPost } from '@/lib/client/hooks/use-similar-posts'
 import { cn } from '@/lib/shared/utils'
-import type { PostId } from '@quackback/ids'
+import type { PostId } from '@featurepool/ids'
 
 const MATCH_STRENGTH_LABELS: Record<MatchStrength, string> = {
   strong: 'Very similar',

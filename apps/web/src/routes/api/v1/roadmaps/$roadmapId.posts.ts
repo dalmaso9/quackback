@@ -8,7 +8,7 @@ import {
   handleDomainError,
 } from '@/lib/server/domains/api/responses'
 import { validateTypeId } from '@/lib/server/domains/api/validation'
-import type { RoadmapId, PostId, StatusId } from '@quackback/ids'
+import type { RoadmapId, PostId, StatusId } from '@featurepool/ids'
 
 // Input validation schema
 const addPostSchema = z.object({

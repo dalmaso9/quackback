@@ -1,14 +1,14 @@
 /**
  * Core data importer
  *
- * Imports validated intermediate format data into the Quackback database.
+ * Imports validated intermediate format data into the Featurepool database.
  * Handles reference resolution, batch processing, and vote count reconciliation.
  */
 
 import { drizzle, type PostgresJsDatabase } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 import { eq, sql } from 'drizzle-orm'
-import { generateId } from '@quackback/ids'
+import { generateId } from '@featurepool/ids'
 import type {
   PostId,
   BoardId,
@@ -17,7 +17,7 @@ import type {
   RoadmapId,
   CommentId,
   ChangelogId,
-} from '@quackback/ids'
+} from '@featurepool/ids'
 
 import {
   boards,
@@ -31,8 +31,8 @@ import {
   comments,
   changelogEntries,
   changelogEntryPosts,
-} from '@quackback/db/schema'
-import * as schema from '@quackback/db/schema'
+} from '@featurepool/db/schema'
+import * as schema from '@featurepool/db/schema'
 
 import type {
   IntermediateData,

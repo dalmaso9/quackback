@@ -1,5 +1,5 @@
 /**
- * Email sending module for Quackback
+ * Email sending module for Featurepool
  *
  * Uses Nodemailer for SMTP or Resend API with React Email components.
  * No build step required - React components are rendered at runtime.
@@ -180,7 +180,7 @@ export async function sendInvitationEmail(params: SendInvitationParams): Promise
 
   return sendEmail({
     to,
-    subject: `You've been invited to join ${workspaceName} on Quackback`,
+    subject: `You've been invited to join ${workspaceName} on Featurepool`,
     react: InvitationEmail({
       invitedByName,
       inviteeName,
@@ -218,7 +218,7 @@ export async function sendWelcomeEmail(params: SendWelcomeParams): Promise<Email
 
   return sendEmail({
     to,
-    subject: `Welcome to ${workspaceName} on Quackback!`,
+    subject: `Welcome to ${workspaceName} on Featurepool!`,
     react: WelcomeEmail({ name, workspaceName, dashboardUrl }),
   })
 }
@@ -248,7 +248,7 @@ export async function sendSigninCodeEmail(params: SendSigninCodeParams): Promise
   console.log(`[Email] Sending sign-in code to ${to}`)
   return sendEmail({
     to,
-    subject: `Your Quackback sign-in code is ${code}`,
+    subject: `Your Featurepool sign-in code is ${code}`,
     react: SigninCodeEmail({ code }),
   })
 }
@@ -280,7 +280,7 @@ export async function sendPasswordResetEmail(
   console.log(`[Email] Sending password reset to ${to}`)
   return sendEmail({
     to,
-    subject: 'Reset your Quackback password',
+    subject: 'Reset your Featurepool password',
     react: PasswordResetEmail({ resetLink }),
   })
 }

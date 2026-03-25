@@ -1,6 +1,6 @@
-# Quackback Data Import System
+# Featurepool Data Import System
 
-Import data from third-party feedback platforms (UserVoice, Canny, Featurebase, etc.) into Quackback.
+Import data from third-party feedback platforms (UserVoice, Canny, Featurebase, etc.) into Featurepool.
 
 ## Architecture
 
@@ -26,7 +26,7 @@ Source Export (UserVoice, Canny, etc.)
     └─────────────┘
          │
          ▼
-      Quackback DB
+      Featurepool DB
 ```
 
 ## Quick Start
@@ -157,14 +157,14 @@ UserVoice provides a full denormalized export where each row represents an idea 
 
 ### Status Mapping
 
-| UserVoice Status      | Quackback Status |
-| --------------------- | ---------------- |
-| active                | open             |
-| under review          | under_review     |
-| planned               | planned          |
-| started / in progress | in_progress      |
-| completed / shipped   | complete         |
-| declined / closed     | closed           |
+| UserVoice Status      | Featurepool Status |
+| --------------------- | ------------------ |
+| active                | open               |
+| under review          | under_review       |
+| planned               | planned            |
+| started / in progress | in_progress        |
+| completed / shipped   | complete           |
+| declined / closed     | closed             |
 
 ### Example
 
@@ -237,7 +237,7 @@ The target board must exist before importing. Create it in the admin UI first.
 Ensure your `.env` file contains a valid `DATABASE_URL`:
 
 ```
-DATABASE_URL=postgresql://user:pass@localhost:5432/quackback
+DATABASE_URL=postgresql://user:pass@localhost:5432/featurepool
 ```
 
 ### Vote counts don't match

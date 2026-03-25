@@ -12,7 +12,7 @@ import type {
   PortalUserListItemView,
   PortalUserDetail,
 } from '@/lib/server/domains/users'
-import type { PrincipalId } from '@quackback/ids'
+import type { PrincipalId } from '@featurepool/ids'
 import { listPortalUsersFn, getPortalUserFn } from '@/lib/server/functions/admin'
 
 // ============================================================================

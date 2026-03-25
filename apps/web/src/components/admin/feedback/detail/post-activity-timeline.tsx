@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import type { PostId } from '@quackback/ids'
+import type { PostId } from '@featurepool/ids'
 import type { ActivityType } from '@/lib/server/domains/activity/activity.service'
 import { activityQueries } from '@/lib/client/queries/activity'
 import { useUnmergePost } from '@/lib/client/mutations/post-merge'

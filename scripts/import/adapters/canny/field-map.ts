@@ -1,11 +1,11 @@
 /**
- * Field mapping utilities for Canny → Quackback conversion
+ * Field mapping utilities for Canny → Featurepool conversion
  */
 
 import type { ModerationState } from '../../schema/types'
 
 /**
- * Normalize a Canny status string to a Quackback-compatible slug.
+ * Normalize a Canny status string to a Featurepool-compatible slug.
  * Canny statuses are freeform strings set by users.
  */
 export function normalizeStatus(status: string): string {

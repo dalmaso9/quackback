@@ -13,7 +13,7 @@ export const notionCatalog: IntegrationCatalogEntry = {
     {
       label: 'Two-way status sync',
       description:
-        'Keep feedback statuses in sync — changes in Notion update Quackback and vice versa',
+        'Keep feedback statuses in sync — changes in Notion update Featurepool and vice versa',
     },
     {
       label: 'Rich content',
@@ -25,5 +25,5 @@ export const notionCatalog: IntegrationCatalogEntry = {
   settingsPath: '/admin/settings/integrations/notion',
   available: true,
   configurable: true,
-  docsUrl: 'https://www.quackback.io/docs/integrations/notion',
+  docsUrl: 'https://www.featurepool.io/docs/integrations/notion',
 }

@@ -32,8 +32,8 @@ import {
   segments,
   userAttributeDefinitions,
 } from '@/lib/server/db'
-import type { PrincipalId, SegmentId, UserId } from '@quackback/ids'
-import { generateId } from '@quackback/ids'
+import type { PrincipalId, SegmentId, UserId } from '@featurepool/ids'
+import { generateId } from '@featurepool/ids'
 import { NotFoundError, ValidationError, InternalError } from '@/lib/shared/errors'
 import { coerceAttributeValue } from '@/lib/server/domains/user-attributes/coerce'
 import type { UserAttributeType } from '@/lib/server/db'

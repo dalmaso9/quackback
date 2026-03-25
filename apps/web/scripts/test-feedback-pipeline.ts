@@ -27,9 +27,10 @@ try {
 }
 
 import postgres from 'postgres'
-import { generateId, toUuid } from '@quackback/ids'
+import { generateId, toUuid } from '@featurepool/ids'
 
-const DB_URL = process.env.DATABASE_URL ?? 'postgresql://postgres:password@localhost:5432/quackback'
+const DB_URL =
+  process.env.DATABASE_URL ?? 'postgresql://postgres:password@localhost:5432/featurepool'
 const REDIS_URL = process.env.REDIS_URL ?? 'redis://localhost:6379'
 const sql = postgres(DB_URL)
 
@@ -97,9 +98,9 @@ async function main() {
 
   // Get test fixtures
   const [source] =
-    await sql`SELECT id FROM feedback_sources WHERE source_type = 'quackback' LIMIT 1`
+    await sql`SELECT id FROM feedback_sources WHERE source_type = 'featurepool' LIMIT 1`
   if (!source) {
-    console.log(`  ERROR: No quackback feedback source. Run seed first.`)
+    console.log(`  ERROR: No featurepool feedback source. Run seed first.`)
     await sql.end()
     process.exit(1)
   }

@@ -34,7 +34,7 @@ import {
   useDeleteUserAttribute,
 } from '@/lib/client/mutations'
 import type { UserAttributeItem } from '@/lib/client/hooks/use-user-attributes-queries'
-import type { UserAttributeId } from '@quackback/ids'
+import type { UserAttributeId } from '@featurepool/ids'
 
 const ATTRIBUTE_TYPES = [
   { value: 'string', label: 'Text' },

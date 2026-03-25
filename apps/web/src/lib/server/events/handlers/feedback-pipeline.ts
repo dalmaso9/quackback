@@ -12,18 +12,18 @@ import type { EventData, PostCreatedEvent } from '../types'
 import { db, eq, feedbackSources } from '@/lib/server/db'
 import { getCommentsByPost } from '@/lib/server/domains/comments/comment.service'
 import { ingestRawFeedback } from '@/lib/server/domains/feedback/ingestion/feedback-ingest.service'
-import type { FeedbackSourceId, PostId } from '@quackback/ids'
+import type { FeedbackSourceId, PostId } from '@featurepool/ids'
 import type { RawFeedbackThreadMessage } from '@/lib/server/db'
 
-// Module-level cache for the quackback source ID.
+// Module-level cache for the featurepool source ID.
 // Set on first hook execution. `null` means no enabled source found.
 let cachedSourceId: FeedbackSourceId | null | undefined = undefined
 
-async function getQuackbackSourceId(): Promise<FeedbackSourceId | null> {
+async function getFeaturepoolSourceId(): Promise<FeedbackSourceId | null> {
   if (cachedSourceId !== undefined) return cachedSourceId
 
   const source = await db.query.feedbackSources.findFirst({
-    where: eq(feedbackSources.sourceType, 'quackback'),
+    where: eq(feedbackSources.sourceType, 'featurepool'),
     columns: { id: true, enabled: true },
   })
 
@@ -32,7 +32,7 @@ async function getQuackbackSourceId(): Promise<FeedbackSourceId | null> {
 }
 
 /** Reset the cached source ID (e.g. after source creation on startup). */
-export function resetQuackbackSourceCache(): void {
+export function resetFeaturepoolSourceCache(): void {
   cachedSourceId = undefined
 }
 
@@ -74,8 +74,8 @@ export const feedbackPipelineHook: HookHandler = {
 
     const { post: eventPost } = (event as PostCreatedEvent).data
 
-    // Source guard: quackback source must exist and be enabled
-    const sourceId = await getQuackbackSourceId()
+    // Source guard: featurepool source must exist and be enabled
+    const sourceId = await getFeaturepoolSourceId()
     if (!sourceId) {
       return { success: true }
     }
@@ -115,7 +115,7 @@ export const feedbackPipelineHook: HookHandler = {
       },
       {
         sourceId,
-        sourceType: 'quackback',
+        sourceType: 'featurepool',
       }
     )
 

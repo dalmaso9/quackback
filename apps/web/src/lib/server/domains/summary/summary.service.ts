@@ -9,7 +9,7 @@ import { db, posts, comments, eq, and, or, isNull, ne, desc, sql } from '@/lib/s
 import { getOpenAI } from '@/lib/server/domains/ai/config'
 import { withRetry } from '@/lib/server/domains/ai/retry'
 import { stripCodeFences } from '@/lib/server/domains/ai/parse'
-import type { PostId } from '@quackback/ids'
+import type { PostId } from '@featurepool/ids'
 
 const SUMMARY_MODEL = 'google/gemini-3.1-flash-lite-preview'
 

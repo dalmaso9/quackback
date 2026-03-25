@@ -4,7 +4,7 @@ import react from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import prettier from "eslint-config-prettier";
 
-// Files that ARE the re-export layer or standalone scripts — they must import @quackback/db directly
+// Files that ARE the re-export layer or standalone scripts — they must import @featurepool/db directly
 const dbReexportFiles = [
   "**/src/lib/server/db.ts",
   "**/src/lib/shared/db-types.ts",
@@ -41,7 +41,7 @@ export default tseslint.config(
         {
           patterns: [
             {
-              group: ["@quackback/db", "@quackback/db/*"],
+              group: ["@featurepool/db", "@featurepool/db/*"],
               message:
                 "Import from '@/lib/server/db' (server) or '@/lib/shared/db-types' (client) instead.",
             },
@@ -71,7 +71,7 @@ export default tseslint.config(
         {
           patterns: [
             {
-              group: ["@quackback/db", "@quackback/db/*"],
+              group: ["@featurepool/db", "@featurepool/db/*"],
               message:
                 "Import from '@/lib/server/db' (server) or '@/lib/shared/db-types' (client) instead.",
             },

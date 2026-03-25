@@ -6,7 +6,7 @@
  */
 
 import { useQuery } from '@tanstack/react-query'
-import type { NotificationId } from '@quackback/ids'
+import type { NotificationId } from '@featurepool/ids'
 import { getNotificationsFn, getUnreadCountFn } from '@/lib/server/functions/notifications'
 
 // ============================================================================

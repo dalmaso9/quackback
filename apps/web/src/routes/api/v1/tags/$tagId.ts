@@ -8,7 +8,7 @@ import {
   handleDomainError,
 } from '@/lib/server/domains/api/responses'
 import { validateTypeId } from '@/lib/server/domains/api/validation'
-import type { TagId } from '@quackback/ids'
+import type { TagId } from '@featurepool/ids'
 
 // Input validation schema
 const updateTagSchema = z.object({

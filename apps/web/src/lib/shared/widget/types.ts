@@ -38,9 +38,9 @@ export type WidgetEventName = keyof WidgetEventMap
 // ---- SDK -> Iframe Messages ----
 
 export interface WidgetInboundMessages {
-  'quackback:identify': { anonymous: true } | Record<string, unknown> | null
-  'quackback:metadata': WidgetMetadata
-  'quackback:open':
+  'featurepool:identify': { anonymous: true } | Record<string, unknown> | null
+  'featurepool:metadata': WidgetMetadata
+  'featurepool:open':
     | {
         view?: 'home' | 'new-post'
         title?: string
@@ -52,18 +52,18 @@ export interface WidgetInboundMessages {
 // ---- Iframe -> SDK Messages ----
 
 export interface WidgetOutboundMessages {
-  'quackback:ready': Record<string, never>
-  'quackback:close': Record<string, never>
-  'quackback:navigate': { url: string }
-  'quackback:identify-result': {
+  'featurepool:ready': Record<string, never>
+  'featurepool:close': Record<string, never>
+  'featurepool:navigate': { url: string }
+  'featurepool:identify-result': {
     success: boolean
     user: { id: string; name: string; email: string; avatarUrl: string | null } | null
     error?: string
   }
-  'quackback:auth-change': {
+  'featurepool:auth-change': {
     user: { id: string; name: string; email: string; avatarUrl: string | null } | null
   }
-  'quackback:event': {
+  'featurepool:event': {
     name: WidgetEventName
     payload: WidgetEventMap[WidgetEventName]
   }

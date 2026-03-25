@@ -20,7 +20,7 @@ import { signOut } from '@/lib/server/auth/client'
 import { useRouter, useRouteContext } from '@tanstack/react-router'
 import { useAuthBroadcast } from '@/lib/client/hooks/use-auth-broadcast'
 import { cn } from '@/lib/shared/utils'
-import type { PostId, CommentId } from '@quackback/ids'
+import type { PostId, CommentId } from '@featurepool/ids'
 
 export type CreateCommentMutation = UseMutationResult<
   unknown,

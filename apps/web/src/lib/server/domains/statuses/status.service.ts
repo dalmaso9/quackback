@@ -10,7 +10,7 @@
  */
 
 import { db, eq, and, isNull, sql, posts, postStatuses, asc } from '@/lib/server/db'
-import { toUuid, type StatusId } from '@quackback/ids'
+import { toUuid, type StatusId } from '@featurepool/ids'
 import {
   NotFoundError,
   ValidationError,

@@ -60,7 +60,7 @@ function StripeIntegrationPage() {
             </p>,
             <p key="2">
               Paste the API key below and click{' '}
-              <span className="font-medium text-foreground">Save</span>. Quackback will verify the
+              <span className="font-medium text-foreground">Save</span>. Featurepool will verify the
               connection.
             </p>,
             <p key="3">

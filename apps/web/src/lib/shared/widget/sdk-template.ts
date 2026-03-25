@@ -297,26 +297,26 @@ export function buildWidgetSDK(baseUrl: string, theme?: WidgetTheme): string {
     if (!msg || typeof msg !== "object" || typeof msg.type !== "string") return;
 
     switch (msg.type) {
-      case "quackback:ready":
+      case "featurepool:ready":
         isReady = true;
         // Replay any pending identify
         if (pendingIdentify !== null) {
-          sendToWidget("quackback:identify", pendingIdentify);
+          sendToWidget("featurepool:identify", pendingIdentify);
           pendingIdentify = null;
         }
-        if (metadata) sendToWidget("quackback:metadata", metadata);
+        if (metadata) sendToWidget("featurepool:metadata", metadata);
         if (pendingOpen) {
-          sendToWidget("quackback:open", pendingOpen);
+          sendToWidget("featurepool:open", pendingOpen);
           pendingOpen = null;
         }
         emit("ready", {});
         break;
 
-      case "quackback:close":
+      case "featurepool:close":
         hidePanel();
         break;
 
-      case "quackback:identify-result":
+      case "featurepool:identify-result":
         emit("identify", {
           success: msg.success,
           user: msg.user || null,
@@ -325,11 +325,11 @@ export function buildWidgetSDK(baseUrl: string, theme?: WidgetTheme): string {
         });
         break;
 
-      case "quackback:event":
+      case "featurepool:event":
         if (msg.name) emit(msg.name, msg.payload || {});
         break;
 
-      case "quackback:navigate":
+      case "featurepool:navigate":
         if (msg.url) window.open(msg.url, "_blank");
         break;
     }
@@ -352,7 +352,7 @@ export function buildWidgetSDK(baseUrl: string, theme?: WidgetTheme): string {
           isIdentified = false;
           hidePanel();
           if (trigger) trigger.style.display = "none";
-          if (isReady) sendToWidget("quackback:identify", null);
+          if (isReady) sendToWidget("featurepool:identify", null);
           else pendingIdentify = null;
         } else {
           // Show trigger on first identify
@@ -367,14 +367,14 @@ export function buildWidgetSDK(baseUrl: string, theme?: WidgetTheme): string {
           // the identify round-trip in the background — before the user opens
           // the panel. This eliminates the visible delay on vote highlights.
           if (!panel) createPanel();
-          if (isReady) sendToWidget("quackback:identify", options);
+          if (isReady) sendToWidget("featurepool:identify", options);
           else pendingIdentify = options;
         }
         break;
 
       case "open":
         if (options && typeof options === "object") {
-          if (isReady) sendToWidget("quackback:open", options);
+          if (isReady) sendToWidget("featurepool:open", options);
           else pendingOpen = options;
         }
         showPanel();
@@ -413,7 +413,7 @@ export function buildWidgetSDK(baseUrl: string, theme?: WidgetTheme): string {
             if (options[k] === null) delete metadata[k];
             else metadata[k] = String(options[k]);
           }
-          if (isReady) sendToWidget("quackback:metadata", metadata);
+          if (isReady) sendToWidget("featurepool:metadata", metadata);
         }
         break;
 
@@ -441,9 +441,9 @@ export function buildWidgetSDK(baseUrl: string, theme?: WidgetTheme): string {
   // Initialize: replay queued commands, replace queue function
   // =========================================================================
 
-  var queue = window.Quackback && window.Quackback.q ? window.Quackback.q : [];
+  var queue = window.Featurepool && window.Featurepool.q ? window.Featurepool.q : [];
 
-  window.Quackback = function() {
+  window.Featurepool = function() {
     var args = Array.prototype.slice.call(arguments);
     return dispatch(args[0], args[1], args[2]);
   };

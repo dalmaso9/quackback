@@ -1,12 +1,12 @@
-# Quackback Contributor License Agreement
+# Featurepool Contributor License Agreement
 
-Thank you for your interest in contributing to Quackback. This Contributor License Agreement ("Agreement") documents the rights granted by contributors to Quackback Ltd ("Company").
+Thank you for your interest in contributing to Featurepool. This Contributor License Agreement ("Agreement") documents the rights granted by contributors to Featurepool Ltd ("Company").
 
 By submitting a Contribution (as defined below) to this project, you agree to the following terms and conditions.
 
 ## 1. Definitions
 
-**"Contribution"** means any original work of authorship, including any modifications or additions to an existing work, that you submit to the Company for inclusion in the Quackback project.
+**"Contribution"** means any original work of authorship, including any modifications or additions to an existing work, that you submit to the Company for inclusion in the Featurepool project.
 
 **"Submit"** means any form of electronic, verbal, or written communication sent to the Company, including but not limited to pull requests, issues, patches, and emails.
 
@@ -48,4 +48,4 @@ You agree to notify the Company of any facts or circumstances of which you becom
 
 By submitting a pull request to this repository, you indicate your agreement to this CLA. A CLA assistant bot will verify your signature on each pull request.
 
-If you have questions about this Agreement, please open an issue or contact legal@quackback.io.
+If you have questions about this Agreement, please open an issue or contact legal@featurepool.io.

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import type { PrincipalId } from '@quackback/ids'
+import type { PrincipalId } from '@featurepool/ids'
 
 // --- Mock: capture handlers registered via createServerFn ---
 
@@ -181,7 +181,7 @@ const ANON_PRINCIPAL = {
 
 const ANON_AUTH = {
   principal: ANON_PRINCIPAL,
-  user: { id: 'user_anon123', email: 'anon@anon.quackback.io', name: null, image: null },
+  user: { id: 'user_anon123', email: 'anon@anon.featurepool.io', name: null, image: null },
 }
 
 const USER_PRINCIPAL = {

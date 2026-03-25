@@ -2,10 +2,10 @@
  * ID mapping utilities
  *
  * Tracks the mapping from external IDs (e.g., UserVoice Idea ID)
- * to internal Quackback TypeIDs.
+ * to internal Featurepool TypeIDs.
  */
 
-import type { PostId, CommentId } from '@quackback/ids'
+import type { PostId, CommentId } from '@featurepool/ids'
 
 /**
  * Simple ID map from external to internal IDs

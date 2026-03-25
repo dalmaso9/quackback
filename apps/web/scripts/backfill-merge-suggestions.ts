@@ -30,8 +30,8 @@ import OpenAI from 'openai'
 import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 import { eq, and, or, isNull, desc, sql, count } from 'drizzle-orm'
-import { posts, mergeSuggestions } from '@quackback/db/schema'
-import { toUuid, type PostId } from '@quackback/ids'
+import { posts, mergeSuggestions } from '@featurepool/db/schema'
+import { toUuid, type PostId } from '@featurepool/ids'
 
 // ============================================
 // Configuration
@@ -352,7 +352,7 @@ function determineDirection(
 // ============================================
 
 async function main() {
-  console.log('Quackback Merge Suggestion Backfill\n')
+  console.log('Featurepool Merge Suggestion Backfill\n')
   console.log('Configuration:')
   console.log(`  Mode: ${dryRun ? 'DRY RUN (no changes)' : 'LIVE'}`)
   console.log(`  Force re-check: ${force ? 'Yes' : 'No'}`)

@@ -15,7 +15,7 @@ Use Better Auth's built-in `anonymous()` plugin to create real user + session re
 - **Full session management** — anonymous users get standard `better-auth.session_token` cookies
 - **Existing auth flow works** — `hasSessionCookie()`, `requireAuth()`, `getOptionalAuth()` all work for anonymous users with zero changes
 - **Built-in account linking** — `onLinkAccount` callback fires when anonymous user signs up, merges their data automatically
-- **No custom cookie management** — no `quackback_anon` cookie, no `Set-Cookie` headers in server functions
+- **No custom cookie management** — no `featurepool_anon` cookie, no `Set-Cookie` headers in server functions
 - **No custom lookup table** — no `anonymous_vote_identities` table needed
 - **Widget support** — same-origin session cookie works in widget iframe
 
@@ -102,7 +102,7 @@ import { anonymous } from 'better-auth/plugins'
 
 // Add to plugins array (before tanstackStartCookies):
 anonymous({
-  emailDomainName: 'anon.quackback.io',
+  emailDomainName: 'anon.featurepool.io',
   disableDeleteAnonymousUser: true, // we handle cleanup ourselves
   onLinkAccount: async ({ anonymousUser, newUser }) => {
     // Update principal from anonymous → real user

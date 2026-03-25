@@ -30,7 +30,7 @@ export function buildAsanaTaskBody(
     '<hr/>',
     `<p><strong>Submitted by:</strong> ${escapeHtml(author)}</p>`,
     `<p><strong>Board:</strong> ${escapeHtml(post.boardSlug)}</p>`,
-    `<p><a href="${postUrl}">View in Quackback</a></p>`,
+    `<p><a href="${postUrl}">View in Featurepool</a></p>`,
     '</body>',
   ].join('\n')
 
