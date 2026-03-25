@@ -8,10 +8,10 @@ import { cn } from '@/lib/shared/utils'
 import { useBoardSelection, type BoardTab } from './use-board-selection'
 
 const navItems: { label: string; tab: BoardTab; icon: typeof Cog6ToothIcon }[] = [
-  { label: 'General', tab: 'general', icon: Cog6ToothIcon },
-  { label: 'Access', tab: 'access', icon: LockClosedIcon },
-  { label: 'Import Data', tab: 'import', icon: ArrowUpTrayIcon },
-  { label: 'Export Data', tab: 'export', icon: ArrowDownTrayIcon },
+  { label: 'Geral', tab: 'general', icon: Cog6ToothIcon },
+  { label: 'Acesso', tab: 'access', icon: LockClosedIcon },
+  { label: 'Importar dados', tab: 'import', icon: ArrowUpTrayIcon },
+  { label: 'Exportar dados', tab: 'export', icon: ArrowDownTrayIcon },
 ]
 
 export function BoardSettingsNav() {

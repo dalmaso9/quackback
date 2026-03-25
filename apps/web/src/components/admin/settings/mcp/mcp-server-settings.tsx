@@ -35,10 +35,11 @@ export function McpServerSettings({ initialEnabled }: McpServerSettingsProps) {
       <div className="flex items-center justify-between rounded-lg border border-border/50 p-4">
         <div>
           <Label htmlFor="mcp-toggle" className="text-sm font-medium cursor-pointer">
-            Enable MCP Server
+            Ativar servidor MCP
           </Label>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Allow AI tools like Claude Code to interact with your feedback data via the MCP protocol
+            Permita que ferramentas de IA, como Claude Code, interajam com seus dados de feedback
+            via protocolo MCP
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -48,7 +49,7 @@ export function McpServerSettings({ initialEnabled }: McpServerSettingsProps) {
             checked={enabled}
             onCheckedChange={handleToggle}
             disabled={isBusy}
-            aria-label="MCP Server"
+            aria-label="Servidor MCP"
           />
         </div>
       </div>

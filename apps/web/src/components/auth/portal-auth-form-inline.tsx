@@ -69,7 +69,7 @@ function OAuthButton({
       disabled={disabled}
     >
       {loading ? <ArrowPathIcon className="h-5 w-5 animate-spin" /> : icon}
-      {mode === 'login' ? 'Sign in' : 'Sign up'} with {label}
+      {mode === 'login' ? 'Entrar' : 'Cadastrar-se'} com {label}
     </Button>
   )
 }
@@ -132,10 +132,10 @@ export function PortalAuthFormInline({
           setEmail(data.email)
         } else {
           const data = (await response.json()) as { error?: string }
-          setError(data.error || 'Invalid or expired invitation')
+          setError(data.error || 'Convite inválido ou expirado')
         }
       } catch {
-        setError('Failed to load invitation')
+        setError('Não foi possível carregar o convite')
       } finally {
         setLoadingInvitation(false)
       }
@@ -172,15 +172,15 @@ export function PortalAuthFormInline({
     setError('')
 
     if (!email.trim()) {
-      setError('Email is required')
+      setError('Email é obrigatório')
       return
     }
     if (!password) {
-      setError('Password is required')
+      setError('Senha é obrigatória')
       return
     }
     if (mode === 'signup' && password.length < 8) {
-      setError('Password must be at least 8 characters')
+      setError('A senha deve ter pelo menos 8 caracteres')
       return
     }
 
@@ -193,7 +193,7 @@ export function PortalAuthFormInline({
           password,
         })
         if (result.error) {
-          throw new Error(result.error.message || 'Failed to create account')
+          throw new Error(result.error.message || 'Não foi possível criar a conta')
         }
       } else {
         const result = await authClient.signIn.email({
@@ -201,13 +201,13 @@ export function PortalAuthFormInline({
           password,
         })
         if (result.error) {
-          throw new Error(result.error.message || 'Invalid email or password')
+          throw new Error(result.error.message || 'Email ou senha inválidos')
         }
       }
       const { postAuthSuccess } = await import('@/lib/client/hooks/use-auth-broadcast')
       postAuthSuccess()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Authentication failed')
+      setError(err instanceof Error ? err.message : 'Falha na autenticação')
       setLoadingAction(null)
     }
   }
@@ -224,13 +224,13 @@ export function PortalAuthFormInline({
       })
 
       if (result.error) {
-        throw new Error(result.error.message || 'Failed to send code')
+        throw new Error(result.error.message || 'Não foi possível enviar o código')
       }
 
       setStep('code')
       setResendCooldown(60)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to send code')
+      setError(err instanceof Error ? err.message : 'Não foi possível enviar o código')
     } finally {
       setLoadingAction(null)
     }
@@ -247,13 +247,13 @@ export function PortalAuthFormInline({
       })
 
       if (result.error) {
-        throw new Error(result.error.message || 'Failed to verify code')
+        throw new Error(result.error.message || 'Não foi possível verificar o código')
       }
 
       const { postAuthSuccess } = await import('@/lib/client/hooks/use-auth-broadcast')
       postAuthSuccess()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to verify code')
+      setError(err instanceof Error ? err.message : 'Não foi possível verificar o código')
       setLoadingAction(null)
     }
   }
@@ -264,7 +264,7 @@ export function PortalAuthFormInline({
     setError('')
 
     if (!email.trim()) {
-      setError('Email is required')
+      setError('Email é obrigatório')
       return
     }
 
@@ -275,11 +275,11 @@ export function PortalAuthFormInline({
         redirectTo: '/auth/reset-password',
       })
       if (result.error) {
-        throw new Error(result.error.message || 'Failed to send reset link')
+        throw new Error(result.error.message || 'Não foi possível enviar o link de redefinição')
       }
       setStep('reset')
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to send reset link')
+      setError(err instanceof Error ? err.message : 'Não foi possível enviar o link de redefinição')
     } finally {
       setLoadingAction(null)
     }
@@ -289,7 +289,7 @@ export function PortalAuthFormInline({
   const handleEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!email.trim()) {
-      setError('Email is required')
+      setError('Email é obrigatório')
       return
     }
     sendCode()
@@ -298,7 +298,7 @@ export function PortalAuthFormInline({
   const handleCodeSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!code.trim() || code.length !== 6) {
-      setError('Please enter the 6-digit code')
+      setError('Digite o código de 6 dígitos')
       return
     }
     verifyCode()
@@ -344,12 +344,12 @@ export function PortalAuthFormInline({
         popup.location.href = url
       } else {
         popup.close()
-        setError('Failed to initiate sign in')
+        setError('Não foi possível iniciar a autenticação')
         setLoadingAction(null)
       }
     } catch (err) {
       popup.close()
-      setError(err instanceof Error ? err.message : 'Failed to initiate sign in')
+      setError(err instanceof Error ? err.message : 'Não foi possível iniciar a autenticação')
       setLoadingAction(null)
     }
   }
@@ -387,11 +387,11 @@ export function PortalAuthFormInline({
         <Alert variant="destructive">
           <InformationCircleIcon className="h-4 w-4" />
           <AlertDescription>
-            Popup was blocked by your browser. Please allow popups for this site and try again.
+            O pop-up foi bloqueado pelo navegador. Permita pop-ups para este site e tente novamente.
           </AlertDescription>
         </Alert>
         <Button onClick={() => setPopupBlocked(false)} variant="outline" className="w-full">
-          Try again
+          Tentar novamente
         </Button>
       </div>
     )
@@ -410,11 +410,11 @@ export function PortalAuthFormInline({
           <div className="flex items-start gap-3">
             <EnvelopeIcon className="h-5 w-5 text-primary mt-0.5" />
             <div>
-              <p className="font-medium text-foreground">You&apos;ve been invited!</p>
+              <p className="font-medium text-foreground">Você foi convidado!</p>
               <p className="text-sm text-muted-foreground mt-1">
-                Create your account to join{' '}
+                Crie sua conta para entrar em{' '}
                 <span className="font-medium text-foreground">{invitation.workspaceName}</span>
-                {invitation.inviterName && <> (invited by {invitation.inviterName})</>}
+                {invitation.inviterName && <> (convidado por {invitation.inviterName})</>}
               </p>
             </div>
           </div>
@@ -448,7 +448,7 @@ export function PortalAuthFormInline({
               </div>
               <div className="relative flex justify-center text-sm">
                 <span className="bg-background px-2 text-muted-foreground">
-                  Or continue with {passwordEnabled ? 'email' : 'email code'}
+                  Ou continue com {passwordEnabled ? 'email' : 'código por email'}
                 </span>
               </div>
             </div>
@@ -464,12 +464,12 @@ export function PortalAuthFormInline({
           {mode === 'signup' && (
             <div className="space-y-2">
               <label htmlFor="inline-name" className="text-sm font-medium">
-                Name
+                Nome
               </label>
               <Input
                 id="inline-name"
                 type="text"
-                placeholder="Jane Doe"
+                placeholder="João Silva"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 disabled={loadingAction !== null}
@@ -485,7 +485,7 @@ export function PortalAuthFormInline({
             <Input
               id="inline-email"
               type="email"
-              placeholder="you@example.com"
+              placeholder="voce@exemplo.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={!!invitation || loadingAction !== null}
@@ -493,18 +493,18 @@ export function PortalAuthFormInline({
               autoComplete="email"
             />
             {invitation && (
-              <p className="text-xs text-muted-foreground">Email is set from your invitation</p>
+              <p className="text-xs text-muted-foreground">Email preenchido a partir do convite</p>
             )}
           </div>
 
           <div className="space-y-2">
             <label htmlFor="inline-password" className="text-sm font-medium">
-              Password
+              Senha
             </label>
             <Input
               id="inline-password"
               type="password"
-              placeholder={mode === 'signup' ? 'At least 8 characters' : '••••••••'}
+              placeholder={mode === 'signup' ? 'Pelo menos 8 caracteres' : '••••••••'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={loadingAction !== null}
@@ -522,7 +522,7 @@ export function PortalAuthFormInline({
                 }}
                 className="text-sm text-muted-foreground hover:text-foreground"
               >
-                Forgot password?
+                Esqueceu a senha?
               </button>
             </div>
           )}
@@ -533,11 +533,11 @@ export function PortalAuthFormInline({
             )}
             {loadingAction === 'password'
               ? mode === 'signup'
-                ? 'Creating account...'
-                : 'Signing in...'
+                ? 'Criando conta...'
+                : 'Entrando...'
               : mode === 'signup'
-                ? 'Create account'
-                : 'Sign in'}
+                ? 'Criar conta'
+                : 'Entrar'}
           </Button>
 
           {/* Link to email OTP if also enabled */}
@@ -551,7 +551,7 @@ export function PortalAuthFormInline({
                 }}
                 className="text-sm text-muted-foreground hover:text-foreground"
               >
-                Use email code instead
+                Usar código por email
               </button>
             </div>
           )}
@@ -561,24 +561,24 @@ export function PortalAuthFormInline({
             <p className="text-center text-sm text-muted-foreground">
               {mode === 'login' ? (
                 <>
-                  Don&apos;t have an account?{' '}
+                  Não tem uma conta?{' '}
                   <button
                     type="button"
                     onClick={() => onModeSwitch('signup')}
                     className="text-primary hover:underline font-medium"
                   >
-                    Sign up
+                    Cadastre-se
                   </button>
                 </>
               ) : (
                 <>
-                  Already have an account?{' '}
+                  Já tem uma conta?{' '}
                   <button
                     type="button"
                     onClick={() => onModeSwitch('login')}
                     className="text-primary hover:underline font-medium"
                   >
-                    Sign in
+                    Entrar
                   </button>
                 </>
               )}
@@ -599,7 +599,7 @@ export function PortalAuthFormInline({
             <Input
               id="inline-otp-email"
               type="email"
-              placeholder="you@example.com"
+              placeholder="voce@exemplo.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={!!invitation || loadingAction !== null}
@@ -607,7 +607,7 @@ export function PortalAuthFormInline({
               autoComplete="email"
             />
             {invitation && (
-              <p className="text-xs text-muted-foreground">Email is set from your invitation</p>
+              <p className="text-xs text-muted-foreground">Email preenchido a partir do convite</p>
             )}
           </div>
 
@@ -615,10 +615,10 @@ export function PortalAuthFormInline({
             {loadingAction === 'email' ? (
               <>
                 <ArrowPathIcon className="mr-2 h-4 w-4 animate-spin" />
-                Sending code...
+                Enviando código...
               </>
             ) : (
-              'Continue with email'
+              'Continuar com email'
             )}
           </Button>
 
@@ -633,7 +633,7 @@ export function PortalAuthFormInline({
                 }}
                 className="text-sm text-muted-foreground hover:text-foreground"
               >
-                Use password instead
+                Usar senha
               </button>
             </div>
           )}
@@ -643,24 +643,24 @@ export function PortalAuthFormInline({
             <p className="text-center text-sm text-muted-foreground">
               {mode === 'login' ? (
                 <>
-                  Don&apos;t have an account?{' '}
+                  Não tem uma conta?{' '}
                   <button
                     type="button"
                     onClick={() => onModeSwitch('signup')}
                     className="text-primary hover:underline font-medium"
                   >
-                    Sign up
+                    Cadastre-se
                   </button>
                 </>
               ) : (
                 <>
-                  Already have an account?{' '}
+                  Já tem uma conta?{' '}
                   <button
                     type="button"
                     onClick={() => onModeSwitch('login')}
                     className="text-primary hover:underline font-medium"
                   >
-                    Sign in
+                    Entrar
                   </button>
                 </>
               )}
@@ -678,12 +678,13 @@ export function PortalAuthFormInline({
             className="flex items-center text-sm text-muted-foreground hover:text-foreground"
           >
             <ArrowLeftIcon className="mr-1 h-4 w-4" />
-            Back
+            Voltar
           </button>
 
           <div className="rounded-lg bg-muted/50 p-4">
             <p className="text-sm text-center">
-              We sent a 6-digit code to <span className="font-medium text-foreground">{email}</span>
+              Enviamos um código de 6 dígitos para{' '}
+              <span className="font-medium text-foreground">{email}</span>
             </p>
           </div>
 
@@ -691,7 +692,7 @@ export function PortalAuthFormInline({
 
           <div className="space-y-2">
             <label htmlFor="inline-code" className="text-sm font-medium">
-              Verification code
+              Código de verificação
             </label>
             <Input
               ref={codeInputRef}
@@ -717,10 +718,10 @@ export function PortalAuthFormInline({
             {loadingAction === 'code' ? (
               <>
                 <ArrowPathIcon className="mr-2 h-4 w-4 animate-spin" />
-                Verifying...
+                Verificando...
               </>
             ) : (
-              'Verify code'
+              'Verificar código'
             )}
           </Button>
 
@@ -732,8 +733,8 @@ export function PortalAuthFormInline({
               className="text-sm text-muted-foreground hover:text-foreground disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {resendCooldown > 0
-                ? `Resend code in ${resendCooldown}s`
-                : "Didn't receive a code? Resend"}
+                ? `Reenviar código em ${resendCooldown}s`
+                : 'Não recebeu o código? Reenviar'}
             </button>
           </div>
         </form>
@@ -748,13 +749,13 @@ export function PortalAuthFormInline({
             className="flex items-center text-sm text-muted-foreground hover:text-foreground"
           >
             <ArrowLeftIcon className="mr-1 h-4 w-4" />
-            Back
+            Voltar
           </button>
 
           <div className="text-center">
-            <h2 className="text-lg font-semibold">Reset your password</h2>
+            <h2 className="text-lg font-semibold">Redefina sua senha</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Enter your email and we&apos;ll send you a link to reset your password.
+              Digite seu email e enviaremos um link para redefinir sua senha.
             </p>
           </div>
 
@@ -767,7 +768,7 @@ export function PortalAuthFormInline({
             <Input
               id="inline-forgot-email"
               type="email"
-              placeholder="you@example.com"
+              placeholder="voce@exemplo.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={loadingAction !== null}
@@ -783,10 +784,10 @@ export function PortalAuthFormInline({
             {loadingAction === 'forgot' ? (
               <>
                 <ArrowPathIcon className="mr-2 h-4 w-4 animate-spin" />
-                Sending link...
+                Enviando link...
               </>
             ) : (
-              'Send reset link'
+              'Enviar link de redefinição'
             )}
           </Button>
         </form>
@@ -801,16 +802,16 @@ export function PortalAuthFormInline({
             className="flex items-center text-sm text-muted-foreground hover:text-foreground"
           >
             <ArrowLeftIcon className="mr-1 h-4 w-4" />
-            Back
+            Voltar
           </button>
 
           <div className="text-center space-y-3">
             <EnvelopeIcon className="h-10 w-10 text-primary mx-auto" />
-            <h2 className="text-lg font-semibold">Check your email</h2>
+            <h2 className="text-lg font-semibold">Verifique seu email</h2>
             <p className="text-sm text-muted-foreground">
-              We sent a password reset link to{' '}
-              <span className="font-medium text-foreground">{email}</span>. The link expires in 24
-              hours.
+              Enviamos um link para redefinir sua senha para{' '}
+              <span className="font-medium text-foreground">{email}</span>. O link expira em 24
+              horas.
             </p>
           </div>
         </div>

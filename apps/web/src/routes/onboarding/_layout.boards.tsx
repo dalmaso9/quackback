@@ -96,7 +96,7 @@ function BoardsStep() {
       await createBoardsBatchFn({ data: { boards: [] } })
       navigate({ to: '/onboarding/complete' })
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong')
+      setError(err instanceof Error ? err.message : 'Algo deu errado')
     } finally {
       setIsLoading(false)
     }
@@ -122,7 +122,7 @@ function BoardsStep() {
 
       navigate({ to: '/onboarding/complete' })
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong')
+      setError(err instanceof Error ? err.message : 'Algo deu errado')
     } finally {
       setIsLoading(false)
     }
@@ -137,10 +137,10 @@ function BoardsStep() {
     <div className="w-full max-w-xl mx-auto">
       {/* Header */}
       <div className="text-center mb-8">
-        <h1 className="text-2xl font-bold mb-2">Create your first boards</h1>
+        <h1 className="text-2xl font-bold mb-2">Crie seus primeiros quadros</h1>
         <p className="text-muted-foreground">
-          Boards help organize feedback by topic.
-          {useCase && ` Here are some suggestions for ${getUseCaseLabel(useCase)}.`}
+          Os quadros ajudam a organizar o feedback por assunto.
+          {useCase && ` Aqui estão algumas sugestões para ${getUseCaseLabel(useCase)}.`}
         </p>
       </div>
 
@@ -224,7 +224,7 @@ function BoardsStep() {
               type="text"
               value={newCustomBoard.name}
               onChange={(e) => setNewCustomBoard((prev) => ({ ...prev, name: e.target.value }))}
-              placeholder="Board name"
+              placeholder="Nome do quadro"
               autoFocus
               disabled={isLoading}
               className="h-10"
@@ -235,7 +235,7 @@ function BoardsStep() {
               onChange={(e) =>
                 setNewCustomBoard((prev) => ({ ...prev, description: e.target.value }))
               }
-              placeholder="Description (optional)"
+              placeholder="Descrição (opcional)"
               disabled={isLoading}
               className="h-10"
             />
@@ -250,7 +250,7 @@ function BoardsStep() {
                 }}
                 disabled={isLoading}
               >
-                Cancel
+                Cancelar
               </Button>
               <Button
                 type="button"
@@ -258,7 +258,7 @@ function BoardsStep() {
                 onClick={addCustomBoard}
                 disabled={isLoading || !newCustomBoard.name.trim()}
               >
-                Add
+                Adicionar
               </Button>
             </div>
           </div>
@@ -270,7 +270,7 @@ function BoardsStep() {
             className="w-full flex items-center justify-center gap-2 p-4 rounded-xl border border-dashed border-border text-muted-foreground hover:text-foreground hover:border-muted-foreground/50 transition-all disabled:opacity-50"
           >
             <PlusIcon className="h-4 w-4" />
-            <span className="text-sm">Add custom board</span>
+            <span className="text-sm">Adicionar quadro personalizado</span>
           </button>
         )}
       </div>
@@ -284,15 +284,15 @@ function BoardsStep() {
           disabled={isLoading}
           className="flex-1 h-11"
         >
-          Skip
+          Pular
         </Button>
         <Button type="button" onClick={handleContinue} disabled={isLoading} className="flex-1 h-11">
           {isLoading ? (
             <ArrowPathIcon className="h-4 w-4 animate-spin" />
           ) : newBoardsCount === 0 ? (
-            'Continue'
+            'Continuar'
           ) : (
-            `Create ${newBoardsCount} board${newBoardsCount !== 1 ? 's' : ''}`
+            `Criar ${newBoardsCount} quadro${newBoardsCount !== 1 ? 's' : ''}`
           )}
         </Button>
       </div>

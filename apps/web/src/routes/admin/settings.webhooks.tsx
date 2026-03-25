@@ -27,17 +27,17 @@ function WebhooksPage() {
   return (
     <div className="space-y-6 max-w-5xl">
       <div className="lg:hidden">
-        <BackLink to="/admin/settings">Settings</BackLink>
+        <BackLink to="/admin/settings">Configurações</BackLink>
       </div>
       <PageHeader
         icon={BoltIcon}
         title="Webhooks"
-        description="Send real-time notifications to external services when events occur"
+        description="Envie notificações em tempo real para serviços externos quando eventos acontecerem"
       />
 
       <SettingsCard
-        title="Configured Webhooks"
-        description="Webhooks receive HTTP POST requests when events happen in your workspace"
+        title="Webhooks configurados"
+        description="Webhooks recebem requisições HTTP POST quando eventos acontecem no seu espaço de trabalho"
       >
         <WebhooksSettings webhooks={webhooksQuery.data} />
       </SettingsCard>

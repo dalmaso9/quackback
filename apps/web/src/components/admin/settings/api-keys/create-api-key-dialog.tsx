@@ -35,7 +35,7 @@ export function CreateApiKeyDialog({ open, onOpenChange, onKeyCreated }: CreateA
     setError(null)
 
     if (!name.trim()) {
-      setError('Please enter a name for the API key')
+      setError('Informe um nome para a chave de API')
       return
     }
 
@@ -53,7 +53,7 @@ export function CreateApiKeyDialog({ open, onOpenChange, onKeyCreated }: CreateA
       onKeyCreated(result.apiKey, result.plainTextKey)
     } catch (err) {
       console.error('Failed to create API key:', err)
-      setError(err instanceof Error ? err.message : 'Failed to create API key')
+      setError(err instanceof Error ? err.message : 'Não foi possível criar a chave de API')
     }
   }
 
@@ -69,25 +69,25 @@ export function CreateApiKeyDialog({ open, onOpenChange, onKeyCreated }: CreateA
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Create API Key</DialogTitle>
+          <DialogTitle>Criar chave de API</DialogTitle>
           <DialogDescription>
-            Create a new API key to authenticate with the Featurepool API.
+            Crie uma nova chave de API para autenticar na API do Featurepool.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">Nome</Label>
               <Input
                 id="name"
-                placeholder="e.g., Production API, Integration Bot"
+                placeholder="ex.: API de produção, bot de integração"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 disabled={isPending}
                 autoFocus
               />
               <p className="text-xs text-muted-foreground">
-                Give your key a descriptive name so you can identify it later.
+                Dê um nome descritivo à sua chave para identificá-la depois.
               </p>
             </div>
             {error && <p className="text-sm text-destructive">{error}</p>}
@@ -99,10 +99,10 @@ export function CreateApiKeyDialog({ open, onOpenChange, onKeyCreated }: CreateA
               onClick={() => handleOpenChange(false)}
               disabled={isPending}
             >
-              Cancel
+              Cancelar
             </Button>
             <Button type="submit" disabled={isPending || !name.trim()}>
-              {isPending ? 'Creating...' : 'Create Key'}
+              {isPending ? 'Criando...' : 'Criar chave'}
             </Button>
           </DialogFooter>
         </form>

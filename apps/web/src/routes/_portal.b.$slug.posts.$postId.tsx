@@ -82,7 +82,7 @@ export const Route = createFileRoute('/_portal/b/$slug/posts/$postId')({
     if (!loaderData) return {}
     const { postTitle, boardName, slug, postId, baseUrl } = loaderData
     const title = `${postTitle} - ${boardName}`
-    const description = `${postTitle}. Vote and comment on this ${boardName} post.`
+    const description = `${postTitle}. Vote e comente neste post de ${boardName}.`
     const canonicalUrl = baseUrl ? `${baseUrl}/b/${slug}/posts/${postId}` : ''
     return {
       meta: [
@@ -130,22 +130,22 @@ function PostDetailPage() {
 
   const deleteComment = useDeleteComment({
     postId,
-    onError: (error) => toast.error(error.message || 'Failed to delete comment'),
+    onError: (error) => toast.error(error.message || 'Não foi possível excluir o comentário'),
   })
 
   const pinComment = usePinComment({
     postId,
-    onError: (error) => toast.error(error.message || 'Failed to pin comment'),
+    onError: (error) => toast.error(error.message || 'Não foi possível fixar o comentário'),
   })
 
   const unpinComment = useUnpinComment({
     postId,
-    onError: (error) => toast.error(error.message || 'Failed to unpin comment'),
+    onError: (error) => toast.error(error.message || 'Não foi possível desafixar o comentário'),
   })
 
   const restoreComment = useRestoreComment({
     postId,
-    onError: (error) => toast.error(error.message || 'Failed to restore comment'),
+    onError: (error) => toast.error(error.message || 'Não foi possível restaurar o comentário'),
   })
 
   const post = postQuery.data
@@ -153,7 +153,7 @@ function PostDetailPage() {
   const board = post?.board
 
   if (!post || !board) {
-    return <div>Post not found</div>
+    return <div>Post não encontrado</div>
   }
 
   const currentStatus = statusesQuery.data.find((s) => s.id === post.statusId)
@@ -246,7 +246,9 @@ function PostDetailPage() {
             comments={post.comments}
             pinnedCommentId={post.pinnedCommentId}
             disableCommenting={!!post.mergeInfo || !!post.isCommentsLocked}
-            lockedMessage={post.isCommentsLocked ? 'Comments are locked on this post' : undefined}
+            lockedMessage={
+              post.isCommentsLocked ? 'Os comentários estão bloqueados neste post' : undefined
+            }
             statuses={statusesQuery.data}
             currentStatusId={post.statusId}
             onPinComment={(commentId: CommentId) => pinComment.mutate(commentId)}

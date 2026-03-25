@@ -26,12 +26,12 @@ function StatusesPage() {
   return (
     <div className="space-y-6 max-w-5xl">
       <div className="lg:hidden">
-        <BackLink to="/admin/settings">Settings</BackLink>
+        <BackLink to="/admin/settings">Configurações</BackLink>
       </div>
       <PageHeader
         icon={Cog6ToothIcon}
-        title="Public Statuses"
-        description="Customize the statuses available for feedback posts"
+        title="Status públicos"
+        description="Personalize os status disponíveis para posts de feedback"
       />
 
       <StatusList initialStatuses={statusesQuery.data} />

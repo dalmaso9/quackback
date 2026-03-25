@@ -19,9 +19,9 @@ interface ModalHeaderProps {
 async function handleCopyLink(): Promise<void> {
   try {
     await navigator.clipboard.writeText(window.location.href)
-    toast.success('Link copied to clipboard')
+    toast.success('Link copiado para a área de transferência')
   } catch {
-    toast.error('Failed to copy link')
+    toast.error('Não foi possível copiar o link')
   }
 }
 
@@ -66,7 +66,7 @@ export function ModalHeader({
               className="gap-1.5 h-8"
             >
               <ArrowTopRightOnSquareIcon className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">View</span>
+              <span className="hidden sm:inline">Ver</span>
             </Button>
           )}
 
@@ -79,7 +79,7 @@ export function ModalHeader({
               className="gap-1.5 h-8"
             >
               <LinkIcon className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">Copy Link</span>
+              <span className="hidden sm:inline">Copiar link</span>
             </Button>
           )}
         </div>

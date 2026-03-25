@@ -47,7 +47,7 @@ services:
       REDIS_URL: redis://${{dragonfly.RAILWAY_PRIVATE_DOMAIN}}:6379
       SECRET_KEY: ${{secret(64)}}
       BASE_URL: https://${{RAILWAY_PUBLIC_DOMAIN}}
-      PORT: '3000'
+      PORT: '5433'
       NODE_ENV: production
       S3_ENDPOINT: ${{Bucket.ENDPOINT}}
       S3_BUCKET: ${{Bucket.BUCKET}}

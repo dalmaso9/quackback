@@ -17,12 +17,13 @@ import { CreateWebhookDialog } from './create-webhook-dialog'
 import { EditWebhookDialog } from './edit-webhook-dialog'
 import { DeleteWebhookDialog } from './delete-webhook-dialog'
 import type { Webhook } from '@/lib/server/domains/webhooks'
+import { ptBR } from 'date-fns/locale'
 
 const EVENT_LABELS: Record<string, string> = {
-  'post.created': 'New Post',
-  'post.status_changed': 'Status Changed',
-  'comment.created': 'New Comment',
-  'changelog.published': 'Changelog Published',
+  'post.created': 'Novo post',
+  'post.status_changed': 'Status alterado',
+  'comment.created': 'Novo comentário',
+  'changelog.published': 'Changelog publicado',
 }
 
 interface WebhooksSettingsProps {
@@ -40,29 +41,29 @@ export function WebhooksSettings({ webhooks }: WebhooksSettingsProps) {
         return (
           <Badge
             variant="destructive"
-            title={`Auto-disabled after ${webhook.failureCount} failures`}
+            title={`Desativado automaticamente após ${webhook.failureCount} falhas`}
           >
-            Auto-disabled
+            Desativado automaticamente
           </Badge>
         )
       }
-      return <Badge variant="secondary">Disabled</Badge>
+      return <Badge variant="secondary">Desativado</Badge>
     }
     if (webhook.failureCount >= 25) {
       return (
-        <Badge variant="destructive" title={`${webhook.failureCount} consecutive failures`}>
-          Failing ({webhook.failureCount}/50)
+        <Badge variant="destructive" title={`${webhook.failureCount} falhas consecutivas`}>
+          Com falhas ({webhook.failureCount}/50)
         </Badge>
       )
     }
     if (webhook.failureCount > 0) {
       return (
-        <Badge variant="outline" title={`${webhook.failureCount} consecutive failures`}>
-          Issues ({webhook.failureCount})
+        <Badge variant="outline" title={`${webhook.failureCount} falhas consecutivas`}>
+          Problemas ({webhook.failureCount})
         </Badge>
       )
     }
-    return <Badge variant="default">Active</Badge>
+    return <Badge variant="default">Ativo</Badge>
   }
 
   return (
@@ -72,12 +73,12 @@ export function WebhooksSettings({ webhooks }: WebhooksSettingsProps) {
         <div className="rounded-lg border border-dashed">
           <EmptyState
             icon={BoltIcon}
-            title="No webhooks configured"
-            description="Get notified in real-time when posts are created, statuses change, or votes hit milestones. Connect to Slack, Discord, or your own systems."
+            title="Nenhum webhook configurado"
+            description="Receba notificações em tempo real quando posts forem criados, status mudarem ou votos atingirem marcos. Conecte Slack, Discord ou seus próprios sistemas."
             action={
               <Button size="sm" onClick={() => setCreateDialogOpen(true)}>
                 <PlusIcon className="h-4 w-4 mr-1.5" />
-                Create your first webhook
+                Criar seu primeiro webhook
               </Button>
             }
           />
@@ -87,14 +88,14 @@ export function WebhooksSettings({ webhooks }: WebhooksSettingsProps) {
       {/* Header with create button */}
       {webhooks.length > 0 && (
         <div className="flex items-center justify-between">
-          <p className="text-sm text-muted-foreground">{webhooks.length} of 25 webhooks</p>
+          <p className="text-sm text-muted-foreground">{webhooks.length} de 25 webhooks</p>
           <Button
             size="sm"
             onClick={() => setCreateDialogOpen(true)}
             disabled={webhooks.length >= 25}
           >
             <PlusIcon className="h-4 w-4 mr-1.5" />
-            Create Webhook
+            Criar webhook
           </Button>
         </div>
       )}
@@ -129,15 +130,18 @@ export function WebhooksSettings({ webhooks }: WebhooksSettingsProps) {
                       <>
                         <span className="hidden sm:inline">·</span>
                         <span>
-                          Last fired{' '}
-                          {formatDistanceToNow(webhook.lastTriggeredAt, { addSuffix: true })}
+                          Último disparo{' '}
+                          {formatDistanceToNow(webhook.lastTriggeredAt, {
+                            addSuffix: true,
+                            locale: ptBR,
+                          })}
                         </span>
                       </>
                     )}
                   </div>
                   {webhook.lastError && webhook.failureCount > 0 && (
                     <p className="text-xs text-destructive mt-1 truncate" title={webhook.lastError}>
-                      Error: {webhook.lastError}
+                      Erro: {webhook.lastError}
                     </p>
                   )}
                 </div>
@@ -149,7 +153,7 @@ export function WebhooksSettings({ webhooks }: WebhooksSettingsProps) {
                   variant="outline"
                   size="sm"
                   onClick={() => setEditWebhook(webhook)}
-                  aria-label={`Edit webhook ${webhook.url}`}
+                  aria-label={`Editar webhook ${webhook.url}`}
                 >
                   <PencilIcon className="h-4 w-4" />
                 </Button>
@@ -157,7 +161,7 @@ export function WebhooksSettings({ webhooks }: WebhooksSettingsProps) {
                   variant="outline"
                   size="sm"
                   onClick={() => setDeleteWebhook(webhook)}
-                  aria-label={`Delete webhook ${webhook.url}`}
+                  aria-label={`Excluir webhook ${webhook.url}`}
                   className="text-destructive hover:text-destructive"
                 >
                   <TrashIcon className="h-4 w-4" />
@@ -168,21 +172,21 @@ export function WebhooksSettings({ webhooks }: WebhooksSettingsProps) {
               <div className="sm:hidden self-end">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm" aria-label="Webhook actions">
+                    <Button variant="outline" size="sm" aria-label="Ações do webhook">
                       <EllipsisVerticalIcon className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem onClick={() => setEditWebhook(webhook)}>
                       <PencilIcon className="h-4 w-4 mr-2" />
-                      Edit Webhook
+                      Editar webhook
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => setDeleteWebhook(webhook)}
                       className="text-destructive focus:text-destructive"
                     >
                       <TrashIcon className="h-4 w-4 mr-2" />
-                      Delete Webhook
+                      Excluir webhook
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>

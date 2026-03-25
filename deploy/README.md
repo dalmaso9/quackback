@@ -20,7 +20,7 @@ Deploy Featurepool on your own infrastructure with full control over your data.
 ```bash
 docker run -d \
   --name featurepool \
-  -p 3000:3000 \
+  -p 5433:5433 \
   -e DATABASE_URL="postgresql://user:pass@host:5432/featurepool" \
   -e SECRET_KEY="your-secret-32-chars-minimum" \
   -e BASE_URL="https://your-domain.com" \

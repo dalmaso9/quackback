@@ -75,23 +75,23 @@ function PermissionsPage() {
   return (
     <div className="space-y-6 max-w-5xl">
       <div className="lg:hidden">
-        <BackLink to="/admin/settings">Settings</BackLink>
+        <BackLink to="/admin/settings">Configurações</BackLink>
       </div>
       <PageHeader
         icon={ShieldCheckIcon}
-        title="Permissions"
-        description="Change who can post, comment and upvote under your organization."
+        title="Permissões"
+        description="Altere quem pode publicar, comentar e votar na sua organização."
       />
 
       <SettingsCard
-        title="Anonymous Access"
-        description="Control what actions visitors can take without signing in. Anonymous users cannot receive notifications."
+        title="Acesso anônimo"
+        description="Controle quais ações visitantes podem executar sem entrar. Usuários anônimos não podem receber notificações."
       >
         <div className="divide-y divide-border/50">
           <PermissionToggle
             id="anon-posting"
-            label="Anonymous Posting"
-            description="Anyone can create submissions without authenticating."
+            label="Publicação anônima"
+            description="Qualquer pessoa pode criar envios sem autenticação."
             checked={anonPosting}
             onCheckedChange={(checked) => {
               setAnonPosting(checked)
@@ -101,8 +101,8 @@ function PermissionsPage() {
           />
           <PermissionToggle
             id="anon-commenting"
-            label="Anonymous Commenting"
-            description="Users will be able to comment on posts without signing in."
+            label="Comentários anônimos"
+            description="Usuários poderão comentar em posts sem entrar."
             checked={anonCommenting}
             onCheckedChange={(checked) => {
               setAnonCommenting(checked)
@@ -112,8 +112,8 @@ function PermissionsPage() {
           />
           <PermissionToggle
             id="anon-voting"
-            label="Anonymous Upvoting"
-            description="Users will be able to upvote posts without having to sign in."
+            label="Votos anônimos"
+            description="Usuários poderão votar em posts sem precisar entrar."
             checked={anonVoting}
             onCheckedChange={(checked) => {
               setAnonVoting(checked)

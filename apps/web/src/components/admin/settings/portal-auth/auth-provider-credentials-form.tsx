@@ -41,7 +41,7 @@ function CopyableField({ label, value }: { label: string; value: string }) {
           type="button"
           onClick={handleCopy}
           className="flex-shrink-0 rounded-md p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-          title="Copy to clipboard"
+          title="Copiar para a área de transferência"
         >
           {copied ? (
             <CheckIcon className="h-3.5 w-3.5 text-green-600" />
@@ -115,10 +115,10 @@ export function AuthProviderCredentialsForm({
   const guidanceSection = (
     <div className="rounded-lg border border-border/50 bg-muted/20 p-3 space-y-2">
       <p className="text-xs font-medium text-muted-foreground">
-        Use these values when creating your {providerName} OAuth app:
+        Use estes valores ao criar seu app OAuth de {providerName}:
       </p>
-      <CopyableField label="Redirect / Callback URI" value={redirectUri} />
-      <CopyableField label="Homepage URL" value={baseUrl} />
+      <CopyableField label="URI de redirecionamento / callback" value={redirectUri} />
+      <CopyableField label="URL da página inicial" value={baseUrl} />
     </div>
   )
 
@@ -139,7 +139,7 @@ export function AuthProviderCredentialsForm({
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={handleStartEdit}>
-            Update
+            Atualizar
           </Button>
           <Button
             variant="outline"
@@ -148,7 +148,7 @@ export function AuthProviderCredentialsForm({
             disabled={deleteMutation.isPending}
             className="text-destructive hover:text-destructive"
           >
-            {deleteMutation.isPending ? 'Removing...' : 'Remove'}
+            {deleteMutation.isPending ? 'Removendo...' : 'Remover'}
           </Button>
         </div>
       </div>
@@ -181,17 +181,17 @@ export function AuthProviderCredentialsForm({
       </div>
       <div className="flex gap-2">
         <Button size="sm" onClick={handleSave} disabled={!requiredFilled || saveMutation.isPending}>
-          {saveMutation.isPending ? 'Saving...' : 'Save'}
+          {saveMutation.isPending ? 'Salvando...' : 'Salvar'}
         </Button>
         {isEditing && (
           <Button variant="outline" size="sm" onClick={handleCancel}>
-            Cancel
+            Cancelar
           </Button>
         )}
       </div>
       {saveMutation.isError && (
         <p className="text-sm text-destructive">
-          {saveMutation.error?.message ?? 'Failed to save credentials'}
+          {saveMutation.error?.message ?? 'Não foi possível salvar as credenciais'}
         </p>
       )}
     </div>

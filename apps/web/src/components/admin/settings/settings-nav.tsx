@@ -31,40 +31,40 @@ interface NavSection {
 
 const navSections: NavSection[] = [
   {
-    label: 'Workspace',
+    label: 'Espaço de trabalho',
     items: [
-      { label: 'Team Members', to: '/admin/settings/team', icon: UsersIcon },
-      { label: 'Integrations', to: '/admin/settings/integrations', icon: PuzzlePieceIcon },
+      { label: 'Membros da equipe', to: '/admin/settings/team', icon: UsersIcon },
+      { label: 'Integrações', to: '/admin/settings/integrations', icon: PuzzlePieceIcon },
     ],
   },
   {
     label: 'Feedback',
     items: [
-      { label: 'Boards', to: '/admin/settings/boards', icon: Squares2X2Icon },
-      { label: 'Statuses', to: '/admin/settings/statuses', icon: Cog6ToothIcon },
-      { label: 'Permissions', to: '/admin/settings/permissions', icon: ShieldCheckIcon },
+      { label: 'Quadros', to: '/admin/settings/boards', icon: Squares2X2Icon },
+      { label: 'Status', to: '/admin/settings/statuses', icon: Cog6ToothIcon },
+      { label: 'Permissões', to: '/admin/settings/permissions', icon: ShieldCheckIcon },
       { label: 'Widget', to: '/admin/settings/widget', icon: ChatBubbleLeftRightIcon },
     ],
   },
   {
-    label: 'Appearance',
-    items: [{ label: 'Branding', to: '/admin/settings/branding', icon: PaintBrushIcon }],
+    label: 'Aparência',
+    items: [{ label: 'Marca', to: '/admin/settings/branding', icon: PaintBrushIcon }],
   },
   {
-    label: 'Users',
+    label: 'Usuários',
     items: [
-      { label: 'Authentication', to: '/admin/settings/portal-auth', icon: LockClosedIcon },
+      { label: 'Autenticação', to: '/admin/settings/portal-auth', icon: LockClosedIcon },
       {
-        label: 'User Attributes',
+        label: 'Atributos de usuário',
         to: '/admin/settings/user-attributes',
         icon: AdjustmentsHorizontalIcon,
       },
     ],
   },
   {
-    label: 'Developers',
+    label: 'Desenvolvedores',
     items: [
-      { label: 'API Keys', to: '/admin/settings/api-keys', icon: KeyIcon },
+      { label: 'Chaves de API', to: '/admin/settings/api-keys', icon: KeyIcon },
       { label: 'Webhooks', to: '/admin/settings/webhooks', icon: BoltIcon },
       { label: 'MCP Server', to: '/admin/settings/mcp', icon: CommandLineIcon },
     ],

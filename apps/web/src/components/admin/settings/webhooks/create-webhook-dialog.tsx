@@ -45,7 +45,7 @@ export function CreateWebhookDialog({ open, onOpenChange }: CreateWebhookDialogP
     setError(null)
 
     if (selectedEvents.length === 0) {
-      setError('Select at least one event')
+      setError('Selecione pelo menos um evento')
       return
     }
 
@@ -65,7 +65,7 @@ export function CreateWebhookDialog({ open, onOpenChange }: CreateWebhookDialogP
       // Show secret reveal
       setCreatedSecret(result.secret)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create webhook')
+      setError(err instanceof Error ? err.message : 'Não foi possível criar o webhook')
     }
   }
 
@@ -89,21 +89,21 @@ export function CreateWebhookDialog({ open, onOpenChange }: CreateWebhookDialogP
       <SecretRevealDialog
         open={open}
         onOpenChange={handleClose}
-        title="Webhook Created"
-        description="Save your signing secret now. You won't be able to see it again."
-        secretLabel="Signing Secret"
+        title="Webhook criado"
+        description="Salve seu segredo de assinatura agora. Você não poderá vê-lo novamente."
+        secretLabel="Segredo de assinatura"
         secretValue={createdSecret}
-        confirmLabel="I've saved my secret"
+        confirmLabel="Já salvei meu segredo"
       >
         <div className="text-xs text-muted-foreground space-y-1">
           <p>
-            <strong>Verification:</strong> Each webhook includes an{' '}
+            <strong>Verificação:</strong> Cada webhook inclui o cabeçalho{' '}
             <code className="bg-muted px-1 rounded">X-Featurepool-Signature</code> header.
           </p>
           <p>
-            Compute{' '}
-            <code className="bg-muted px-1 rounded">HMAC-SHA256(timestamp.payload, secret)</code>{' '}
-            and compare with the signature.
+            Calcule{' '}
+            <code className="bg-muted px-1 rounded">HMAC-SHA256(timestamp.payload, secret)</code> e
+            compare com a assinatura.
           </p>
         </div>
       </SecretRevealDialog>
@@ -115,16 +115,16 @@ export function CreateWebhookDialog({ open, onOpenChange }: CreateWebhookDialogP
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>Create Webhook</DialogTitle>
+          <DialogTitle>Criar webhook</DialogTitle>
           <DialogDescription>
-            Configure an endpoint to receive event notifications.
+            Configure um endpoint para receber notificações de eventos.
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit}>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="url">Endpoint URL</Label>
+              <Label htmlFor="url">URL do endpoint</Label>
               <Input
                 id="url"
                 type="url"
@@ -134,11 +134,11 @@ export function CreateWebhookDialog({ open, onOpenChange }: CreateWebhookDialogP
                 disabled={isPending}
                 required
               />
-              <p className="text-xs text-muted-foreground">Must be HTTPS in production</p>
+              <p className="text-xs text-muted-foreground">Deve usar HTTPS em produção</p>
             </div>
 
             <div className="space-y-2">
-              <Label>Events</Label>
+              <Label>Eventos</Label>
               <div className="space-y-2">
                 {WEBHOOK_EVENT_CONFIG.map((event) => (
                   <label
@@ -150,7 +150,7 @@ export function CreateWebhookDialog({ open, onOpenChange }: CreateWebhookDialogP
                       onCheckedChange={() => toggleEvent(event.id)}
                       disabled={isPending}
                       className="mt-0.5"
-                      aria-label={`Subscribe to ${event.label} events`}
+                      aria-label={`Assinar eventos de ${event.label}`}
                     />
                     <div>
                       <p className="text-sm font-medium">{event.label}</p>
@@ -166,10 +166,10 @@ export function CreateWebhookDialog({ open, onOpenChange }: CreateWebhookDialogP
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={handleClose} disabled={isPending}>
-              Cancel
+              Cancelar
             </Button>
             <Button type="submit" disabled={isPending || !url || selectedEvents.length === 0}>
-              {isPending ? 'Creating...' : 'Create Webhook'}
+              {isPending ? 'Criando...' : 'Criar webhook'}
             </Button>
           </DialogFooter>
         </form>

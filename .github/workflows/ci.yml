@@ -8,7 +8,7 @@ on:
 env:
   DATABASE_URL: postgresql://postgres:postgres@localhost:5432/featurepool_test
   BETTER_AUTH_SECRET: test-secret-for-ci-only-must-be-at-least-32-characters
-  BASE_URL: http://localhost:3000
+  BASE_URL: http://localhost:5433
 
 jobs:
   check:

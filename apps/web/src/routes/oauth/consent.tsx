@@ -43,24 +43,24 @@ function isSafeUrl(url: string): boolean {
 }
 
 const SCOPE_LABELS: Record<string, { label: string; description: string }> = {
-  openid: { label: 'User ID', description: 'Access your user identifier' },
-  profile: { label: 'Profile', description: 'View your name and avatar' },
-  email: { label: 'Email', description: 'View your email address' },
+  openid: { label: 'ID do usuário', description: 'Acessar seu identificador de usuário' },
+  profile: { label: 'Perfil', description: 'Ver seu nome e avatar' },
+  email: { label: 'Email', description: 'Ver seu endereço de email' },
   'read:feedback': {
-    label: 'Read feedback',
-    description: 'Read posts, comments, boards, and roadmaps',
+    label: 'Ler feedback',
+    description: 'Ler posts, comentários, quadros e roadmaps',
   },
   'write:feedback': {
-    label: 'Write feedback',
-    description: 'Create posts, add comments, and vote',
+    label: 'Escrever feedback',
+    description: 'Criar posts, adicionar comentários e votar',
   },
   'write:changelog': {
-    label: 'Write changelogs',
-    description: 'Create and publish changelog entries',
+    label: 'Escrever changelogs',
+    description: 'Criar e publicar itens de changelog',
   },
   offline_access: {
-    label: 'Offline access',
-    description: "Stay connected when you're not actively using it",
+    label: 'Acesso offline',
+    description: 'Continuar conectado mesmo sem uso ativo',
   },
 }
 
@@ -89,7 +89,7 @@ function ConsentPage() {
   const visibleScopes = allScopes.filter((s) => !HIDDEN_SCOPES.has(s))
   const [submitting, setSubmitting] = useState<'accept' | 'deny' | null>(null)
 
-  const clientName = client?.client_name || 'An application'
+  const clientName = client?.client_name || 'Um aplicativo'
   const clientDomain = (() => {
     if (!client?.client_uri || !isSafeUrl(client.client_uri)) return null
     try {
@@ -164,7 +164,7 @@ function ConsentPage() {
 
           <CardTitle className="text-xl">{clientName}</CardTitle>
 
-          <p className="mt-1 text-sm text-muted-foreground">wants to access your account</p>
+          <p className="mt-1 text-sm text-muted-foreground">quer acessar a sua conta</p>
 
           {clientDomain && (
             <p className="mt-1 text-xs text-muted-foreground">
@@ -190,7 +190,7 @@ function ConsentPage() {
           {visibleScopes.length > 0 && (
             <div className="rounded-lg border p-4 space-y-3">
               <p className="text-sm font-medium text-muted-foreground">
-                This will allow {client.client_name || 'the application'} to:
+                Isto permitirá que {client.client_name || 'o aplicativo'}:
               </p>
               <ul className="space-y-2.5">
                 {visibleScopes.map((s) => {
@@ -214,7 +214,7 @@ function ConsentPage() {
           {/* Authorization notice */}
           <div className="flex items-start gap-2 text-xs text-muted-foreground">
             <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" />
-            <p>You can revoke this access at any time from your account settings.</p>
+            <p>Você pode revogar esse acesso a qualquer momento nas configurações da conta.</p>
           </div>
 
           {/* Actions */}
@@ -225,14 +225,14 @@ function ConsentPage() {
               disabled={submitting !== null}
               onClick={() => handleConsent(false)}
             >
-              {submitting === 'deny' ? 'Denying...' : 'Deny'}
+              {submitting === 'deny' ? 'Negando...' : 'Negar'}
             </Button>
             <Button
               className="flex-1"
               disabled={submitting !== null}
               onClick={() => handleConsent(true)}
             >
-              {submitting === 'accept' ? 'Authorizing...' : 'Authorize'}
+              {submitting === 'accept' ? 'Autorizando...' : 'Autorizar'}
             </Button>
           </div>
 
@@ -240,7 +240,7 @@ function ConsentPage() {
           {((client.tos_uri && isSafeUrl(client.tos_uri)) ||
             (client.policy_uri && isSafeUrl(client.policy_uri))) && (
             <p className="text-center text-xs text-muted-foreground">
-              {'By authorizing, you agree to '}
+              {'Ao autorizar, você concorda com os '}
               {client.tos_uri && isSafeUrl(client.tos_uri) && (
                 <a
                   href={client.tos_uri}
@@ -248,14 +248,14 @@ function ConsentPage() {
                   rel="noopener noreferrer"
                   className="underline hover:text-foreground"
                 >
-                  Terms of Service
+                  Termos de Serviço
                 </a>
               )}
               {client.tos_uri &&
                 isSafeUrl(client.tos_uri) &&
                 client.policy_uri &&
                 isSafeUrl(client.policy_uri) &&
-                ' and '}
+                ' e a '}
               {client.policy_uri && isSafeUrl(client.policy_uri) && (
                 <a
                   href={client.policy_uri}
@@ -263,7 +263,7 @@ function ConsentPage() {
                   rel="noopener noreferrer"
                   className="underline hover:text-foreground"
                 >
-                  Privacy Policy
+                  Política de Privacidade
                 </a>
               )}
               .

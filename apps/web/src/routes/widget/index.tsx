@@ -199,8 +199,10 @@ function WidgetPage() {
                   <CheckCircleIcon className="w-4.5 h-4.5 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-foreground">Thanks for your feedback!</p>
-                  <p className="text-[11px] text-muted-foreground">Your idea has been submitted.</p>
+                  <p className="text-sm font-semibold text-foreground">
+                    Obrigado pelo seu feedback!
+                  </p>
+                  <p className="text-[11px] text-muted-foreground">Sua ideia foi enviada.</p>
                 </div>
               </div>
 
@@ -262,7 +264,7 @@ function WidgetPage() {
                   }}
                   className="inline-flex items-center gap-1 text-[11px] text-muted-foreground/70 hover:text-muted-foreground transition-colors"
                 >
-                  View on feedback board
+                  Ver no quadro de feedback
                   <ArrowTopRightOnSquareIcon className="h-3 w-3" />
                 </button>
               </div>
@@ -274,7 +276,7 @@ function WidgetPage() {
                   onClick={closeWidget}
                   className="text-[11px] text-muted-foreground/50 hover:text-muted-foreground transition-colors"
                 >
-                  Close widget
+                  Fechar widget
                 </button>
               </div>
             </div>

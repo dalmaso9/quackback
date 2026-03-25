@@ -111,7 +111,7 @@ function AttributeFormDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>{isEditing ? 'Edit attribute' : 'New user attribute'}</DialogTitle>
+          <DialogTitle>{isEditing ? 'Editar atributo' : 'Novo atributo de usuário'}</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -120,7 +120,7 @@ function AttributeFormDialog({
             <Label htmlFor="attr-key">
               Key{' '}
               <span className="text-muted-foreground font-normal text-xs">
-                (matches user.metadata field)
+                (corresponde ao campo `user.metadata`)
               </span>
             </Label>
             <Input
@@ -134,26 +134,27 @@ function AttributeFormDialog({
             />
             {!isEditing && (
               <p className="text-[11px] text-muted-foreground">
-                Lowercase letters, numbers, underscores only. Cannot be changed after creation.
+                Apenas letras minúsculas, números e sublinhados. Não pode ser alterado após a
+                criação.
               </p>
             )}
           </div>
 
           {/* Label */}
           <div className="space-y-1.5">
-            <Label htmlFor="attr-label">Display label</Label>
+            <Label htmlFor="attr-label">Rótulo de exibição</Label>
             <Input
               id="attr-label"
               value={label}
               onChange={(e) => setLabel(e.target.value)}
-              placeholder="Monthly Revenue"
+              placeholder="Receita mensal"
               required
             />
           </div>
 
           {/* Type */}
           <div className="space-y-1.5">
-            <Label>Type</Label>
+            <Label>Tipo</Label>
             <Select value={type} onValueChange={(v) => setType(v as AttributeType)}>
               <SelectTrigger>
                 <SelectValue />
@@ -171,7 +172,7 @@ function AttributeFormDialog({
           {/* Currency code — only for currency type */}
           {type === 'currency' && (
             <div className="space-y-1.5">
-              <Label>Currency</Label>
+              <Label>Moeda</Label>
               <Select value={currencyCode} onValueChange={setCurrencyCode}>
                 <SelectTrigger className="w-[120px]">
                   <SelectValue />
@@ -190,13 +191,13 @@ function AttributeFormDialog({
           {/* Description */}
           <div className="space-y-1.5">
             <Label htmlFor="attr-desc">
-              Description <span className="text-muted-foreground font-normal">(optional)</span>
+              Descrição <span className="text-muted-foreground font-normal">(opcional)</span>
             </Label>
             <Textarea
               id="attr-desc"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Monthly recurring revenue in USD"
+              placeholder="Receita recorrente mensal em USD"
               rows={2}
               className="resize-none text-sm"
             />
@@ -206,7 +207,7 @@ function AttributeFormDialog({
           <div className="space-y-1.5">
             <Label htmlFor="attr-external-key">
               CDP attribute name{' '}
-              <span className="text-muted-foreground font-normal text-xs">(optional)</span>
+              <span className="text-muted-foreground font-normal text-xs">(opcional)</span>
             </Label>
             <Input
               id="attr-external-key"
@@ -215,8 +216,8 @@ function AttributeFormDialog({
               placeholder="monthly_recurring_revenue"
             />
             <p className="text-[11px] text-muted-foreground">
-              Maps an external attribute name (e.g. from Segment) to this attribute&apos;s internal
-              key. Leave blank to use the key above.
+              Mapeia um nome de atributo externo, por exemplo do Segment, para a chave interna deste
+              atributo. Deixe em branco para usar a chave acima.
             </p>
           </div>
 
@@ -227,10 +228,10 @@ function AttributeFormDialog({
               onClick={() => onOpenChange(false)}
               disabled={isPending}
             >
-              Cancel
+              Cancelar
             </Button>
             <Button type="submit" disabled={!canSubmit || isPending}>
-              {isPending ? 'Saving...' : isEditing ? 'Save changes' : 'Create attribute'}
+              {isPending ? 'Salvando...' : isEditing ? 'Salvar alterações' : 'Criar atributo'}
             </Button>
           </DialogFooter>
         </form>
@@ -279,7 +280,7 @@ function AttributeRow({
           size="sm"
           className="h-7 px-2 text-muted-foreground hover:text-foreground"
           onClick={onEdit}
-          title="Edit attribute"
+          title="Editar atributo"
         >
           <PencilIcon className="h-3.5 w-3.5" />
         </Button>
@@ -288,7 +289,7 @@ function AttributeRow({
           size="sm"
           className="h-7 px-2 text-muted-foreground hover:text-destructive"
           onClick={onDelete}
-          title="Delete attribute"
+          title="Excluir atributo"
         >
           <TrashIcon className="h-3.5 w-3.5" />
         </Button>
@@ -358,24 +359,24 @@ export function UserAttributesList({ initialAttributes }: UserAttributesListProp
 
   return (
     <SettingsCard
-      title="User Attributes"
-      description="Define custom attributes that map to fields in user metadata. These appear as segment rule options."
+      title="Atributos de usuário"
+      description="Defina atributos personalizados que mapeiam para campos em `user.metadata`. Eles aparecem como opções nas regras de segmento."
       action={
         <Button size="sm" className="h-8 text-xs gap-1.5" onClick={() => setCreateOpen(true)}>
           <PlusIcon className="h-3.5 w-3.5" />
-          New attribute
+          Novo atributo
         </Button>
       }
     >
       {attributes.length === 0 ? (
         <EmptyState
           icon={AdjustmentsHorizontalIcon}
-          title="No attributes yet"
-          description="Add custom user attributes to enable richer segmentation rules."
+          title="Ainda não há atributos"
+          description="Adicione atributos personalizados de usuário para criar regras de segmentação mais ricas."
           action={
             <Button size="sm" onClick={() => setCreateOpen(true)}>
               <PlusIcon className="h-4 w-4 mr-1.5" />
-              New attribute
+              Novo atributo
             </Button>
           }
           className="py-10"
@@ -426,9 +427,9 @@ export function UserAttributesList({ initialAttributes }: UserAttributesListProp
       <ConfirmDialog
         open={!!deleteTarget}
         onOpenChange={(open) => !open && setDeleteTarget(null)}
-        title={`Delete "${deleteTarget?.label}"?`}
-        description="This will remove the attribute definition. Existing segment rules using this attribute key will continue to work but won't show the friendly label."
-        confirmLabel="Delete"
+        title={`Excluir "${deleteTarget?.label}"?`}
+        description="Isso removerá a definição do atributo. Regras de segmento existentes que usam essa chave continuarão funcionando, mas não exibirão o rótulo amigável."
+        confirmLabel="Excluir"
         variant="destructive"
         isPending={deleteAttr.isPending}
         onConfirm={handleDelete}

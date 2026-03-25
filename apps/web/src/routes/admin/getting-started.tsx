@@ -48,39 +48,39 @@ function GettingStartedPage() {
   const tasks: OnboardingTask[] = [
     {
       id: 'create-board',
-      title: 'Create your first board',
-      description: 'Set up a feedback board where users can submit and vote on ideas',
+      title: 'Crie seu primeiro quadro',
+      description: 'Configure um quadro de feedback onde usuários podem enviar e votar em ideias',
       isCompleted: status.hasBoards,
       href: '/admin/settings/boards',
-      actionLabel: 'Create Board',
-      completedLabel: 'View Boards',
+      actionLabel: 'Criar quadro',
+      completedLabel: 'Ver quadros',
     },
     {
       id: 'invite-team',
-      title: 'Invite team members',
-      description: 'Add your team to collaborate on feedback management',
+      title: 'Convide membros da equipe',
+      description: 'Adicione sua equipe para colaborar na gestão de feedback',
       isCompleted: status.memberCount > 1,
       href: '/admin/settings/team',
-      actionLabel: 'Invite Members',
-      completedLabel: 'Manage Team',
+      actionLabel: 'Convidar membros',
+      completedLabel: 'Gerenciar equipe',
     },
     {
       id: 'customize-branding',
-      title: 'Customize branding',
-      description: 'Add your logo and brand colors to match your product',
+      title: 'Personalize a marca',
+      description: 'Adicione seu logo e as cores da marca para combinar com seu produto',
       isCompleted: false,
       href: '/admin/settings',
-      actionLabel: 'Customize',
-      completedLabel: 'Edit Branding',
+      actionLabel: 'Personalizar',
+      completedLabel: 'Editar marca',
     },
     {
       id: 'connect-integrations',
-      title: 'Connect integrations',
-      description: 'Connect GitHub, Slack, or Discord to streamline your workflow',
+      title: 'Conecte integrações',
+      description: 'Conecte GitHub, Slack ou Discord para agilizar seu fluxo de trabalho',
       isCompleted: false,
       href: '/admin/settings',
-      actionLabel: 'Connect',
-      completedLabel: 'Manage Integrations',
+      actionLabel: 'Conectar',
+      completedLabel: 'Gerenciar integrações',
     },
   ]
 
@@ -91,8 +91,8 @@ function GettingStartedPage() {
     <div className="mx-auto max-w-3xl space-y-6 px-6 py-8">
       <PageHeader
         icon={RocketLaunchIcon}
-        title="Getting Started"
-        description={`Complete these steps to set up ${settings!.name}`}
+        title="Primeiros passos"
+        description={`Conclua estas etapas para configurar ${settings!.name}`}
         animate
       />
 
@@ -110,7 +110,7 @@ function GettingStartedPage() {
           ))}
         </div>
         <span className="text-xs font-medium tabular-nums text-muted-foreground">
-          {completedCount} of {tasks.length}
+          {completedCount} de {tasks.length}
         </span>
       </div>
 

@@ -41,7 +41,7 @@ export function PostActionsMenu({
           className="text-muted-foreground hover:text-foreground"
         >
           <EllipsisVerticalIcon className="size-5" />
-          <span className="sr-only">Post actions</span>
+          <span className="sr-only">Ações do post</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
@@ -49,14 +49,14 @@ export function PostActionsMenu({
         {canEdit ? (
           <DropdownMenuItem onClick={onEdit}>
             <PencilIcon className="size-4" />
-            Edit
+            Editar
           </DropdownMenuItem>
         ) : editReason ? (
           <Tooltip>
             <TooltipTrigger asChild>
               <DropdownMenuItem disabled>
                 <PencilIcon className="size-4" />
-                Edit
+                Editar
               </DropdownMenuItem>
             </TooltipTrigger>
             <TooltipContent side="left">{editReason}</TooltipContent>
@@ -67,14 +67,14 @@ export function PostActionsMenu({
         {canDelete ? (
           <DropdownMenuItem variant="destructive" onClick={onDelete}>
             <TrashIcon className="size-4" />
-            Delete
+            Excluir
           </DropdownMenuItem>
         ) : deleteReason ? (
           <Tooltip>
             <TooltipTrigger asChild>
               <DropdownMenuItem disabled>
                 <TrashIcon className="size-4" />
-                Delete
+                Excluir
               </DropdownMenuItem>
             </TooltipTrigger>
             <TooltipContent side="left">{deleteReason}</TooltipContent>

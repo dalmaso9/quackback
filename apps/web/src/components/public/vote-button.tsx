@@ -108,7 +108,7 @@ export function VoteButton({
     return (
       <div
         data-testid="vote-button"
-        aria-label={`${displayCount} votes`}
+        aria-label={`${displayCount} votos`}
         className={sharedClassName}
       >
         {chevron}
@@ -122,7 +122,7 @@ export function VoteButton({
       type="button"
       data-testid="vote-button"
       aria-label={
-        hasVoted ? `Remove vote (${voteCount} votes)` : `Vote for this post (${voteCount} votes)`
+        hasVoted ? `Remover voto (${voteCount} votos)` : `Votar neste post (${voteCount} votos)`
       }
       aria-pressed={hasVoted}
       className={sharedClassName}

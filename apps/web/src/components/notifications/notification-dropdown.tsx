@@ -28,7 +28,7 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
     <div>
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3">
-        <h3 className="font-semibold text-sm">Notifications</h3>
+        <h3 className="font-semibold text-sm">Notificações</h3>
         {unreadCount > 0 && (
           <Button
             variant="ghost"
@@ -37,7 +37,7 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
             disabled={markAllAsRead.isPending}
             className="text-xs h-7 px-2 text-muted-foreground hover:text-foreground"
           >
-            Mark all read
+            Marcar todas como lidas
           </Button>
         )}
       </div>
@@ -50,7 +50,7 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
       ) : isError ? (
         <div className="flex flex-col items-center justify-center h-48">
           <ExclamationTriangleIcon className="h-8 w-8 text-muted-foreground/50 mb-2" />
-          <p className="text-sm text-muted-foreground">Failed to load</p>
+          <p className="text-sm text-muted-foreground">Não foi possível carregar</p>
         </div>
       ) : hasNotifications ? (
         <div className="max-h-80 overflow-hidden">
@@ -70,7 +70,7 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
       ) : (
         <div className="flex flex-col items-center justify-center h-48">
           <InboxIcon className="h-8 w-8 text-muted-foreground/50 mb-2" />
-          <p className="text-sm text-muted-foreground">No notifications yet</p>
+          <p className="text-sm text-muted-foreground">Ainda não há notificações</p>
         </div>
       )}
 
@@ -82,7 +82,7 @@ export function NotificationDropdown({ onClose }: NotificationDropdownProps) {
             onClick={onClose}
             className="block text-center text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
-            View all
+            Ver todas
           </Link>
         </div>
       )}

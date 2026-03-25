@@ -6,6 +6,7 @@ import { CopyButton } from '@/components/shared/copy-button'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { cancelInvitationFn, resendInvitationFn } from '@/lib/server/functions/admin'
 import { formatDistanceToNow } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import type { InviteId } from '@featurepool/ids'
 
 export interface PendingInvitation {
@@ -28,8 +29,8 @@ export function getExpiryText(expiresAt: string) {
   const isExpiringSoon = !isExpired && msUntilExpiry < 2 * 24 * 60 * 60 * 1000
 
   const text = isExpired
-    ? `Expired ${formatDistanceToNow(expiry, { addSuffix: false })} ago`
-    : `Expires in ${formatDistanceToNow(expiry, { addSuffix: false })}`
+    ? `Expirou há ${formatDistanceToNow(expiry, { addSuffix: false, locale: ptBR })}`
+    : `Expira em ${formatDistanceToNow(expiry, { addSuffix: false, locale: ptBR })}`
 
   const className = isExpired
     ? 'text-destructive'
@@ -42,7 +43,7 @@ export function getExpiryText(expiresAt: string) {
 
 export function formatInviteDate(dateStr: string) {
   const date = new Date(dateStr)
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  return date.toLocaleDateString('pt-BR', { month: 'short', day: 'numeric' })
 }
 
 interface InvitationActionsProps {
@@ -70,9 +71,9 @@ export function InvitationActions({
 
   const resendDisabled = !canResendNow || loading !== null
   const resendTitle = expiry.isExpired
-    ? 'Invitation expired'
+    ? 'Convite expirado'
     : minutesUntilResend
-      ? `Wait ${minutesUntilResend} min to resend`
+      ? `Aguarde ${minutesUntilResend} min para reenviar`
       : undefined
 
   const handleResend = async () => {
@@ -87,7 +88,7 @@ export function InvitationActions({
         onInviteLink(inv.id, result.inviteLink)
       }
     } catch (err) {
-      onError(err instanceof Error ? err.message : 'Failed to resend invitation')
+      onError(err instanceof Error ? err.message : 'Não foi possível reenviar o convite')
     } finally {
       setLoading(null)
     }
@@ -102,7 +103,7 @@ export function InvitationActions({
       })
       onCancelled(inv.id)
     } catch (err) {
-      onError(err instanceof Error ? err.message : 'Failed to cancel invitation')
+      onError(err instanceof Error ? err.message : 'Não foi possível cancelar o convite')
     } finally {
       setLoading(null)
     }
@@ -117,7 +118,7 @@ export function InvitationActions({
         disabled={resendDisabled}
         title={resendTitle}
       >
-        {loading === 'resend' ? <ArrowPathIcon className="h-4 w-4 animate-spin" /> : 'Resend'}
+        {loading === 'resend' ? <ArrowPathIcon className="h-4 w-4 animate-spin" /> : 'Reenviar'}
       </Button>
 
       <TooltipProvider>
@@ -133,7 +134,7 @@ export function InvitationActions({
               <XMarkIcon className="h-4 w-4" />
             </Button>
           </TooltipTrigger>
-          <TooltipContent>Cancel invitation</TooltipContent>
+          <TooltipContent>Cancelar convite</TooltipContent>
         </Tooltip>
       </TooltipProvider>
     </div>

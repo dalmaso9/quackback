@@ -24,7 +24,7 @@ export function IntegrationHeader({
 
   return (
     <>
-      <BackLink to="/admin/settings/integrations">Integrations</BackLink>
+      <BackLink to="/admin/settings/integrations">Integrações</BackLink>
 
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-4">
@@ -38,34 +38,34 @@ export function IntegrationHeader({
               <h1 className="text-xl font-semibold text-foreground">{catalog.name}</h1>
               {isConnected && (
                 <Badge variant="outline" className="border-green-500/30 text-green-600">
-                  Enabled
+                  Ativa
                 </Badge>
               )}
               {isPaused && (
                 <Badge variant="outline" className="border-yellow-500/30 text-yellow-600">
-                  Paused
+                  Pausada
                 </Badge>
               )}
               {!status && !catalog.available && catalog.configurable && (
                 <Badge variant="outline" className="text-muted-foreground/60 border-border/40">
-                  Not configured
+                  Não configurada
                 </Badge>
               )}
               {!status && !catalog.available && !catalog.configurable && (
                 <Badge variant="outline" className="text-muted-foreground/60 border-border/40">
-                  Coming soon
+                  Em breve
                 </Badge>
               )}
             </div>
             <p className="text-sm text-muted-foreground">{catalog.description}</p>
             {catalog.docsUrl && (
               <DocsLink href={catalog.docsUrl} className="mt-1 text-xs">
-                Learn how to set up {catalog.name}
+                Veja como configurar {catalog.name}
               </DocsLink>
             )}
             {workspaceName && (
               <p className="mt-1 text-xs text-muted-foreground">
-                Connected to <span className="font-medium">{workspaceName}</span>
+                Conectada a <span className="font-medium">{workspaceName}</span>
               </p>
             )}
           </div>

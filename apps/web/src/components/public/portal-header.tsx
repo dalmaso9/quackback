@@ -45,7 +45,7 @@ interface PortalHeaderProps {
 const navItems = [
   { to: '/', label: 'Feedback' },
   { to: '/roadmap', label: 'Roadmap' },
-  { to: '/changelog', label: 'Changelog' },
+  { to: '/changelog', label: 'Novidades' },
 ]
 
 export function PortalHeader({
@@ -133,9 +133,9 @@ export function PortalHeader({
     if (!showThemeToggle || !mounted) return null
 
     const themeOptions = [
-      { value: 'system', label: 'System', icon: ComputerDesktopIcon },
-      { value: 'light', label: 'Light', icon: SunIcon },
-      { value: 'dark', label: 'Dark', icon: MoonIcon },
+      { value: 'system', label: 'Sistema', icon: ComputerDesktopIcon },
+      { value: 'light', label: 'Claro', icon: SunIcon },
+      { value: 'dark', label: 'Escuro', icon: MoonIcon },
     ] as const
 
     const currentTheme = themeOptions.find((t) => t.value === theme) ?? themeOptions[0]
@@ -146,7 +146,7 @@ export function PortalHeader({
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="h-9 w-9">
             <CurrentIcon className="h-4 w-4" />
-            <span className="sr-only">Toggle theme</span>
+            <span className="sr-only">Alternar tema</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
@@ -204,12 +204,12 @@ export function PortalHeader({
             <DropdownMenuItem asChild>
               <Link to="/settings">
                 <Cog6ToothIcon className="mr-2 h-4 w-4" />
-                Settings
+                Configurações
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleSignOut}>
               <ArrowRightStartOnRectangleIcon className="mr-2 h-4 w-4" />
-              Sign out
+              Sair
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -217,10 +217,10 @@ export function PortalHeader({
         // Anonymous user with auth popover available - show login/signup buttons
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="sm" onClick={() => openAuthPopover({ mode: 'login' })}>
-            Log in
+            Entrar
           </Button>
           <Button size="sm" onClick={() => openAuthPopover({ mode: 'signup' })}>
-            Sign up
+            Cadastre-se
           </Button>
         </div>
       ) : null}

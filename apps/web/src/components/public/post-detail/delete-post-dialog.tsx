@@ -104,22 +104,23 @@ export function DeletePostDialog({
     <ConfirmDialog
       open={open}
       onOpenChange={onOpenChange}
-      title="Delete Post"
+      title="Excluir post"
       description={
         description ?? (
           <>
-            Are you sure you want to delete &ldquo;{postTitle}&rdquo;? This action cannot be undone.
+            Tem certeza de que deseja excluir &ldquo;{postTitle}&rdquo;? Essa ação não pode ser
+            desfeita.
           </>
         )
       }
       variant="destructive"
-      confirmLabel={isPending ? 'Deleting...' : isLoadingLinks ? 'Loading...' : 'Delete Post'}
+      confirmLabel={isPending ? 'Excluindo...' : isLoadingLinks ? 'Carregando...' : 'Excluir post'}
       isPending={isPending || isLoadingLinks || isErrorLinks}
       onConfirm={handleConfirm}
     >
       {isErrorLinks && (
         <p className="text-sm text-destructive">
-          Failed to load linked integrations. Please close and try again.
+          Não foi possível carregar as integrações vinculadas. Feche e tente novamente.
         </p>
       )}
       {hasLinks && (
@@ -132,7 +133,7 @@ export function DeletePostDialog({
             const noun = getIntegrationItemNoun(link.integrationType)
             const displayId = getDisplayId(link)
             const Icon = INTEGRATION_ICON_MAP[link.integrationType]
-            const pastTense = verb === 'Close' ? 'closed' : 'archived'
+            const pastTense = verb === 'Close' ? 'encerrado' : 'arquivado'
 
             return (
               <div key={link.id} className="flex items-start gap-3">
@@ -153,15 +154,15 @@ export function DeletePostDialog({
                     {Icon && <Icon className="h-4 w-4 shrink-0" />}
                     <span>
                       {disabled
-                        ? `${name} ${noun} (disconnected)`
-                        : `${verb} linked ${name} ${noun}`}
+                        ? `${name} ${noun} (desconectado)`
+                        : `${verb} ${name} ${noun} vinculado`}
                     </span>
                   </Label>
                   <p className="text-xs text-muted-foreground mt-0.5 ml-6">
                     <code className="rounded bg-muted px-1 py-0.5 text-[11px]">{displayId}</code>
                     {disabled
-                      ? ` — integration disconnected, cannot ${verb.toLowerCase()}`
-                      : ` will be ${pastTense} in ${name}.`}
+                      ? ` — integração desconectada, não é possível ${verb.toLowerCase()}`
+                      : ` será ${pastTense} em ${name}.`}
                   </p>
                 </div>
               </div>

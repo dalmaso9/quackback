@@ -47,7 +47,7 @@ export function BoardAccessForm({ board }: BoardAccessFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        {mutation.isError && <FormError message={mutation.error?.message ?? 'An error occurred'} />}
+        {mutation.isError && <FormError message={mutation.error?.message ?? 'Ocorreu um erro'} />}
 
         {/* Board Visibility */}
         <FormField
@@ -56,8 +56,8 @@ export function BoardAccessForm({ board }: BoardAccessFormProps) {
           render={({ field }) => (
             <FormItem className="space-y-4">
               <div>
-                <FormLabel className="text-base">Board Visibility</FormLabel>
-                <FormDescription>Control who can see this board on your portal</FormDescription>
+                <FormLabel className="text-base">Visibilidade do board</FormLabel>
+                <FormDescription>Controle quem pode ver este board no seu portal</FormDescription>
               </div>
               <FormControl>
                 <RadioGroup
@@ -73,11 +73,11 @@ export function BoardAccessForm({ board }: BoardAccessFormProps) {
                     <div className="flex-1 space-y-1">
                       <div className="flex items-center gap-2">
                         <GlobeAltIcon className="h-4 w-4" />
-                        <span className="font-medium">Public</span>
+                        <span className="font-medium">Público</span>
                       </div>
                       <p className="text-sm text-muted-foreground">
-                        Anyone can view this board on your portal. Signed-in users can vote,
-                        comment, and submit feedback.
+                        Qualquer pessoa pode ver este board no seu portal. Usuários autenticados
+                        podem votar, comentar e enviar feedback.
                       </p>
                     </div>
                   </Label>
@@ -89,10 +89,10 @@ export function BoardAccessForm({ board }: BoardAccessFormProps) {
                     <div className="flex-1 space-y-1">
                       <div className="flex items-center gap-2">
                         <LockClosedIcon className="h-4 w-4" />
-                        <span className="font-medium">Private</span>
+                        <span className="font-medium">Privado</span>
                       </div>
                       <p className="text-sm text-muted-foreground">
-                        Only team members can view this board
+                        Apenas membros da equipe podem ver este board
                       </p>
                     </div>
                   </Label>
@@ -104,7 +104,7 @@ export function BoardAccessForm({ board }: BoardAccessFormProps) {
 
         <div className="flex justify-end">
           <Button type="submit" disabled={mutation.isPending}>
-            {mutation.isPending ? 'Saving...' : 'Save changes'}
+            {mutation.isPending ? 'Salvando...' : 'Salvar alterações'}
           </Button>
         </div>
       </form>

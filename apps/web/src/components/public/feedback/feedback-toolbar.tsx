@@ -30,9 +30,9 @@ interface FeedbackToolbarProps {
 }
 
 const SORT_OPTIONS = [
-  { value: 'top', label: 'Top', icon: ArrowTrendingUpIcon },
-  { value: 'new', label: 'New', icon: ClockIcon },
-  { value: 'trending', label: 'Trending', icon: FireIcon },
+  { value: 'top', label: 'Mais votadas', icon: ArrowTrendingUpIcon },
+  { value: 'new', label: 'Recentes', icon: ClockIcon },
+  { value: 'trending', label: 'Em alta', icon: FireIcon },
 ] as const
 
 export function FeedbackToolbar({
@@ -100,25 +100,25 @@ export function FeedbackToolbar({
           <PopoverTrigger asChild>
             <Button variant="outline" size="sm" className="gap-1.5">
               <MagnifyingGlassIcon className="h-4 w-4" />
-              <span className="hidden sm:inline">Search</span>
+              <span className="hidden sm:inline">Buscar</span>
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-80" align="end">
             <form onSubmit={handleSearchSubmit} className="flex gap-2">
               <Input
-                placeholder="Search posts..."
+                placeholder="Buscar posts..."
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
                 className="flex-1"
                 autoFocus
               />
               <Button type="submit" size="sm">
-                Search
+                Buscar
               </Button>
             </form>
             {currentSearch && (
               <Button variant="ghost" size="sm" className="mt-2 w-full" onClick={handleClearSearch}>
-                Clear search
+                Limpar busca
               </Button>
             )}
           </PopoverContent>

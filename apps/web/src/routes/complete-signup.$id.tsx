@@ -19,21 +19,20 @@ import {
 
 const ERROR_MESSAGES: Record<string, string> = {
   INVALID_TOKEN:
-    'This invitation link is invalid. It may have already been used. Please ask your administrator to resend the invitation.',
-  EXPIRED_TOKEN:
-    'This invitation link has expired. Please ask your administrator to resend the invitation.',
+    'Este link de convite é inválido. Ele pode já ter sido usado. Peça ao administrador para reenviar o convite.',
+  EXPIRED_TOKEN: 'Este link de convite expirou. Peça ao administrador para reenviar o convite.',
   failed_to_create_user:
-    "We couldn't create your account. Please try again or contact your administrator.",
+    'Não foi possível criar sua conta. Tente novamente ou fale com o administrador.',
   new_user_signup_disabled:
-    'New account creation is currently disabled. Please contact your administrator.',
-  failed_to_create_session: "We couldn't sign you in. Please try again.",
+    'A criação de novas contas está desativada no momento. Fale com o administrador.',
+  failed_to_create_session: 'Não foi possível entrar na sua conta. Tente novamente.',
 }
 
 const FEATURES = [
-  { icon: ChatBubbleLeftRightIcon, label: 'Feedback & voting' },
-  { icon: SparklesIcon, label: 'AI-powered insights' },
-  { icon: BoltIcon, label: '24 integrations' },
-  { icon: MapIcon, label: 'Roadmap & changelog' },
+  { icon: ChatBubbleLeftRightIcon, label: 'Feedback e votos' },
+  { icon: SparklesIcon, label: 'Insights com IA' },
+  { icon: BoltIcon, label: '24 integrações' },
+  { icon: MapIcon, label: 'Roadmap e changelog' },
 ] as const
 
 export interface InviteBranding {
@@ -93,7 +92,7 @@ function AcceptInvitationPage() {
     console.log(`[route:complete-signup] component: errorCode=${errorCode}, state=${data.state}`)
     const message =
       ERROR_MESSAGES[errorCode] ??
-      'Something went wrong with the invitation link. Please ask your administrator to resend the invitation.'
+      'Algo deu errado com o link de convite. Peça ao administrador para reenviar o convite.'
     return (
       <PageShell>
         <ErrorContent error={message} invitationId={id} errorKind="token" branding={branding} />
@@ -205,21 +204,21 @@ function NotAuthenticatedContent({
     >
       <WorkspaceIdentity branding={branding} />
       <div className="mt-6 mb-6 h-px bg-border/50" />
-      <h1 className="text-2xl font-bold tracking-tight">You're invited!</h1>
+      <h1 className="text-2xl font-bold tracking-tight">Você foi convidado!</h1>
       <p className="mt-2 text-muted-foreground">
         {branding.inviterName
-          ? `${branding.inviterName} invited you to join the team. Sign in to get started.`
-          : 'Sign in to accept your invitation and get started with your team.'}
+          ? `${branding.inviterName} convidou você para entrar na equipe. Entre para começar.`
+          : 'Entre para aceitar o convite e começar com a sua equipe.'}
       </p>
       <div className="mt-6 flex flex-col gap-3">
         <a href={`/admin/login?callbackUrl=/complete-signup/${invitationId}`}>
-          <Button className="w-full h-11">Sign in</Button>
+          <Button className="w-full h-11">Entrar</Button>
         </a>
         <a
           href="/"
           className="text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
-          Go to Home
+          Ir para a página inicial
         </a>
       </div>
     </div>
@@ -255,11 +254,11 @@ function WelcomeContent({
     const trimmedName = name.trim()
 
     if (trimmedName.length < 2) {
-      setError('Please enter your name (at least 2 characters)')
+      setError('Digite seu nome com pelo menos 2 caracteres')
       return
     }
     if (!skipPassword && password && password.length < 8) {
-      setError('Password must be at least 8 characters')
+      setError('A senha deve ter pelo menos 8 caracteres')
       return
     }
 
@@ -277,7 +276,7 @@ function WelcomeContent({
 
       window.location.href = '/admin'
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to accept invitation'
+      const message = err instanceof Error ? err.message : 'Não foi possível aceitar o convite'
       if (message.includes('already been accepted')) {
         window.location.href = '/admin'
         return
@@ -299,11 +298,11 @@ function WelcomeContent({
         <WorkspaceIdentity branding={branding} />
         <div className="mt-6 mb-6 h-px bg-border/50" />
         <div className="mb-6 text-center">
-          <h1 className="text-2xl font-bold tracking-tight">Welcome!</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Boas-vindas!</h1>
           <p className="mt-2 text-muted-foreground">
             {invite.inviterName
-              ? `Invited by ${invite.inviterName}`
-              : 'Complete your account setup to get started'}
+              ? `Convidado por ${invite.inviterName}`
+              : 'Conclua a configuração da sua conta para começar'}
           </p>
         </div>
 
@@ -316,7 +315,7 @@ function WelcomeContent({
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <label htmlFor="name" className="text-sm font-medium">
-              Your name
+              Seu nome
             </label>
             <Input
               id="name"
@@ -324,7 +323,7 @@ function WelcomeContent({
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              placeholder="Jane Doe"
+              placeholder="João Silva"
               autoComplete="name"
               autoFocus
               disabled={isLoading}
@@ -335,14 +334,15 @@ function WelcomeContent({
           {passwordEnabled && (
             <div className="space-y-2">
               <label htmlFor="password" className="text-sm font-medium">
-                Set a password <span className="text-muted-foreground font-normal">(optional)</span>
+                Defina uma senha{' '}
+                <span className="text-muted-foreground font-normal">(opcional)</span>
               </label>
               <Input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="At least 8 characters"
+                placeholder="Pelo menos 8 caracteres"
                 autoComplete="new-password"
                 disabled={isLoading}
                 className="h-11"
@@ -355,7 +355,7 @@ function WelcomeContent({
             disabled={isLoading || name.trim().length < 2}
             className="w-full h-11"
           >
-            {isLoading ? <ArrowPathIcon className="h-4 w-4 animate-spin" /> : 'Get started'}
+            {isLoading ? <ArrowPathIcon className="h-4 w-4 animate-spin" /> : 'Começar'}
           </Button>
 
           {passwordEnabled && (
@@ -366,7 +366,7 @@ function WelcomeContent({
               disabled={isLoading}
               className="w-full text-muted-foreground"
             >
-              Skip password setup
+              Pular configuração de senha
             </Button>
           )}
         </form>
@@ -409,22 +409,22 @@ function ErrorContent({
       {retrying ? (
         <div>
           <Spinner size="xl" className="border-primary mx-auto" />
-          <p className="mt-4 text-muted-foreground">Retrying...</p>
+          <p className="mt-4 text-muted-foreground">Tentando novamente...</p>
         </div>
       ) : (
         <div>
           <div className="text-destructive text-xl font-medium tracking-tight">
-            Unable to accept invitation
+            Não foi possível aceitar o convite
           </div>
           <p className="mt-2 text-muted-foreground">{error}</p>
           <div className="mt-6 flex flex-col gap-3">
             {kind === 'already-accepted' ? (
               <a href="/admin">
-                <Button className="w-full h-11">Go to Dashboard</Button>
+                <Button className="w-full h-11">Ir para o painel</Button>
               </a>
             ) : kind === 'token' ? (
               <a href={`/admin/login?callbackUrl=/complete-signup/${invitationId}`}>
-                <Button className="w-full h-11">Sign in</Button>
+                <Button className="w-full h-11">Entrar</Button>
               </a>
             ) : (
               <Button
@@ -434,14 +434,14 @@ function ErrorContent({
                   window.location.reload()
                 }}
               >
-                Try Again
+                Tentar novamente
               </Button>
             )}
             <a
               href="/"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
-              Go to Home
+              Ir para a página inicial
             </a>
           </div>
         </div>

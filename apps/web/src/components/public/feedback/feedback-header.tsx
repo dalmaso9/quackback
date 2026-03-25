@@ -108,19 +108,19 @@ export function FeedbackHeader({
     setError('')
 
     if (!selectedBoardId) {
-      setError('Please select a board')
+      setError('Selecione um quadro')
       return
     }
 
     if (!title.trim()) {
-      setError('Please add a title')
+      setError('Adicione um título')
       return
     }
 
     const plainText = contentJson ? richTextToPlainText(contentJson) : ''
 
     if (!effectiveUser && !anonymousPostingEnabled) {
-      setError('Please sign in to submit feedback')
+      setError('Entre para enviar feedback')
       return
     }
 
@@ -128,7 +128,7 @@ export function FeedbackHeader({
       if (!effectiveUser && anonymousPostingEnabled) {
         const ok = await ensureAnonSession()
         if (!ok) {
-          setError('Failed to create session')
+          setError('Não foi possível criar a sessão')
           return
         }
       }
@@ -144,14 +144,14 @@ export function FeedbackHeader({
       setExpanded(false)
       onPostCreated?.(result.id, result.board.slug)
 
-      toast.success('Feedback submitted', {
+      toast.success('Feedback enviado', {
         action: {
-          label: 'View',
+          label: 'Ver',
           onClick: () => router.navigate({ to: `/b/${result.board.slug}/posts/${result.id}` }),
         },
       })
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to submit feedback')
+      setError(err instanceof Error ? err.message : 'Não foi possível enviar o feedback')
     }
   }
 
@@ -192,13 +192,13 @@ export function FeedbackHeader({
             className="overflow-hidden"
           >
             <div className="flex items-center px-4 sm:px-5 pt-3 pb-1">
-              <span className="text-xs text-muted-foreground mr-1">Posting to</span>
+              <span className="text-xs text-muted-foreground mr-1">Publicando em</span>
               <Select value={selectedBoardId} onValueChange={setSelectedBoardId}>
                 <SelectTrigger
                   size="xs"
                   className="border-0 bg-transparent shadow-none font-medium text-foreground hover:text-foreground/80 focus-visible:ring-0"
                 >
-                  <SelectValue placeholder="Select a board" />
+                  <SelectValue placeholder="Selecione um quadro" />
                 </SelectTrigger>
                 <SelectContent align="start">
                   {boards.map((board) => (
@@ -234,7 +234,7 @@ export function FeedbackHeader({
         <motion.input
           ref={titleInputRef}
           type="text"
-          placeholder="What's your idea?"
+          placeholder="Qual é a sua ideia?"
           value={title}
           onChange={(e) => {
             setTitle(e.target.value)
@@ -287,7 +287,7 @@ export function FeedbackHeader({
               <RichTextEditor
                 value={contentJson || ''}
                 onChange={handleContentChange}
-                placeholder="Add more details..."
+                placeholder="Adicione mais detalhes..."
                 minHeight="150px"
                 borderless
               />
@@ -309,7 +309,7 @@ export function FeedbackHeader({
             >
               {effectiveUser ? (
                 <p className="text-xs text-muted-foreground">
-                  Posting as{' '}
+                  Publicando como{' '}
                   <span className="font-medium text-foreground">
                     {effectiveUser.name || effectiveUser.email}
                   </span>
@@ -322,19 +322,19 @@ export function FeedbackHeader({
                       router.invalidate()
                     }}
                   >
-                    sign out
+                    sair
                   </button>
                   {')'}
                 </p>
               ) : canPostAnonymously ? (
-                <p className="text-xs text-muted-foreground">Posting anonymously</p>
+                <p className="text-xs text-muted-foreground">Publicando anonimamente</p>
               ) : (
                 <button
                   type="button"
                   onClick={() => openAuthPopover({ mode: 'login' })}
                   className="text-xs text-primary hover:underline font-medium"
                 >
-                  Sign in to post
+                  Entrar para publicar
                 </button>
               )}
               <div className="flex items-center gap-2">
@@ -345,16 +345,16 @@ export function FeedbackHeader({
                   onClick={handleCancel}
                   disabled={createPost.isPending}
                 >
-                  Cancel
+                  Cancelar
                 </Button>
                 <Button
                   size="sm"
                   onClick={handleSubmit}
                   disabled={createPost.isPending || !canSubmit}
-                  title={!canSubmit ? 'Please sign in to submit feedback' : undefined}
+                  title={!canSubmit ? 'Entre para enviar feedback' : undefined}
                   className="portal-submit-button bg-[var(--portal-button-background)] text-[var(--portal-button-foreground)] hover:bg-[var(--portal-button-background)]/90"
                 >
-                  {createPost.isPending ? 'Submitting...' : 'Submit'}
+                  {createPost.isPending ? 'Enviando...' : 'Enviar'}
                 </Button>
               </div>
             </motion.div>

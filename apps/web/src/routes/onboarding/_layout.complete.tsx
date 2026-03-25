@@ -28,7 +28,7 @@ export const Route = createFileRoute('/onboarding/_layout/complete')({
     const settings = await getSettings()
 
     return {
-      workspaceName: settings?.name ?? 'Your workspace',
+      workspaceName: settings?.name ?? 'Seu espaço de trabalho',
     }
   },
   component: CompleteStep,
@@ -49,18 +49,20 @@ function CompleteStep() {
 
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold mb-2">You're all set!</h1>
-        <p className="text-muted-foreground">{workspaceName} is ready to collect feedback.</p>
+        <h1 className="text-2xl font-bold mb-2">Tudo pronto!</h1>
+        <p className="text-muted-foreground">
+          {workspaceName} já está pronto para receber feedback.
+        </p>
       </div>
 
       {/* Actions */}
       <div className="space-y-3 max-w-xs mx-auto">
         <Button onClick={() => navigate({ to: '/admin' })} className="w-full h-11">
-          Go to dashboard
+          Ir para o painel
           <ArrowRightIcon className="ml-2 h-4 w-4" />
         </Button>
         <Button variant="ghost" onClick={() => navigate({ to: '/' })} className="w-full h-11">
-          View your feedback portal
+          Ver seu portal de feedback
         </Button>
       </div>
     </div>

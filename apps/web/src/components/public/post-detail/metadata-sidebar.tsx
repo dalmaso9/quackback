@@ -77,7 +77,7 @@ export function MetadataSidebarSkeleton({
 }
 
 function NoneLabel() {
-  return <span className="text-sm italic text-muted-foreground">None</span>
+  return <span className="text-sm italic text-muted-foreground">Nenhum</span>
 }
 
 export interface MetadataSidebarManageActions {
@@ -108,9 +108,9 @@ export function ManagePostActions({
   return (
     <div className={cn('flex items-center justify-between', className)}>
       {showLabel ? (
-        <span className="text-sm text-muted-foreground">Manage</span>
+        <span className="text-sm text-muted-foreground">Gerenciar</span>
       ) : (
-        <span className="sr-only">Manage post</span>
+        <span className="sr-only">Gerenciar post</span>
       )}
       <TooltipProvider delayDuration={300}>
         <div className="flex items-center gap-0.5">
@@ -130,12 +130,12 @@ export function ManagePostActions({
                     </button>
                   </DropdownMenuTrigger>
                 </TooltipTrigger>
-                <TooltipContent side="bottom">Merge</TooltipContent>
+                <TooltipContent side="bottom">Mesclar</TooltipContent>
               </Tooltip>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={actions.onMergeOthers}>Merge into this</DropdownMenuItem>
+                <DropdownMenuItem onClick={actions.onMergeOthers}>Mesclar neste</DropdownMenuItem>
                 <DropdownMenuItem onClick={actions.onMergeInto}>
-                  Merge into another...
+                  Mesclar em outro...
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -157,7 +157,7 @@ export function ManagePostActions({
               </button>
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              {actions.isCommentsLocked ? 'Unlock comments' : 'Lock comments'}
+              {actions.isCommentsLocked ? 'Desbloquear comentários' : 'Bloquear comentários'}
             </TooltipContent>
           </Tooltip>
 
@@ -173,7 +173,7 @@ export function ManagePostActions({
                   <IconRestore className="h-5 w-5" strokeWidth={1.5} />
                 </button>
               </TooltipTrigger>
-              <TooltipContent side="bottom">Restore post</TooltipContent>
+              <TooltipContent side="bottom">Restaurar post</TooltipContent>
             </Tooltip>
           ) : (
             <Tooltip>
@@ -186,7 +186,7 @@ export function ManagePostActions({
                   <IconTrash className="h-5 w-5" strokeWidth={1.5} />
                 </button>
               </TooltipTrigger>
-              <TooltipContent side="bottom">Delete post</TooltipContent>
+              <TooltipContent side="bottom">Excluir post</TooltipContent>
             </Tooltip>
           )}
         </div>
@@ -372,7 +372,7 @@ export function MetadataSidebar({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <ChevronUpIcon className="h-4 w-4" />
-                  <span>Upvotes</span>
+                  <span>Votos</span>
                 </div>
                 <span className="text-sm font-semibold tabular-nums text-foreground">
                   {voteCount}
@@ -389,7 +389,7 @@ export function MetadataSidebar({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <ChevronUpIcon className="h-4 w-4" />
-                <span>Upvotes</span>
+                <span>Votos</span>
               </div>
               {/* Portal mode: interactive vote button with auth */}
               <AuthVoteButton
@@ -424,7 +424,7 @@ export function MetadataSidebar({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <FolderIcon className="h-4 w-4" />
-            <span>Board</span>
+            <span>Quadro</span>
           </div>
           <span className="text-sm font-medium text-foreground">{board.name}</span>
         </div>
@@ -473,7 +473,7 @@ export function MetadataSidebar({
                       )}
                     >
                       <PlusIcon className="h-2.5 w-2.5" />
-                      Add
+                      Adicionar
                     </button>
                   </PopoverTrigger>
                   <PopoverContent className="w-40 p-1" align="end" sideOffset={4}>
@@ -565,7 +565,7 @@ export function MetadataSidebar({
                       )}
                     >
                       <PlusIcon className="h-2.5 w-2.5" />
-                      Add
+                      Adicionar
                     </button>
                   </PopoverTrigger>
                   <PopoverContent className="w-48 p-1" align="end" sideOffset={4}>
@@ -622,7 +622,7 @@ export function MetadataSidebar({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <CalendarIcon className="h-4 w-4" />
-            <span>Date</span>
+            <span>Data</span>
           </div>
           <TimeAgo date={createdAt} className="text-sm text-foreground" />
         </div>
@@ -633,7 +633,7 @@ export function MetadataSidebar({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <LinkIcon className="h-4 w-4" />
-                <span>Source</span>
+                <span>Origem</span>
               </div>
               <button
                 type="button"
@@ -651,7 +651,7 @@ export function MetadataSidebar({
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2">
                     <SourceTypeIcon sourceType={feedbackSource.sourceType} size="sm" />
-                    Original feedback
+                    Feedback original
                   </DialogTitle>
                 </DialogHeader>
                 <ScrollArea className="max-h-[50vh] -mx-6 px-6">
@@ -661,7 +661,7 @@ export function MetadataSidebar({
                 </ScrollArea>
                 <div className="space-y-2 pt-3 border-t border-border/30">
                   <div className="flex items-center justify-between text-xs text-muted-foreground">
-                    <span>{feedbackSource.authorName ?? 'Unknown author'}</span>
+                    <span>{feedbackSource.authorName ?? 'Autor desconhecido'}</span>
                     <TimeAgo date={feedbackSource.createdAt} />
                   </div>
                   {feedbackSource.externalUrl && (
@@ -672,7 +672,7 @@ export function MetadataSidebar({
                       className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
                     >
                       <SourceTypeIcon sourceType={feedbackSource.sourceType} size="xs" />
-                      Open in{' '}
+                      Abrir em{' '}
                       {SOURCE_TYPE_LABELS[feedbackSource.sourceType] ?? feedbackSource.sourceType}
                       <span aria-hidden>&rarr;</span>
                     </a>
@@ -687,7 +687,7 @@ export function MetadataSidebar({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <UserIcon className="h-4 w-4" />
-            <span>Author</span>
+            <span>Autor</span>
           </div>
           {canEdit && authorPrincipalId ? (
             <Link
@@ -697,25 +697,23 @@ export function MetadataSidebar({
             >
               <Avatar className="h-5 w-5">
                 {authorAvatarUrl && (
-                  <AvatarImage src={authorAvatarUrl} alt={authorName || 'Author'} />
+                  <AvatarImage src={authorAvatarUrl} alt={authorName || 'Autor'} />
                 )}
                 <AvatarFallback className="text-[9px]">{getInitials(authorName)}</AvatarFallback>
               </Avatar>
               <span className="text-sm font-medium text-foreground underline decoration-muted-foreground/30 underline-offset-2">
-                {authorName || 'Anonymous'}
+                {authorName || 'Anônimo'}
               </span>
             </Link>
           ) : (
             <div className="flex items-center gap-1.5">
               <Avatar className="h-5 w-5">
                 {authorAvatarUrl && (
-                  <AvatarImage src={authorAvatarUrl} alt={authorName || 'Author'} />
+                  <AvatarImage src={authorAvatarUrl} alt={authorName || 'Autor'} />
                 )}
                 <AvatarFallback className="text-[9px]">{getInitials(authorName)}</AvatarFallback>
               </Avatar>
-              <span className="text-sm font-medium text-foreground">
-                {authorName || 'Anonymous'}
-              </span>
+              <span className="text-sm font-medium text-foreground">{authorName || 'Anônimo'}</span>
             </div>
           )}
         </div>
@@ -724,7 +722,7 @@ export function MetadataSidebar({
         {!hideSubscribe && (
           <div className="border-t border-border/30 pt-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Subscribe</span>
+              <span className="text-sm text-muted-foreground">Inscrever-se</span>
               <AuthSubscriptionBell
                 postId={postId}
                 initialStatus={subscriptionStatus}
@@ -732,7 +730,7 @@ export function MetadataSidebar({
               />
             </div>
             <p className="text-xs text-muted-foreground/70 mt-2">
-              Get notified when there are updates to this post
+              Receba notificações quando houver atualizações neste post
             </p>
           </div>
         )}

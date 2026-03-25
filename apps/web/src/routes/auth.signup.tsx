@@ -38,8 +38,8 @@ function SignupPage() {
     <div className="flex min-h-screen items-center justify-center">
       <div className="w-full max-w-md space-y-8 px-4">
         <div className="text-center">
-          <h1 className="text-2xl font-bold">Create an account</h1>
-          <p className="mt-2 text-muted-foreground">Sign up to vote and comment</p>
+          <h1 className="text-2xl font-bold">Criar conta</h1>
+          <p className="mt-2 text-muted-foreground">Cadastre-se para votar e comentar</p>
         </div>
         <PortalAuthForm
           mode="signup"
@@ -48,9 +48,9 @@ function SignupPage() {
           customProviderNames={portalConfig.customProviderNames}
         />
         <p className="text-center text-sm text-muted-foreground">
-          Already have an account?{' '}
+          Já tem uma conta?{' '}
           <Link to="/auth/login" className="font-medium text-primary hover:underline">
-            Sign in
+            Entrar
           </Link>
         </p>
       </div>

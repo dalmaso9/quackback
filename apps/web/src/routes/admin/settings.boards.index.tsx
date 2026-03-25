@@ -73,7 +73,7 @@ function BoardsSettingsPage() {
   return (
     <div className="space-y-6 max-w-5xl">
       <div className="lg:hidden">
-        <BackLink to="/admin/settings">Settings</BackLink>
+        <BackLink to="/admin/settings">Configurações</BackLink>
       </div>
       <BoardSettingsHeader currentBoard={currentBoard} allBoards={boards} />
 
@@ -98,11 +98,11 @@ function BoardTabContent({ board, tab }: BoardTabContentProps): ReactNode {
     case 'general':
       return (
         <div className="space-y-8">
-          <SettingsCard title="Board Details">
+          <SettingsCard title="Detalhes do board">
             <BoardGeneralForm board={board} />
           </SettingsCard>
 
-          <SettingsCard title="Danger Zone" variant="danger">
+          <SettingsCard title="Zona de perigo" variant="danger">
             <DeleteBoardForm board={board} />
           </SettingsCard>
         </div>
@@ -110,7 +110,7 @@ function BoardTabContent({ board, tab }: BoardTabContentProps): ReactNode {
 
     case 'access':
       return (
-        <SettingsCard title="Access Control">
+        <SettingsCard title="Controle de acesso">
           <BoardAccessForm board={board} />
         </SettingsCard>
       )
@@ -119,9 +119,9 @@ function BoardTabContent({ board, tab }: BoardTabContentProps): ReactNode {
       return (
         <div className="space-y-4">
           <div>
-            <h2 className="text-base font-semibold">Import Data</h2>
+            <h2 className="text-base font-semibold">Importar dados</h2>
             <p className="text-sm text-muted-foreground mt-1">
-              Import posts from a CSV file into this board
+              Importe posts de um arquivo CSV para este board
             </p>
           </div>
           <BoardImportSection boardId={board.id} />
@@ -132,9 +132,9 @@ function BoardTabContent({ board, tab }: BoardTabContentProps): ReactNode {
       return (
         <div className="space-y-4">
           <div>
-            <h2 className="text-base font-semibold">Export Data</h2>
+            <h2 className="text-base font-semibold">Exportar dados</h2>
             <p className="text-sm text-muted-foreground mt-1">
-              Download all posts from this board as CSV
+              Baixe todos os posts deste board em CSV
             </p>
           </div>
           <BoardExportSection boardId={board.id} />
@@ -148,15 +148,15 @@ function EmptyBoardsState() {
     <div className="space-y-6">
       <PageHeader
         icon={Squares2X2Icon}
-        title="Board Settings"
-        description="Configure your feedback board settings and preferences"
+        title="Configurações do board"
+        description="Configure as preferências e opções do seu board de feedback"
       />
 
       <div className="rounded-xl border border-border/50 bg-card p-8 shadow-sm">
         <EmptyState
           icon={ChatBubbleLeftIcon}
-          title="No boards yet"
-          description="Create your first feedback board to start collecting ideas from your users"
+          title="Ainda não há boards"
+          description="Crie seu primeiro board de feedback para começar a coletar ideias dos seus usuários"
           action={<CreateBoardDialog />}
           className="py-8"
         />

@@ -58,7 +58,7 @@ export function WidgetPostDetail({
         data: { postId },
         headers: getWidgetAuthHeaders(),
       })
-      if (!result) throw new Error('Post not found')
+      if (!result) throw new Error('Post não encontrado')
       return result as PublicPostDetailView
     },
     staleTime: 30 * 1000,
@@ -113,7 +113,7 @@ export function WidgetPostDetail({
       await submitComment(content)
       setCommentText('')
     } catch (err) {
-      setCommentError(err instanceof Error ? err.message : 'Failed to post comment')
+      setCommentError(err instanceof Error ? err.message : 'Não foi possível publicar o comentário')
     } finally {
       setIsSubmitting(false)
     }
@@ -167,9 +167,9 @@ export function WidgetPostDetail({
   if (error || !post) {
     return (
       <div className="flex flex-col items-center justify-center h-full px-4 text-center">
-        <p className="text-sm text-muted-foreground">Could not load post</p>
+        <p className="text-sm text-muted-foreground">Não foi possível carregar o post</p>
         <p className="text-xs text-muted-foreground/60 mt-1">
-          {error instanceof Error ? error.message : 'Something went wrong'}
+          {error instanceof Error ? error.message : 'Algo deu errado'}
         </p>
       </div>
     )
@@ -185,7 +185,7 @@ export function WidgetPostDetail({
           )}
           <h2 className="text-sm font-semibold text-foreground leading-snug">{post.title}</h2>
           <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground/60 mt-1.5">
-            <span>{post.authorName || 'Anonymous'}</span>
+            <span>{post.authorName || 'Anônimo'}</span>
             <span className="text-muted-foreground/30">&middot;</span>
             <TimeAgo date={post.createdAt} />
             <span className="text-muted-foreground/30">&middot;</span>
@@ -207,7 +207,7 @@ export function WidgetPostDetail({
             onClick={handleViewOnPortal}
             className="inline-flex items-center gap-1 text-[11px] text-muted-foreground/60 hover:text-muted-foreground transition-colors ml-auto"
           >
-            View full discussion
+            Ver discussão completa
             <ArrowTopRightOnSquareIcon className="h-3 w-3" />
           </button>
         </div>
@@ -224,12 +224,12 @@ export function WidgetPostDetail({
         {/* Pinned comment / official response */}
         {post.pinnedComment && (
           <div className="rounded-md border border-primary/20 bg-primary/[0.03] p-2.5">
-            <p className="text-[10px] font-medium text-primary mb-1">Official response</p>
+            <p className="text-[10px] font-medium text-primary mb-1">Resposta oficial</p>
             <p className="text-xs text-foreground/80 whitespace-pre-wrap leading-relaxed">
               {post.pinnedComment.content}
             </p>
             <p className="text-[10px] text-muted-foreground/60 mt-1">
-              — {post.pinnedComment.authorName || 'Team'}
+              — {post.pinnedComment.authorName || 'Equipe'}
             </p>
           </div>
         )}
@@ -239,7 +239,7 @@ export function WidgetPostDetail({
           <div className="flex items-center gap-1.5 mb-3">
             <ChatBubbleLeftIcon className="h-3.5 w-3.5 text-muted-foreground/50" />
             <span className="text-xs font-medium text-muted-foreground">
-              {liveCommentCount} {liveCommentCount === 1 ? 'comment' : 'comments'}
+              {liveCommentCount} {liveCommentCount === 1 ? 'comentário' : 'comentários'}
             </span>
           </div>
 
@@ -250,7 +250,7 @@ export function WidgetPostDetail({
                 <textarea
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
-                  placeholder="Write a comment..."
+                  placeholder="Escreva um comentário..."
                   rows={2}
                   disabled={isSubmitting}
                   className="flex-1 min-h-[52px] max-h-[120px] resize-none rounded-md border border-border/50 bg-muted/20 px-2.5 py-2 text-xs text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/30 focus:border-primary/50 disabled:opacity-50 transition-colors"
@@ -267,11 +267,11 @@ export function WidgetPostDetail({
                   disabled={isSubmitting || !commentText.trim()}
                   className="self-end px-3 py-1.5 rounded-md bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shrink-0"
                 >
-                  {isSubmitting ? 'Posting...' : 'Post'}
+                  {isSubmitting ? 'Enviando...' : 'Publicar'}
                 </button>
               </div>
               <p className="text-[10px] text-muted-foreground/50 mt-1">
-                {user ? `Posting as ${user.name || user.email}` : 'Posting anonymously'}
+                {user ? `Comentando como ${user.name || user.email}` : 'Comentando anonimamente'}
               </p>
               {commentError && <p className="text-[10px] text-destructive mt-1">{commentError}</p>}
             </div>
@@ -283,13 +283,13 @@ export function WidgetPostDetail({
               onClick={handleViewOnPortal}
               className="text-[10px] text-primary hover:text-primary/80 transition-colors mb-3"
             >
-              Log in to join the conversation
+              Entre para participar da conversa
             </button>
           )}
 
           {post.isCommentsLocked && (
             <p className="text-[10px] text-muted-foreground/50 mb-3">
-              Comments are locked on this post
+              Os comentários estão bloqueados neste post
             </p>
           )}
 

@@ -163,7 +163,7 @@ export function PostContentSection({
             type="text"
             value={editTitle}
             onChange={(e) => setEditTitle(e.target.value)}
-            placeholder="What's your idea?"
+            placeholder="Qual é a sua ideia?"
             maxLength={200}
             autoFocus
             disabled={isSaving}
@@ -174,7 +174,7 @@ export function PostContentSection({
           <RichTextEditor
             value={editContentJson || ''}
             onChange={handleContentChange}
-            placeholder="Add more details..."
+            placeholder="Adicione mais detalhes..."
             minHeight="150px"
             disabled={isSaving}
             borderless
@@ -191,10 +191,10 @@ export function PostContentSection({
             onClick={onEditCancel}
             disabled={isSaving}
           >
-            Cancel
+            Cancelar
           </Button>
           <Button size="sm" onClick={handleSave} disabled={!isValid || !hasChanges || isSaving}>
-            {isSaving ? 'Saving...' : 'Save'}
+            {isSaving ? 'Salvando...' : 'Salvar'}
           </Button>
         </div>
       </div>

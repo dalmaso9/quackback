@@ -36,13 +36,15 @@ function AuthCompletePage() {
         {status === 'broadcasting' ? (
           <>
             <ArrowPathIcon className="h-12 w-12 animate-spin text-primary mx-auto" />
-            <p className="text-muted-foreground">Completing sign in...</p>
+            <p className="text-muted-foreground">Concluindo entrada...</p>
           </>
         ) : (
           <>
             <CheckCircleIcon className="h-12 w-12 text-green-500 mx-auto" />
-            <p className="text-foreground font-medium">Signed in successfully!</p>
-            <p className="text-sm text-muted-foreground">This window will close automatically.</p>
+            <p className="text-foreground font-medium">Login concluído com sucesso!</p>
+            <p className="text-sm text-muted-foreground">
+              Esta janela será fechada automaticamente.
+            </p>
           </>
         )}
       </div>

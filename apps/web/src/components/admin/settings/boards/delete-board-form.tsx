@@ -63,11 +63,11 @@ export function DeleteBoardForm({ board }: DeleteBoardFormProps) {
   return (
     <div className="space-y-4">
       <WarningBox
-        title="Delete this board"
-        description="Once you delete a board, there is no going back. All feedback, votes, and comments associated with this board will be permanently deleted."
+        title="Excluir este board"
+        description="Depois que você excluir um board, não há volta. Todo feedback, votos e comentários associados a este board serão excluídos permanentemente."
       />
 
-      {mutation.isError && <FormError message={mutation.error?.message ?? 'An error occurred'} />}
+      {mutation.isError && <FormError message={mutation.error?.message ?? 'Ocorreu um erro'} />}
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -77,7 +77,7 @@ export function DeleteBoardForm({ board }: DeleteBoardFormProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  Type <span className="font-mono font-bold">{board.name}</span> to confirm
+                  Digite <span className="font-mono font-bold">{board.name}</span> para confirmar
                 </FormLabel>
                 <FormControl>
                   <Input placeholder={board.name} {...field} />
@@ -88,7 +88,7 @@ export function DeleteBoardForm({ board }: DeleteBoardFormProps) {
           />
 
           <Button type="submit" variant="destructive" disabled={!canDelete || mutation.isPending}>
-            {mutation.isPending ? 'Deleting...' : 'Delete board'}
+            {mutation.isPending ? 'Excluindo...' : 'Excluir board'}
           </Button>
         </form>
       </Form>

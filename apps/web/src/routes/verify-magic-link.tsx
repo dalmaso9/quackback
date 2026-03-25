@@ -17,10 +17,10 @@ interface InviteBranding {
 }
 
 const FEATURES = [
-  { icon: ChatBubbleLeftRightIcon, label: 'Feedback & voting' },
-  { icon: SparklesIcon, label: 'AI-powered insights' },
-  { icon: BoltIcon, label: '24 integrations' },
-  { icon: MapIcon, label: 'Roadmap & changelog' },
+  { icon: ChatBubbleLeftRightIcon, label: 'Feedback e votos' },
+  { icon: SparklesIcon, label: 'Insights com IA' },
+  { icon: BoltIcon, label: '24 integrações' },
+  { icon: MapIcon, label: 'Roadmap e changelog' },
 ] as const
 
 /** Extract an invitation ID (invite_...) from a callback URL path */
@@ -51,14 +51,14 @@ function VerifyMagicLinkPage() {
     return (
       <PageShell>
         <Card>
-          <div className="text-destructive text-xl font-medium tracking-tight">Invalid link</div>
+          <div className="text-destructive text-xl font-medium tracking-tight">Link inválido</div>
           <p className="mt-2 text-muted-foreground">
-            This verification link is invalid or incomplete. Please check the link in your email and
-            try again.
+            Este link de verificação é inválido ou está incompleto. Confira o link no seu email e
+            tente novamente.
           </p>
           <a href="/" className="mt-6 block">
             <Button variant="outline" className="w-full h-11">
-              Go to Home
+              Ir para a página inicial
             </Button>
           </a>
         </Card>
@@ -124,28 +124,28 @@ function InvitationVerifyPage({
           <>
             <WorkspaceIdentity branding={branding} />
             <div className="mt-6 mb-6 h-px bg-border/50" />
-            <h1 className="text-2xl font-bold tracking-tight">You're invited!</h1>
+            <h1 className="text-2xl font-bold tracking-tight">Você foi convidado!</h1>
             <p className="mt-2 text-muted-foreground">
               {branding.inviterName
-                ? `${branding.inviterName} invited you to join ${branding.workspaceName}.`
-                : `You've been invited to join ${branding.workspaceName}.`}
+                ? `${branding.inviterName} convidou você para entrar em ${branding.workspaceName}.`
+                : `Você foi convidado para entrar em ${branding.workspaceName}.`}
             </p>
           </>
         ) : (
           <>
             <div className="h-8" />
-            <h1 className="text-2xl font-bold tracking-tight">You're invited!</h1>
-            <p className="mt-2 text-muted-foreground">Loading invitation details...</p>
+            <h1 className="text-2xl font-bold tracking-tight">Você foi convidado!</h1>
+            <p className="mt-2 text-muted-foreground">Carregando detalhes do convite...</p>
           </>
         )}
         <Button onClick={handleAccept} disabled={isLoading} className="mt-6 w-full h-11">
           {isLoading ? (
             <>
               <ArrowPathIcon className="mr-2 h-4 w-4 animate-spin" />
-              Setting up...
+              Preparando...
             </>
           ) : (
-            'Accept invitation'
+            'Aceitar convite'
           )}
         </Button>
       </Card>
@@ -174,10 +174,10 @@ function GenericVerifyPage({
   return (
     <PageShell>
       <Card>
-        <h1 className="text-2xl font-bold tracking-tight">Confirm sign-in</h1>
-        <p className="mt-2 text-muted-foreground">Click the button below to complete signing in.</p>
+        <h1 className="text-2xl font-bold tracking-tight">Confirmar entrada</h1>
+        <p className="mt-2 text-muted-foreground">Clique no botão abaixo para concluir o login.</p>
         <Button onClick={handleContinue} className="mt-6 w-full h-11">
-          Continue
+          Continuar
         </Button>
       </Card>
     </PageShell>

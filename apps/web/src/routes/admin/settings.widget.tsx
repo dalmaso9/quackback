@@ -76,12 +76,12 @@ function WidgetSettingsPage() {
   return (
     <div className="space-y-6 max-w-5xl">
       <div className="lg:hidden">
-        <BackLink to="/admin/settings">Settings</BackLink>
+        <BackLink to="/admin/settings">Configurações</BackLink>
       </div>
       <PageHeader
         icon={ChatBubbleLeftRightIcon}
-        title="Feedback Widget"
-        description="Embed a feedback widget directly in your product to collect feedback from users"
+        title="Widget de feedback"
+        description="Incorpore um widget de feedback diretamente no seu produto para coletar feedback dos usuários"
       />
 
       <WidgetToggle initialEnabled={config.enabled} />
@@ -96,7 +96,7 @@ function WidgetSettingsPage() {
             onPositionChange={setPosition}
           />
         </BrandingControlsPanel>
-        <BrandingPreviewPanel label="Preview">
+        <BrandingPreviewPanel label="Pré-visualização">
           <WidgetPreview position={position} />
         </BrandingPreviewPanel>
       </BrandingLayout>
@@ -124,15 +124,16 @@ function WidgetToggle({ initialEnabled }: { initialEnabled: boolean }) {
   }
 
   return (
-    <SettingsCard title="Widget" description="Enable or disable the embeddable feedback widget">
+    <SettingsCard title="Widget" description="Ative ou desative o widget de feedback incorporável">
       <div className="space-y-3">
         <div className="flex items-center justify-between rounded-lg border border-border/50 p-4">
           <div>
             <Label htmlFor="widget-toggle" className="text-sm font-medium cursor-pointer">
-              Enable Feedback Widget
+              Ativar widget de feedback
             </Label>
             <p className="text-xs text-muted-foreground mt-0.5">
-              When enabled, you can embed a feedback widget on any website using a script tag
+              Quando ativado, você pode incorporar um widget de feedback em qualquer site usando uma
+              tag de script
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -142,7 +143,7 @@ function WidgetToggle({ initialEnabled }: { initialEnabled: boolean }) {
               checked={enabled}
               onCheckedChange={handleToggle}
               disabled={saving || isPending}
-              aria-label="Feedback Widget"
+              aria-label="Widget de feedback"
             />
           </div>
         </div>
@@ -183,15 +184,15 @@ function WidgetAppearanceControls({
     <>
       <div className="p-5 space-y-4">
         <div>
-          <h3 className="text-sm font-medium text-foreground">Appearance</h3>
+          <h3 className="text-sm font-medium text-foreground">Aparência</h3>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Customize the widget trigger button and default behavior
+            Personalize o botão do widget e o comportamento padrão
           </p>
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="widget-position" className="text-xs text-muted-foreground">
-            Button Position
+            Posição do botão
           </Label>
           <Select
             value={position}
@@ -205,8 +206,8 @@ function WidgetAppearanceControls({
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="bottom-right">Bottom Right</SelectItem>
-              <SelectItem value="bottom-left">Bottom Left</SelectItem>
+              <SelectItem value="bottom-right">Inferior direita</SelectItem>
+              <SelectItem value="bottom-left">Inferior esquerda</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -214,9 +215,9 @@ function WidgetAppearanceControls({
 
       <div className="p-5 space-y-4">
         <div>
-          <h3 className="text-sm font-medium text-foreground">Default Board</h3>
+          <h3 className="text-sm font-medium text-foreground">Board padrão</h3>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Which board new posts from the widget are submitted to
+            Para qual board os novos posts enviados pelo widget irão
           </p>
         </div>
 
@@ -230,10 +231,10 @@ function WidgetAppearanceControls({
           disabled={isBusy}
         >
           <SelectTrigger className="w-full">
-            <SelectValue placeholder="All Boards" />
+            <SelectValue placeholder="Todos os boards" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="__all__">All Boards</SelectItem>
+            <SelectItem value="__all__">Todos os boards</SelectItem>
             {boards.map((board) => (
               <SelectItem key={board.id} value={board.slug}>
                 {board.name}
@@ -526,9 +527,9 @@ function WidgetInstallation({
         <div className="flex flex-col border-b lg:border-b-0 lg:border-r border-border divide-y divide-border">
           {/* Header */}
           <div className="p-5">
-            <h3 className="text-sm font-semibold text-foreground">Installation</h3>
+            <h3 className="text-sm font-semibold text-foreground">Instalação</h3>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Configure and add the widget to your site
+              Configure e adicione o widget ao seu site
             </p>
           </div>
 
@@ -538,10 +539,10 @@ function WidgetInstallation({
               <span className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary text-[11px] font-bold shrink-0">
                 1
               </span>
-              <span className="text-xs font-medium text-foreground">Add the script</span>
+              <span className="text-xs font-medium text-foreground">Adicionar o script</span>
             </div>
             <p className="text-[11px] text-muted-foreground ml-7">
-              Paste before the closing <code className="text-[11px]">&lt;/body&gt;</code> tag
+              Cole antes da tag de fechamento <code className="text-[11px]">&lt;/body&gt;</code>
             </p>
           </div>
 
@@ -552,8 +553,8 @@ function WidgetInstallation({
                 2
               </span>
               <div>
-                <span className="text-xs font-medium text-foreground">Identify users</span>
-                <p className="text-[11px] text-muted-foreground">Required to display the widget</p>
+                <span className="text-xs font-medium text-foreground">Identificar usuários</span>
+                <p className="text-[11px] text-muted-foreground">Necessário para exibir o widget</p>
               </div>
             </div>
 
@@ -561,8 +562,10 @@ function WidgetInstallation({
               {/* HMAC toggle */}
               <div className="flex items-center justify-between gap-2">
                 <div>
-                  <span className="text-xs font-medium text-foreground">HMAC verification</span>
-                  <p className="text-[11px] text-muted-foreground">Prevent identity spoofing</p>
+                  <span className="text-xs font-medium text-foreground">Verificação HMAC</span>
+                  <p className="text-[11px] text-muted-foreground">
+                    Evita falsificação de identidade
+                  </p>
                 </div>
                 <div className="flex items-center gap-2">
                   <InlineSpinner visible={isBusy} />
@@ -570,7 +573,7 @@ function WidgetInstallation({
                     checked={hmacEnabled}
                     onCheckedChange={handleHmacToggle}
                     disabled={isBusy}
-                    aria-label="Require HMAC verification"
+                    aria-label="Exigir verificação HMAC"
                   />
                 </div>
               </div>
@@ -579,7 +582,9 @@ function WidgetInstallation({
                 <div className="space-y-2.5">
                   {/* Framework */}
                   <div className="space-y-1">
-                    <Label className="text-[11px] text-muted-foreground">Backend framework</Label>
+                    <Label className="text-[11px] text-muted-foreground">
+                      Framework de backend
+                    </Label>
                     <Select value={framework} onValueChange={setFramework}>
                       <SelectTrigger className="h-8 text-xs">
                         <SelectValue />
@@ -596,7 +601,7 @@ function WidgetInstallation({
 
                   {/* Secret */}
                   <div className="space-y-1.5">
-                    <Label className="text-[11px] text-muted-foreground">Widget secret</Label>
+                    <Label className="text-[11px] text-muted-foreground">Segredo do widget</Label>
                     {currentSecret ? (
                       <div className="flex items-center gap-1">
                         <code className="flex-1 text-[10px] font-mono text-foreground bg-muted/30 border border-border/50 rounded px-2 py-1 truncate">
@@ -629,7 +634,7 @@ function WidgetInstallation({
                       </div>
                     ) : (
                       <p className="text-[11px] text-muted-foreground italic">
-                        Click regenerate to create a secret
+                        Clique em regenerar para criar um segredo
                       </p>
                     )}
                     <Button
@@ -642,10 +647,10 @@ function WidgetInstallation({
                       {regenerating ? (
                         <>
                           <ArrowPathIcon className="h-3 w-3 animate-spin mr-1" />
-                          Regenerating...
+                          Regenerando...
                         </>
                       ) : (
-                        'Regenerate'
+                        'Regenerar'
                       )}
                     </Button>
                   </div>
@@ -653,7 +658,7 @@ function WidgetInstallation({
                   {/* Security note */}
                   <p className="flex items-start gap-1.5 text-[10px] text-yellow-600 dark:text-yellow-500">
                     <ExclamationTriangleIcon className="h-3 w-3 shrink-0 mt-px" />
-                    Keep this secret server-side only
+                    Mantenha este segredo apenas no servidor
                   </p>
                 </div>
               )}
@@ -693,12 +698,12 @@ function WidgetInstallation({
               {copiedCode ? (
                 <>
                   <CheckIcon className="h-3 w-3 text-green-400" />
-                  <span className="text-green-400">Copied</span>
+                  <span className="text-green-400">Copiado</span>
                 </>
               ) : (
                 <>
                   <ClipboardDocumentIcon className="h-3 w-3" />
-                  <span>Copy</span>
+                  <span>Copiar</span>
                 </>
               )}
             </button>

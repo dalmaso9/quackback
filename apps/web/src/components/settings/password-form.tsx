@@ -31,11 +31,11 @@ export function PasswordForm() {
     setError('')
 
     if (newPassword.length < 8) {
-      setError('Password must be at least 8 characters')
+      setError('A senha deve ter pelo menos 8 caracteres')
       return
     }
     if (newPassword !== confirmPassword) {
-      setError('Passwords do not match')
+      setError('As senhas não coincidem')
       return
     }
 
@@ -43,7 +43,7 @@ export function PasswordForm() {
     try {
       if (hasPassword) {
         if (!currentPassword) {
-          setError('Current password is required')
+          setError('A senha atual é obrigatória')
           setLoading(false)
           return
         }
@@ -53,19 +53,19 @@ export function PasswordForm() {
           revokeOtherSessions: false,
         })
         if (result.error) {
-          throw new Error(result.error.message || 'Failed to change password')
+          throw new Error(result.error.message || 'Não foi possível alterar a senha')
         }
-        toast.success('Password changed')
+        toast.success('Senha alterada')
       } else {
         await setPasswordFn({ data: { newPassword } })
         setHasPassword(true)
-        toast.success('Password set')
+        toast.success('Senha definida')
       }
       setCurrentPassword('')
       setNewPassword('')
       setConfirmPassword('')
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update password')
+      setError(err instanceof Error ? err.message : 'Não foi possível atualizar a senha')
     } finally {
       setLoading(false)
     }
@@ -75,8 +75,8 @@ export function PasswordForm() {
   if (hasPassword === null) {
     return (
       <div className="rounded-xl border border-border/50 bg-card p-6 shadow-sm">
-        <h2 className="font-medium mb-1">Password</h2>
-        <p className="text-sm text-muted-foreground mb-4">Loading...</p>
+        <h2 className="font-medium mb-1">Senha</h2>
+        <p className="text-sm text-muted-foreground mb-4">Carregando...</p>
       </div>
     )
   }
@@ -84,11 +84,11 @@ export function PasswordForm() {
   return (
     <form onSubmit={handleSubmit}>
       <div className="rounded-xl border border-border/50 bg-card p-6 shadow-sm">
-        <h2 className="font-medium mb-1">{hasPassword ? 'Change password' : 'Set password'}</h2>
+        <h2 className="font-medium mb-1">{hasPassword ? 'Alterar senha' : 'Definir senha'}</h2>
         <p className="text-sm text-muted-foreground mb-4">
           {hasPassword
-            ? 'Update your current password'
-            : 'Add a password to sign in with email and password'}
+            ? 'Atualize sua senha atual'
+            : 'Adicione uma senha para entrar com email e senha'}
         </p>
 
         <div className="space-y-4">
@@ -97,7 +97,7 @@ export function PasswordForm() {
           {hasPassword && (
             <div className="space-y-2">
               <label htmlFor="current-password" className="text-sm font-medium">
-                Current password
+                Senha atual
               </label>
               <Input
                 id="current-password"
@@ -113,12 +113,12 @@ export function PasswordForm() {
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <label htmlFor="new-password" className="text-sm font-medium">
-                New password
+                Nova senha
               </label>
               <Input
                 id="new-password"
                 type="password"
-                placeholder="At least 8 characters"
+                placeholder="Pelo menos 8 caracteres"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 disabled={loading}
@@ -127,12 +127,12 @@ export function PasswordForm() {
             </div>
             <div className="space-y-2">
               <label htmlFor="confirm-password" className="text-sm font-medium">
-                Confirm password
+                Confirmar senha
               </label>
               <Input
                 id="confirm-password"
                 type="password"
-                placeholder="Re-enter your password"
+                placeholder="Digite sua senha novamente"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 disabled={loading}
@@ -154,12 +154,12 @@ export function PasswordForm() {
               {loading ? (
                 <>
                   <ArrowPathIcon className="h-4 w-4 animate-spin mr-2" />
-                  {hasPassword ? 'Changing...' : 'Setting...'}
+                  {hasPassword ? 'Alterando...' : 'Definindo...'}
                 </>
               ) : hasPassword ? (
-                'Change password'
+                'Alterar senha'
               ) : (
-                'Set password'
+                'Definir senha'
               )}
             </Button>
           </div>

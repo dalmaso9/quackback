@@ -4,6 +4,7 @@ import * as React from 'react'
 import { format } from 'date-fns'
 import { CalendarIcon, ClockIcon } from '@heroicons/react/24/outline'
 
+import { DATE_FNS_LOCALE } from '@/lib/shared/locale'
 import { cn } from '@/lib/shared/utils'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -30,7 +31,7 @@ export function DateTimePicker({
   value,
   onChange,
   minDate,
-  placeholder = 'Pick date & time',
+  placeholder = 'Escolha data e hora',
   disabled = false,
   className,
 }: DateTimePickerProps) {
@@ -76,7 +77,11 @@ export function DateTimePicker({
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {value ? format(value, 'MMM d, yyyy · HH:mm') : <span>{placeholder}</span>}
+          {value ? (
+            format(value, "d 'de' MMM 'de' yyyy · HH:mm", { locale: DATE_FNS_LOCALE })
+          ) : (
+            <span>{placeholder}</span>
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="end">
@@ -90,7 +95,7 @@ export function DateTimePicker({
         <div className="border-t border-border/50 px-3 py-2">
           <div className="flex items-center gap-2">
             <ClockIcon className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Time</span>
+            <span className="text-sm text-muted-foreground">Hora</span>
             <Input
               type="time"
               step="60"

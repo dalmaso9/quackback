@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { formatDistanceToNow } from 'date-fns'
+import { DATE_FNS_LOCALE } from '@/lib/shared/locale'
 
 interface TimeAgoProps {
   date: Date | string
@@ -11,7 +12,7 @@ function getTimeAgo(date: Date | string | null | undefined): string {
   const d = typeof date === 'string' ? new Date(date) : date
   // Check for invalid date
   if (isNaN(d.getTime())) return ''
-  return formatDistanceToNow(d, { addSuffix: true })
+  return formatDistanceToNow(d, { addSuffix: true, locale: DATE_FNS_LOCALE })
 }
 
 export function TimeAgo({ date, className }: TimeAgoProps) {

@@ -202,8 +202,10 @@ export function ApiUsageGuide({ apiBaseUrl }: ApiUsageGuideProps) {
         <div className="flex flex-col border-b lg:border-b-0 lg:border-r border-border divide-y divide-border">
           {/* Header */}
           <div className="p-5">
-            <h3 className="text-sm font-semibold text-foreground">Quick Start</h3>
-            <p className="text-xs text-muted-foreground mt-0.5">Make your first API request</p>
+            <h3 className="text-sm font-semibold text-foreground">Início rápido</h3>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Faça sua primeira requisição à API
+            </p>
           </div>
 
           {/* Step 1: Base URL */}
@@ -212,7 +214,7 @@ export function ApiUsageGuide({ apiBaseUrl }: ApiUsageGuideProps) {
               <span className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary text-[11px] font-bold shrink-0">
                 1
               </span>
-              <span className="text-xs font-medium text-foreground">Base URL</span>
+              <span className="text-xs font-medium text-foreground">URL base</span>
             </div>
             <div className="ml-7">
               <button
@@ -240,14 +242,14 @@ export function ApiUsageGuide({ apiBaseUrl }: ApiUsageGuideProps) {
               <span className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary text-[11px] font-bold shrink-0">
                 2
               </span>
-              <span className="text-xs font-medium text-foreground">Authentication</span>
+              <span className="text-xs font-medium text-foreground">Autenticação</span>
             </div>
             <p className="text-[11px] text-muted-foreground ml-7">
-              Add your API key as a Bearer token in the{' '}
+              Adicione sua chave de API como token Bearer no cabeçalho{' '}
               <code className="text-[10px] bg-muted/50 px-1 py-0.5 rounded font-mono">
                 Authorization
-              </code>{' '}
-              header. Create a key above if you don't have one.
+              </code>
+              . Crie uma chave acima se ainda não tiver uma.
             </p>
           </div>
 
@@ -258,8 +260,8 @@ export function ApiUsageGuide({ apiBaseUrl }: ApiUsageGuideProps) {
                 3
               </span>
               <div>
-                <span className="text-xs font-medium text-foreground">Choose your language</span>
-                <p className="text-[11px] text-muted-foreground">Try the example request</p>
+                <span className="text-xs font-medium text-foreground">Escolha sua linguagem</span>
+                <p className="text-[11px] text-muted-foreground">Teste a requisição de exemplo</p>
               </div>
             </div>
 
@@ -292,7 +294,7 @@ export function ApiUsageGuide({ apiBaseUrl }: ApiUsageGuideProps) {
           <div className="p-5 space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-foreground">
-                {API_RESOURCES.length} resources
+                {API_RESOURCES.length} recursos
               </span>
               <a
                 href="/api/v1/docs"
@@ -300,7 +302,7 @@ export function ApiUsageGuide({ apiBaseUrl }: ApiUsageGuideProps) {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 text-[11px] text-primary hover:underline"
               >
-                API Reference
+                Referência da API
                 <ArrowTopRightOnSquareIcon className="h-3 w-3" />
               </a>
             </div>
@@ -337,12 +339,12 @@ export function ApiUsageGuide({ apiBaseUrl }: ApiUsageGuideProps) {
               {copiedCode ? (
                 <>
                   <CheckIcon className="h-3 w-3 text-green-400" />
-                  <span className="text-green-400">Copied</span>
+                  <span className="text-green-400">Copiado</span>
                 </>
               ) : (
                 <>
                   <ClipboardDocumentIcon className="h-3 w-3" />
-                  <span>Copy</span>
+                  <span>Copiar</span>
                 </>
               )}
             </button>

@@ -18,7 +18,7 @@ export function MobileBoardSheet({ boards, currentBoard, onBoardChange }: Mobile
 
   const currentBoardName = currentBoard
     ? boards.find((b) => b.slug === currentBoard)?.name
-    : 'All Posts'
+    : 'Todos os posts'
 
   function handleBoardSelect(board: string | undefined): void {
     onBoardChange(board)
@@ -35,7 +35,7 @@ export function MobileBoardSheet({ boards, currentBoard, onBoardChange }: Mobile
       </SheetTrigger>
       <SheetContent side="left" className="w-[280px] p-0">
         <SheetHeader className="border-b border-border/50 px-4 py-4">
-          <SheetTitle className="text-base">Boards</SheetTitle>
+          <SheetTitle className="text-base">Quadros</SheetTitle>
         </SheetHeader>
         <nav className="p-4 space-y-1 overflow-y-auto max-h-[calc(100vh-8rem)]">
           {/* View all posts */}
@@ -50,7 +50,7 @@ export function MobileBoardSheet({ boards, currentBoard, onBoardChange }: Mobile
             )}
           >
             <ListBulletIcon className={cn('h-5 w-5 shrink-0', !currentBoard && 'text-primary')} />
-            <span>View all posts</span>
+            <span>Ver todos os posts</span>
           </button>
 
           {/* Board list */}

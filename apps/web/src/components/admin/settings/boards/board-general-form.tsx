@@ -49,14 +49,14 @@ export function BoardGeneralForm({ board }: BoardGeneralFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        {mutation.isError && <FormError message={mutation.error?.message ?? 'An error occurred'} />}
+        {mutation.isError && <FormError message={mutation.error?.message ?? 'Ocorreu um erro'} />}
 
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Board name</FormLabel>
+              <FormLabel>Nome do board</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -70,7 +70,7 @@ export function BoardGeneralForm({ board }: BoardGeneralFormProps) {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel>Descrição</FormLabel>
               <FormControl>
                 <Textarea rows={3} {...field} />
               </FormControl>
@@ -81,7 +81,7 @@ export function BoardGeneralForm({ board }: BoardGeneralFormProps) {
 
         <div className="flex justify-end">
           <Button type="submit" disabled={mutation.isPending}>
-            {mutation.isPending ? 'Saving...' : 'Save changes'}
+            {mutation.isPending ? 'Salvando...' : 'Salvar alterações'}
           </Button>
         </div>
       </form>

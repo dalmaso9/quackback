@@ -68,7 +68,7 @@ export const Route = createFileRoute('/_portal/')({
     const workspaceName = loaderData.org.name
     const { baseUrl } = loaderData
     const title = `Feedback - ${workspaceName}`
-    const description = `Submit and vote on feature requests for ${workspaceName}. Help shape what gets built next.`
+    const description = `Envie e vote em solicitações de funcionalidades para ${workspaceName}. Ajude a decidir o que será desenvolvido em seguida.`
     return {
       meta: [
         { title },
@@ -117,8 +117,8 @@ function PublicPortalPage() {
       <div className="py-6">
         <EmptyState
           icon={ChatBubbleOvalLeftEllipsisIcon}
-          title="Coming Soon"
-          description={`${org.name} is setting up their feedback portal. Check back soon to share your ideas and suggestions.`}
+          title="Em breve"
+          description={`${org.name} está configurando o portal de feedback. Volte em breve para compartilhar suas ideias e sugestões.`}
           className="py-24"
         />
       </div>

@@ -28,7 +28,7 @@ export function BoardExportSection({ boardId }: BoardExportSectionProps) {
 
       if (!response.ok) {
         const data = errorResponseSchema.parse(await response.json())
-        throw new Error(data.error || 'Export failed')
+        throw new Error(data.error || 'Falha na exportação')
       }
 
       const contentDisposition = response.headers.get('Content-Disposition')
@@ -43,7 +43,7 @@ export function BoardExportSection({ boardId }: BoardExportSectionProps) {
       a.click()
       URL.revokeObjectURL(url)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Export failed')
+      setError(err instanceof Error ? err.message : 'Falha na exportação')
     } finally {
       setIsExporting(false)
     }
@@ -56,8 +56,8 @@ export function BoardExportSection({ boardId }: BoardExportSectionProps) {
           <ArrowDownTrayIcon className="h-5 w-5 text-green-500" />
         </div>
         <div>
-          <h2 className="font-semibold text-foreground">Export to CSV</h2>
-          <p className="text-sm text-muted-foreground">Download all posts from this board</p>
+          <h2 className="font-semibold text-foreground">Exportar para CSV</h2>
+          <p className="text-sm text-muted-foreground">Baixe todos os posts deste board</p>
         </div>
       </div>
 
@@ -65,7 +65,8 @@ export function BoardExportSection({ boardId }: BoardExportSectionProps) {
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <DocumentArrowDownIcon className="h-4 w-4" />
           <span>
-            Includes: title, content, status, tags, author info, vote count, and creation date
+            Inclui: título, conteúdo, status, tags, informações do autor, total de votos e data de
+            criação
           </span>
         </div>
       </div>
@@ -80,12 +81,12 @@ export function BoardExportSection({ boardId }: BoardExportSectionProps) {
         {isExporting ? (
           <>
             <ArrowPathIcon className="h-4 w-4 mr-2 animate-spin" />
-            Exporting...
+            Exportando...
           </>
         ) : (
           <>
             <ArrowDownTrayIcon className="h-4 w-4 mr-2" />
-            Export CSV
+            Exportar CSV
           </>
         )}
       </Button>

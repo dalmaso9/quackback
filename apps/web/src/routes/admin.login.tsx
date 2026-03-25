@@ -6,12 +6,12 @@ import { ExclamationCircleIcon } from '@heroicons/react/24/solid'
 
 // Error messages for login failures
 const errorMessages: Record<string, string> = {
-  invalid_token: 'Your login link is invalid or has been tampered with. Please try again.',
-  token_expired: 'Your login link has expired. Please request a new one.',
+  invalid_token: 'Seu link de login é inválido ou foi alterado. Tente novamente.',
+  token_expired: 'Seu link de login expirou. Solicite um novo.',
   not_team_member:
-    "This account doesn't have team access. Team membership is by invitation only. Please contact your administrator.",
-  oauth_method_not_allowed: 'This sign-in method is not enabled for team members.',
-  password_method_not_allowed: 'Password sign-in is not enabled. Please use another method.',
+    'Esta conta não tem acesso à equipe. A entrada na equipe é somente por convite. Fale com o administrador.',
+  oauth_method_not_allowed: 'Este método de entrada não está habilitado para membros da equipe.',
+  password_method_not_allowed: 'O login com senha não está habilitado. Use outro método.',
 }
 
 const searchSchema = z.object({
@@ -67,8 +67,8 @@ function AdminLoginPage() {
     <div className="flex min-h-screen items-center justify-center">
       <div className="w-full max-w-md space-y-8 px-4">
         <div className="text-center">
-          <h1 className="text-2xl font-bold">Team Sign In</h1>
-          <p className="mt-2 text-muted-foreground">Sign in to access the admin dashboard</p>
+          <h1 className="text-2xl font-bold">Entrar na equipe</h1>
+          <p className="mt-2 text-muted-foreground">Entre para acessar o painel administrativo</p>
         </div>
         {errorMessage && (
           <Alert variant="destructive">

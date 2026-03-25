@@ -34,18 +34,18 @@ function PortalAuthPage() {
   return (
     <div className="space-y-6 max-w-5xl">
       <div className="lg:hidden">
-        <BackLink to="/admin/settings">Settings</BackLink>
+        <BackLink to="/admin/settings">Configurações</BackLink>
       </div>
       <PageHeader
         icon={LockClosedIcon}
-        title="Portal Authentication"
-        description="Configure how visitors can sign in to your public feedback portal"
+        title="Autenticação"
+        description="Configure como visitantes podem entrar no seu portal público de feedback"
       />
 
       {/* Authentication Methods */}
       <SettingsCard
-        title="Sign-in Methods"
-        description="Choose which authentication methods are available to portal users. Configure OAuth providers by adding your app credentials."
+        title="Métodos de entrada"
+        description="Escolha quais métodos de autenticação estarão disponíveis para usuários do portal. Configure provedores OAuth adicionando as credenciais do seu app."
       >
         <PortalAuthSettings
           initialConfig={{ oauth: portalConfigQuery.data.oauth }}

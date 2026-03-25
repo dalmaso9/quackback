@@ -80,8 +80,8 @@ ENV BUN_INSTALL_CACHE_DIR=/app/.cache
 # Set migrations folder for Docker context
 ENV MIGRATIONS_FOLDER=/app/packages/db/drizzle
 
-EXPOSE 3000
-ENV PORT=3000
+EXPOSE 5433
+ENV PORT=5433
 ENV HOSTNAME="0.0.0.0"
 
 # Run migrations on startup, then start the app

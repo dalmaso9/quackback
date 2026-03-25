@@ -43,7 +43,7 @@ function UseCaseStep() {
 
   async function handleContinue() {
     if (!useCase) {
-      setError('Please select how you plan to use Featurepool')
+      setError('Selecione como você pretende usar o Featurepool')
       return
     }
 
@@ -54,7 +54,7 @@ function UseCaseStep() {
       await saveUseCaseFn({ data: { useCase } })
       navigate({ to: '/onboarding/workspace' })
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong')
+      setError(err instanceof Error ? err.message : 'Algo deu errado')
     } finally {
       setIsLoading(false)
     }
@@ -64,8 +64,10 @@ function UseCaseStep() {
     <div className="w-full max-w-2xl mx-auto">
       {/* Header */}
       <div className="text-center mb-8">
-        <h1 className="text-2xl font-bold mb-2">How are you planning to use Featurepool?</h1>
-        <p className="text-muted-foreground">We'll tailor your setup experience accordingly.</p>
+        <h1 className="text-2xl font-bold mb-2">Como você pretende usar o Featurepool?</h1>
+        <p className="text-muted-foreground">
+          Vamos adaptar sua experiência de configuração com base nisso.
+        </p>
       </div>
 
       {error && (
@@ -82,7 +84,7 @@ function UseCaseStep() {
       {/* Continue button */}
       <div className="max-w-xs mx-auto">
         <Button onClick={handleContinue} disabled={isLoading || !useCase} className="w-full h-11">
-          {isLoading ? <ArrowPathIcon className="h-4 w-4 animate-spin" /> : 'Continue'}
+          {isLoading ? <ArrowPathIcon className="h-4 w-4 animate-spin" /> : 'Continuar'}
         </Button>
       </div>
     </div>

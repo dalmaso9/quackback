@@ -37,8 +37,8 @@ function LoginPage() {
     <div className="flex min-h-screen items-center justify-center">
       <div className="w-full max-w-md space-y-8 px-4">
         <div className="text-center">
-          <h1 className="text-2xl font-bold">Welcome back</h1>
-          <p className="mt-2 text-muted-foreground">Sign in to your account</p>
+          <h1 className="text-2xl font-bold">Boas-vindas de volta</h1>
+          <p className="mt-2 text-muted-foreground">Entre na sua conta</p>
         </div>
         <PortalAuthForm
           mode="login"
@@ -47,9 +47,9 @@ function LoginPage() {
           customProviderNames={portalConfig.customProviderNames}
         />
         <p className="text-center text-sm text-muted-foreground">
-          Don&apos;t have an account?{' '}
+          Não tem uma conta?{' '}
           <Link to="/auth/signup" className="font-medium text-primary hover:underline">
-            Sign up
+            Cadastre-se
           </Link>
         </p>
       </div>

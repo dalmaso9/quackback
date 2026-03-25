@@ -148,7 +148,7 @@ export function AdminSidebar({ initialUserData }: AdminSidebarProps) {
             <NavItem
               href="/admin/settings"
               icon={Cog6ToothIcon}
-              label="Settings"
+              label="Configurações"
               isActive={isNavActive(pathname, '/admin/settings')}
             />
 
@@ -163,11 +163,11 @@ export function AdminSidebar({ initialUserData }: AdminSidebarProps) {
                   className="flex items-center justify-center w-10 h-10 rounded-lg text-muted-foreground/70 hover:text-foreground hover:bg-muted/50 transition-all duration-200"
                 >
                   <GlobeAltIcon className="h-5 w-5" />
-                  <span className="sr-only">View Portal</span>
+                  <span className="sr-only">Ver portal</span>
                 </Link>
               </TooltipTrigger>
               <TooltipContent side="right" sideOffset={8}>
-                View Portal
+                Ver portal
               </TooltipContent>
             </Tooltip>
 
@@ -182,7 +182,7 @@ export function AdminSidebar({ initialUserData }: AdminSidebarProps) {
                   </DropdownMenuTrigger>
                 </TooltipTrigger>
                 <TooltipContent side="right" sideOffset={8}>
-                  Account
+                  Conta
                 </TooltipContent>
               </Tooltip>
               <DropdownMenuContent align="start" side="right" sideOffset={8} className="w-56">
@@ -196,13 +196,13 @@ export function AdminSidebar({ initialUserData }: AdminSidebarProps) {
                 <DropdownMenuItem asChild>
                   <Link to="/settings">
                     <Cog6ToothIcon className="mr-2 h-4 w-4" />
-                    Settings
+                    Configurações
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleSignOut}>
                   <ArrowRightOnRectangleIcon className="mr-2 h-4 w-4" />
-                  Sign out
+                  Sair
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -214,7 +214,7 @@ export function AdminSidebar({ initialUserData }: AdminSidebarProps) {
       <header className="sm:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-14 px-4 border-b border-border/60 bg-card/95 backdrop-blur-sm">
         <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
           <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="h-9 w-9" aria-label="Open menu">
+            <Button variant="ghost" size="icon" className="h-9 w-9" aria-label="Abrir menu">
               <Bars3Icon className="h-5 w-5" />
             </Button>
           </SheetTrigger>

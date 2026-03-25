@@ -21,12 +21,12 @@ function UserAttributesPage() {
   return (
     <div className="space-y-6 max-w-3xl">
       <div className="lg:hidden">
-        <BackLink to="/admin/settings">Settings</BackLink>
+        <BackLink to="/admin/settings">Configurações</BackLink>
       </div>
       <PageHeader
         icon={AdjustmentsHorizontalIcon}
-        title="User Attributes"
-        description="Define custom attributes to enrich user profiles and power segment rules"
+        title="Atributos de usuário"
+        description="Defina atributos personalizados para enriquecer perfis de usuário e alimentar regras de segmento"
       />
 
       <UserAttributesList initialAttributes={attrsQuery.data} />

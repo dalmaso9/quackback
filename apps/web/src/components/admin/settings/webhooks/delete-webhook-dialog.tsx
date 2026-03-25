@@ -32,7 +32,7 @@ export function DeleteWebhookDialog({ webhook, open, onOpenChange }: DeleteWebho
 
       onOpenChange(false)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete webhook')
+      setError(err instanceof Error ? err.message : 'Não foi possível excluir o webhook')
     }
   }
 
@@ -40,19 +40,19 @@ export function DeleteWebhookDialog({ webhook, open, onOpenChange }: DeleteWebho
     <ConfirmDialog
       open={open}
       onOpenChange={onOpenChange}
-      title="Delete Webhook"
-      description="Are you sure you want to delete this webhook?"
+      title="Excluir webhook"
+      description="Tem certeza de que deseja excluir este webhook?"
       warning={{
-        title: 'This action cannot be undone',
+        title: 'Esta ação não pode ser desfeita',
         description: (
           <>
-            The webhook to <code className="bg-muted px-1 rounded text-xs">{webhook.url}</code> will
-            be permanently deleted and will no longer receive events.
+            O webhook para <code className="bg-muted px-1 rounded text-xs">{webhook.url}</code> será
+            excluído permanentemente e não receberá mais eventos.
           </>
         ),
       }}
       variant="destructive"
-      confirmLabel={isPending ? 'Deleting...' : 'Delete Webhook'}
+      confirmLabel={isPending ? 'Excluindo...' : 'Excluir webhook'}
       isPending={isPending}
       onConfirm={handleDelete}
     >

@@ -21,12 +21,12 @@ function SegmentsPage() {
   return (
     <div className="space-y-6 max-w-3xl">
       <div className="lg:hidden">
-        <BackLink to="/admin/settings">Settings</BackLink>
+        <BackLink to="/admin/settings">Configurações</BackLink>
       </div>
       <PageHeader
         icon={TagIcon}
-        title="Segments"
-        description="Organize users into groups for filtering and analysis. Manual segments are assigned by hand; dynamic segments update automatically based on rules."
+        title="Segmentos"
+        description="Organize usuários em grupos para filtragem e análise. Segmentos manuais são atribuídos manualmente; segmentos dinâmicos se atualizam automaticamente com base nas regras."
       />
       <SegmentList />
     </div>

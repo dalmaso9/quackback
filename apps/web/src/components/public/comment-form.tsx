@@ -103,16 +103,16 @@ export function CommentForm({
   const isPrivateLocked = defaultPrivate === true
 
   function privateTooltipText(): string {
-    if (isPrivateLocked) return 'Replies to private comments are always private'
-    if (isPrivate) return 'Only visible to team members'
-    return 'Make this comment private (team-only)'
+    if (isPrivateLocked) return 'Respostas a comentários privados são sempre privadas'
+    if (isPrivate) return 'Visível apenas para membros da equipe'
+    return 'Tornar este comentário privado (somente equipe)'
   }
 
   function onSubmit(data: CommentInput) {
     setError(null)
 
     if (!createComment) {
-      setError('Comment functionality not available')
+      setError('A funcionalidade de comentários não está disponível')
       return
     }
 
@@ -134,7 +134,7 @@ export function CommentForm({
           onSuccess?.()
         },
         onError: (err) => {
-          setError(err instanceof Error ? err.message : 'Failed to post comment')
+          setError(err instanceof Error ? err.message : 'Não foi possível publicar o comentário')
         },
       }
     )
@@ -158,10 +158,10 @@ export function CommentForm({
               name="content"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="sr-only">Your comment</FormLabel>
+                  <FormLabel className="sr-only">Seu comentário</FormLabel>
                   <FormControl>
                     <textarea
-                      placeholder="Write a comment..."
+                      placeholder="Escreva um comentário..."
                       rows={3}
                       disabled={isSubmitting}
                       className="w-full resize-none border-0 bg-transparent px-3 pt-3 pb-2 text-sm placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
@@ -180,7 +180,7 @@ export function CommentForm({
               {/* Left: Identity */}
               <p className="text-xs text-muted-foreground mr-auto truncate">
                 <span className="font-medium text-foreground">
-                  {effectiveUser?.name || effectiveUser?.email || 'Anonymous'}
+                  {effectiveUser?.name || effectiveUser?.email || 'Anônimo'}
                 </span>
               </p>
 
@@ -217,14 +217,14 @@ export function CommentForm({
                           className="size-1.5 rounded-full shrink-0"
                           style={{ backgroundColor: currentStatus?.color ?? '#94a3b8' }}
                         />
-                        <span>{currentStatus?.name ?? 'No status'}</span>
+                        <span>{currentStatus?.name ?? 'Sem status'}</span>
                       </>
                     )}
                   </button>
                 </PopoverTrigger>
                 <PopoverContent className="w-44 p-1" align="end">
                   <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
-                    Update status
+                    Atualizar status
                   </div>
                   {statuses.map((status) => {
                     const isCurrent = status.id === currentStatusId
@@ -249,7 +249,7 @@ export function CommentForm({
                         />
                         <span className="flex-1 text-left">{status.name}</span>
                         {isCurrent && !isSelected && (
-                          <span className="text-muted-foreground text-[10px]">current</span>
+                          <span className="text-muted-foreground text-[10px]">atual</span>
                         )}
                         {isSelected && <CheckIcon className="size-3.5 text-primary shrink-0" />}
                       </button>
@@ -266,7 +266,7 @@ export function CommentForm({
                           setStatusPopoverOpen(false)
                         }}
                       >
-                        Clear status change
+                        Limpar alteração de status
                       </button>
                     </>
                   )}
@@ -290,7 +290,7 @@ export function CommentForm({
                       )}
                     >
                       <LockClosedIcon className="h-3 w-3" />
-                      Private
+                      Privado
                     </button>
                   </TooltipTrigger>
                   <TooltipContent>{privateTooltipText()}</TooltipContent>
@@ -307,15 +307,15 @@ export function CommentForm({
                   disabled={isSubmitting}
                   className="h-7 text-xs"
                 >
-                  Cancel
+                  Cancelar
                 </Button>
               )}
               <Button type="submit" size="sm" disabled={isSubmitting} className="h-7 text-xs">
                 {isSubmitting
-                  ? 'Posting...'
+                  ? 'Enviando...'
                   : selectedStatus
-                    ? `Comment & mark ${selectedStatus.name}`
-                    : 'Comment'}
+                    ? `Comentar e marcar ${selectedStatus.name}`
+                    : 'Comentar'}
               </Button>
             </div>
           </div>
@@ -333,10 +333,10 @@ export function CommentForm({
           name="content"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="sr-only">Your comment</FormLabel>
+              <FormLabel className="sr-only">Seu comentário</FormLabel>
               <FormControl>
                 <textarea
-                  placeholder="Write a comment..."
+                  placeholder="Escreva um comentário..."
                   rows={3}
                   disabled={isSubmitting}
                   className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -353,10 +353,10 @@ export function CommentForm({
         <div className="flex items-center justify-end gap-2">
           <p className="text-xs text-muted-foreground mr-auto">
             {isAnonymousCommenter ? (
-              'Posting anonymously'
+              'Comentando anonimamente'
             ) : (
               <>
-                Posting as{' '}
+                Comentando como{' '}
                 <span className="font-medium text-foreground">
                   {effectiveUser?.name || effectiveUser?.email}
                 </span>
@@ -374,7 +374,7 @@ export function CommentForm({
                     })
                   }}
                 >
-                  sign out
+                  sair
                 </button>
                 {')'}
               </>
@@ -388,7 +388,7 @@ export function CommentForm({
               onClick={onCancel}
               disabled={isSubmitting}
             >
-              Cancel
+              Cancelar
             </Button>
           )}
           {/* Private toggle for team members */}
@@ -410,7 +410,7 @@ export function CommentForm({
                     )}
                   >
                     <LockClosedIcon className="h-3.5 w-3.5" />
-                    Private
+                    Privado
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>{privateTooltipText()}</TooltipContent>
@@ -418,7 +418,7 @@ export function CommentForm({
             </TooltipProvider>
           )}
           <Button type="submit" size="sm" disabled={isSubmitting}>
-            {isSubmitting ? 'Posting...' : parentId ? 'Reply' : 'Comment'}
+            {isSubmitting ? 'Enviando...' : parentId ? 'Responder' : 'Comentar'}
           </Button>
         </div>
       </form>

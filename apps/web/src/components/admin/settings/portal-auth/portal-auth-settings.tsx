@@ -104,8 +104,8 @@ export function PortalAuthSettings({ initialConfig, credentialStatus }: PortalAu
       {/* Password — always available, no credentials needed */}
       <div>
         <div className="mb-3">
-          <h2 className="text-sm font-semibold text-foreground">Password</h2>
-          <p className="text-xs text-muted-foreground">Email and password sign in</p>
+          <h2 className="text-sm font-semibold text-foreground">Senha</h2>
+          <p className="text-xs text-muted-foreground">Entrada com email e senha</p>
         </div>
         <div className="rounded-xl border border-border/50 bg-card p-5 shadow-sm">
           <div className="flex items-center justify-between">
@@ -116,7 +116,7 @@ export function PortalAuthSettings({ initialConfig, credentialStatus }: PortalAu
               <div>
                 <div className="flex items-center gap-2">
                   <Label htmlFor="password-toggle" className="font-medium cursor-pointer">
-                    Password
+                    Senha
                   </Label>
                   {isLastEnabledMethod('password') && (
                     <TooltipProvider>
@@ -125,14 +125,14 @@ export function PortalAuthSettings({ initialConfig, credentialStatus }: PortalAu
                           <LockClosedIcon className="h-3.5 w-3.5 text-muted-foreground" />
                         </TooltipTrigger>
                         <TooltipContent>
-                          <p>At least one authentication method must be enabled</p>
+                          <p>Pelo menos um método de autenticação deve permanecer ativado</p>
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
                   )}
                 </div>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Users sign in with their email and password
+                  Usuários entram com email e senha
                 </p>
               </div>
             </div>
@@ -141,7 +141,7 @@ export function PortalAuthSettings({ initialConfig, credentialStatus }: PortalAu
               checked={oauthState.password ?? true}
               onCheckedChange={(checked) => handleToggle('password', checked)}
               disabled={saving || isPending || isLastEnabledMethod('password')}
-              aria-label="Password authentication"
+              aria-label="Autenticação por senha"
             />
           </div>
         </div>
@@ -150,8 +150,8 @@ export function PortalAuthSettings({ initialConfig, credentialStatus }: PortalAu
       {/* Email OTP — always available, no credentials needed */}
       <div>
         <div className="mb-3">
-          <h2 className="text-sm font-semibold text-foreground">Email OTP</h2>
-          <p className="text-xs text-muted-foreground">Passwordless sign in with magic codes</p>
+          <h2 className="text-sm font-semibold text-foreground">OTP por email</h2>
+          <p className="text-xs text-muted-foreground">Entrada sem senha com códigos mágicos</p>
         </div>
         <div className="rounded-xl border border-border/50 bg-card p-5 shadow-sm">
           <div className="flex items-center justify-between">
@@ -162,7 +162,7 @@ export function PortalAuthSettings({ initialConfig, credentialStatus }: PortalAu
               <div>
                 <div className="flex items-center gap-2">
                   <Label htmlFor="email-toggle" className="font-medium cursor-pointer">
-                    Email OTP
+                    OTP por email
                   </Label>
                   {(!emailConfigured || isLastEnabledMethod('email')) && (
                     <TooltipProvider>
@@ -174,18 +174,18 @@ export function PortalAuthSettings({ initialConfig, credentialStatus }: PortalAu
                           <p>
                             {!emailConfigured ? (
                               <>
-                                Requires email to be configured (SMTP or Resend).{' '}
+                                Exige configuração de email (SMTP ou Resend).{' '}
                                 <a
                                   href="https://www.featurepool.io/docs/auth/email-otp"
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="underline"
                                 >
-                                  Learn more
+                                  Saiba mais
                                 </a>
                               </>
                             ) : (
-                              'At least one authentication method must be enabled'
+                              'Pelo menos um método de autenticação deve permanecer ativado'
                             )}
                           </p>
                         </TooltipContent>
@@ -194,7 +194,7 @@ export function PortalAuthSettings({ initialConfig, credentialStatus }: PortalAu
                   )}
                 </div>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Users receive a 6-digit code via email to sign in
+                  Usuários recebem um código de 6 dígitos por email para entrar
                 </p>
               </div>
             </div>
@@ -203,7 +203,7 @@ export function PortalAuthSettings({ initialConfig, credentialStatus }: PortalAu
               checked={oauthState.email ?? false}
               onCheckedChange={(checked) => handleToggle('email', checked)}
               disabled={saving || isPending || !emailConfigured || isLastEnabledMethod('email')}
-              aria-label="Email OTP authentication"
+              aria-label="Autenticação por OTP de email"
             />
           </div>
         </div>
@@ -213,15 +213,15 @@ export function PortalAuthSettings({ initialConfig, credentialStatus }: PortalAu
       <div>
         <div className="mb-3 flex items-end justify-between gap-4">
           <div>
-            <h2 className="text-sm font-semibold text-foreground">OAuth Providers</h2>
+            <h2 className="text-sm font-semibold text-foreground">Provedores OAuth</h2>
             <p className="text-xs text-muted-foreground">
-              Allow users to sign in with third-party accounts
+              Permita que usuários entrem com contas de terceiros
             </p>
           </div>
           <div className="relative w-48">
             <MagnifyingGlassIcon className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Filter providers..."
+              placeholder="Filtrar provedores..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="h-8 pl-8 text-sm"
@@ -267,7 +267,7 @@ export function PortalAuthSettings({ initialConfig, credentialStatus }: PortalAu
                         variant="outline"
                         className="text-[10px] px-1.5 py-0 text-muted-foreground/60 border-border/40"
                       >
-                        Not configured
+                        Não configurado
                       </Badge>
                     </div>
                   </div>
@@ -290,7 +290,7 @@ export function PortalAuthSettings({ initialConfig, credentialStatus }: PortalAu
                         variant="outline"
                         className="border-green-500/30 text-green-600 text-[10px] px-1.5 py-0"
                       >
-                        Enabled
+                        Ativado
                       </Badge>
                     )}
                     {isLastEnabledMethod(provider.id) && (
@@ -300,7 +300,7 @@ export function PortalAuthSettings({ initialConfig, credentialStatus }: PortalAu
                             <LockClosedIcon className="h-3.5 w-3.5 text-muted-foreground" />
                           </TooltipTrigger>
                           <TooltipContent>
-                            <p>At least one authentication method must be enabled</p>
+                            <p>Pelo menos um método de autenticação deve permanecer ativado</p>
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
@@ -311,7 +311,7 @@ export function PortalAuthSettings({ initialConfig, credentialStatus }: PortalAu
                     onClick={() => openConfigDialog(provider)}
                     className="text-xs text-primary hover:underline"
                   >
-                    Update credentials
+                    Atualizar credenciais
                   </button>
                 </div>
                 <Switch
@@ -327,7 +327,7 @@ export function PortalAuthSettings({ initialConfig, credentialStatus }: PortalAu
         </div>
         {filteredProviders.length === 0 && search.trim() && (
           <p className="text-sm text-muted-foreground text-center py-8">
-            No providers matching &ldquo;{search}&rdquo;
+            Nenhum provedor corresponde a &ldquo;{search}&rdquo;
           </p>
         )}
       </div>
@@ -336,7 +336,7 @@ export function PortalAuthSettings({ initialConfig, credentialStatus }: PortalAu
       {(saving || isPending) && (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <ArrowPathIcon className="h-4 w-4 animate-spin" />
-          <span>Saving...</span>
+          <span>Salvando...</span>
         </div>
       )}
 

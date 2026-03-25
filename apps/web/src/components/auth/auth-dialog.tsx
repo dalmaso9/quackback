@@ -41,11 +41,11 @@ export function AuthDialog({ authConfig }: AuthDialogProps) {
     <Dialog open={isOpen} onOpenChange={(open) => !open && closeAuthPopover()}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{mode === 'login' ? 'Welcome back' : 'Create an account'}</DialogTitle>
+          <DialogTitle>{mode === 'login' ? 'Boas-vindas de volta' : 'Criar conta'}</DialogTitle>
           <DialogDescription>
             {mode === 'login'
-              ? 'Sign in to your account to vote and comment'
-              : 'Sign up to vote and comment on feedback'}
+              ? 'Entre na sua conta para votar e comentar'
+              : 'Cadastre-se para votar e comentar no feedback'}
           </DialogDescription>
         </DialogHeader>
         <PortalAuthFormInline mode={mode} authConfig={authConfig} onModeSwitch={setMode} />

@@ -17,7 +17,7 @@ export function ChangelogListPublic() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-16">
-        <div className="text-muted-foreground">Loading changelog...</div>
+        <div className="text-muted-foreground">Carregando changelog...</div>
       </div>
     )
   }
@@ -26,8 +26,8 @@ export function ChangelogListPublic() {
     return (
       <EmptyState
         icon={DocumentTextIcon}
-        title="No updates yet"
-        description="Check back soon for the latest product updates and shipped features."
+        title="Ainda não há atualizações"
+        description="Volte em breve para ver as últimas atualizações do produto e funcionalidades lançadas."
       />
     )
   }
@@ -54,7 +54,7 @@ export function ChangelogListPublic() {
       {hasNextPage && (
         <div className="flex justify-center pt-4">
           <Button variant="outline" onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
-            {isFetchingNextPage ? 'Loading...' : 'Load more'}
+            {isFetchingNextPage ? 'Carregando...' : 'Carregar mais'}
           </Button>
         </div>
       )}

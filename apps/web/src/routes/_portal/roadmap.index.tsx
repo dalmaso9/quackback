@@ -36,7 +36,7 @@ export const Route = createFileRoute('/_portal/roadmap/')({
     if (!loaderData) return {}
     const { workspaceName, baseUrl } = loaderData
     const title = `Roadmap - ${workspaceName}`
-    const description = `See what ${workspaceName} is working on and what's coming next.`
+    const description = `Veja no que ${workspaceName} está trabalhando e o que vem a seguir.`
     const canonicalUrl = baseUrl ? `${baseUrl}/roadmap` : ''
     return {
       meta: [
@@ -72,7 +72,9 @@ function RoadmapPage() {
     <div className="py-8">
       <div className="mb-6 animate-in fade-in duration-200 fill-mode-backwards">
         <h1 className="text-3xl font-bold mb-2">Roadmap</h1>
-        <p className="text-muted-foreground">See what we're working on and what's coming next.</p>
+        <p className="text-muted-foreground">
+          Veja no que estamos trabalhando e o que vem a seguir.
+        </p>
       </div>
 
       <div

@@ -10,9 +10,9 @@ import { cn } from '@/lib/shared/utils'
 import type { PostId } from '@featurepool/ids'
 
 const MATCH_STRENGTH_LABELS: Record<MatchStrength, string> = {
-  strong: 'Very similar',
-  good: 'Similar',
-  weak: 'Related',
+  strong: 'Muito parecido',
+  good: 'Parecido',
+  weak: 'Relacionado',
 }
 
 interface SimilarPostItemProps {
@@ -96,7 +96,7 @@ export function SimilarPostsCard({
           <div ref={contentRef}>
             <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground mb-2">
               <LightBulbIcon className="h-3 w-3 text-amber-500/70" />
-              Similar requests from the community
+              Solicitações parecidas da comunidade
             </p>
             <div className="space-y-1">
               {posts.slice(0, MAX_SIMILAR_POSTS).map((post) => (

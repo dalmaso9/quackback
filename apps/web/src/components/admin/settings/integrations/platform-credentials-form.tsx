@@ -82,7 +82,7 @@ export function PlatformCredentialsForm({
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={handleStartEdit}>
-            Update
+            Atualizar
           </Button>
           <Button
             variant="outline"
@@ -91,7 +91,7 @@ export function PlatformCredentialsForm({
             disabled={deleteMutation.isPending}
             className="text-destructive hover:text-destructive"
           >
-            {deleteMutation.isPending ? 'Removing...' : 'Remove'}
+            {deleteMutation.isPending ? 'Removendo...' : 'Remover'}
           </Button>
         </div>
       </div>
@@ -125,7 +125,7 @@ export function PlatformCredentialsForm({
                 rel="noopener noreferrer"
                 className="mt-1 inline-block text-xs text-primary hover:underline"
               >
-                Get credentials from provider
+                Obter credenciais no provedor
               </a>
             )}
           </div>
@@ -137,17 +137,17 @@ export function PlatformCredentialsForm({
           onClick={handleSave}
           disabled={!allFieldsFilled || saveMutation.isPending}
         >
-          {saveMutation.isPending ? 'Saving...' : 'Save'}
+          {saveMutation.isPending ? 'Salvando...' : 'Salvar'}
         </Button>
         {isEditing && (
           <Button variant="outline" size="sm" onClick={handleCancel}>
-            Cancel
+            Cancelar
           </Button>
         )}
       </div>
       {saveMutation.isError && (
         <p className="text-sm text-destructive">
-          {saveMutation.error?.message ?? 'Failed to save credentials'}
+          {saveMutation.error?.message ?? 'Não foi possível salvar as credenciais'}
         </p>
       )}
     </div>

@@ -58,7 +58,7 @@ export function RoadmapColumn({ roadmapId, statusId, title, color, filters }: Ro
             </div>
           ) : posts.length === 0 ? (
             <div className="h-full flex items-center justify-center py-8 animate-in fade-in duration-200">
-              <p className="text-sm text-muted-foreground">No items yet</p>
+              <p className="text-sm text-muted-foreground">Ainda não há itens</p>
             </div>
           ) : (
             <div className="space-y-2">

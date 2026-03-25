@@ -44,7 +44,7 @@ export function WidgetCommentList({
   if (comments.length === 0) {
     return (
       <p className="text-xs text-muted-foreground/60 text-center py-4">
-        No comments yet. Be the first to share your thoughts!
+        Ainda não há comentários. Seja a primeira pessoa a compartilhar sua opinião!
       </p>
     )
   }
@@ -145,7 +145,7 @@ function WidgetCommentItem({
               <AvatarFallback className="text-[9px]">?</AvatarFallback>
             </Avatar>
             <span className="text-xs text-muted-foreground/60 italic">
-              {comment.isRemovedByTeam ? '[removed]' : '[deleted]'}
+              {comment.isRemovedByTeam ? '[removido]' : '[excluído]'}
             </span>
             <span className="text-muted-foreground/50 text-[10px]">&middot;</span>
             <TimeAgo date={comment.createdAt} className="text-[10px] text-muted-foreground/60" />
@@ -218,17 +218,17 @@ function WidgetCommentItem({
             </AvatarFallback>
           </Avatar>
           <span className="text-xs font-medium text-foreground truncate">
-            {comment.authorName || 'Anonymous'}
+            {comment.authorName || 'Anônimo'}
           </span>
           {comment.isTeamMember && (
             <span className="text-[9px] px-1 py-px rounded bg-primary/15 text-primary font-medium shrink-0">
-              Team
+              Equipe
             </span>
           )}
           {isPinned && (
             <span className="text-[9px] px-1 py-px rounded bg-primary/15 text-primary font-medium shrink-0 inline-flex items-center gap-0.5">
               <MapPinIcon className="h-2.5 w-2.5" />
-              Pinned
+              Fixado
             </span>
           )}
           <span className="text-muted-foreground/50 text-[10px]">&middot;</span>
@@ -313,7 +313,7 @@ function WidgetCommentItem({
               className="inline-flex items-center gap-0.5 h-5 px-1 text-[10px] text-muted-foreground/60 hover:text-muted-foreground transition-colors"
             >
               <ArrowUturnLeftIcon className="h-2.5 w-2.5" />
-              Reply
+              Responder
             </button>
           )}
         </div>

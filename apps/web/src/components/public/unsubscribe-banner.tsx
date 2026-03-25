@@ -29,13 +29,13 @@ export function UnsubscribeBanner({ postId }: UnsubscribeBannerProps) {
       <div className="flex items-center gap-3">
         <CheckCircleIcon className="h-5 w-5 text-success flex-shrink-0" />
         <p className="text-sm text-foreground">
-          You&apos;ve been unsubscribed from this post. Use the bell icon to resubscribe.
+          Você deixou de seguir este post. Use o sino para se inscrever novamente.
         </p>
       </div>
       <button
         onClick={() => setVisible(false)}
         className="flex-shrink-0 text-success hover:text-success/80 transition-colors"
-        aria-label="Dismiss"
+        aria-label="Fechar"
       >
         <XMarkIcon className="h-4 w-4" />
       </button>

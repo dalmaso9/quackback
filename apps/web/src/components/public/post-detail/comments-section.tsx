@@ -129,7 +129,7 @@ export function CommentsSection({
       style={{ animationDelay: '150ms' }}
     >
       <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">
-        {commentCount} {commentCount === 1 ? 'Comment' : 'Comments'}
+        {commentCount} {commentCount === 1 ? 'comentário' : 'comentários'}
       </h2>
 
       <AuthCommentsSection

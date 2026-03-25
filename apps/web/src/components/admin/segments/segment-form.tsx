@@ -66,13 +66,13 @@ export interface CustomAttrDef {
 }
 
 const BUILT_IN_ATTRIBUTE_OPTIONS: { value: RuleAttribute; label: string }[] = [
-  { value: 'email_domain', label: 'Email Domain' },
-  { value: 'email_verified', label: 'Email Verified' },
-  { value: 'created_at_days_ago', label: 'Days Since Joined' },
-  { value: 'post_count', label: 'Post Count' },
-  { value: 'vote_count', label: 'Vote Count' },
-  { value: 'comment_count', label: 'Comment Count' },
-  { value: 'metadata_key', label: 'Custom Metadata Key' },
+  { value: 'email_domain', label: 'Domínio do email' },
+  { value: 'email_verified', label: 'Email verificado' },
+  { value: 'created_at_days_ago', label: 'Dias desde o cadastro' },
+  { value: 'post_count', label: 'Quantidade de posts' },
+  { value: 'vote_count', label: 'Quantidade de votos' },
+  { value: 'comment_count', label: 'Quantidade de comentários' },
+  { value: 'metadata_key', label: 'Chave de metadado personalizada' },
 ]
 
 const CUSTOM_ATTR_OPERATORS: Record<
@@ -263,7 +263,7 @@ function RuleConditionRow({
               <SelectSeparator />
               <SelectGroup>
                 <SelectLabel className="text-[10px] uppercase tracking-wider px-2 py-1.5">
-                  Custom attributes
+                  Atributos personalizados
                 </SelectLabel>
                 {customAttributes.map((attr) => (
                   <SelectItem
@@ -300,7 +300,7 @@ function RuleConditionRow({
       {condition.attribute === 'metadata_key' && (
         <Input
           className="h-8 text-xs w-[100px] shrink-0"
-          placeholder="key"
+          placeholder="chave"
           value={condition.metadataKey ?? ''}
           onChange={(e) => onChange({ ...condition, metadataKey: e.target.value })}
         />
@@ -316,10 +316,10 @@ function RuleConditionRow({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="true" className="text-xs">
-              True
+              Verdadeiro
             </SelectItem>
             <SelectItem value="false" className="text-xs">
-              False
+              Falso
             </SelectItem>
           </SelectContent>
         </Select>
@@ -328,7 +328,7 @@ function RuleConditionRow({
         <Input
           className="h-8 text-xs flex-1"
           type={isNumeric ? 'number' : 'text'}
-          placeholder={isNumeric ? '0' : 'value'}
+          placeholder={isNumeric ? '0' : 'valor'}
           value={condition.value}
           onChange={(e) => onChange({ ...condition, value: e.target.value })}
         />
@@ -380,21 +380,21 @@ function RuleBuilder({
     <div className="space-y-3">
       {/* Match type */}
       <div className="flex items-center gap-2 text-xs text-muted-foreground">
-        <span>Users must match</span>
+        <span>Usuários devem corresponder a</span>
         <Select value={match} onValueChange={(v) => onMatchChange(v as 'all' | 'any')}>
           <SelectTrigger className="h-7 w-[60px] text-xs">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all" className="text-xs">
-              ALL
+              TODAS
             </SelectItem>
             <SelectItem value="any" className="text-xs">
-              ANY
+              QUALQUER
             </SelectItem>
           </SelectContent>
         </Select>
-        <span>of these conditions:</span>
+        <span>destas condições:</span>
       </div>
 
       {/* Conditions */}
@@ -412,7 +412,7 @@ function RuleBuilder({
 
       <Button type="button" variant="outline" size="sm" className="h-7 text-xs" onClick={handleAdd}>
         <PlusIcon className="h-3.5 w-3.5 mr-1" />
-        Add condition
+        Adicionar condição
       </Button>
     </div>
   )
@@ -485,7 +485,7 @@ export function SegmentFormDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>{isEditing ? 'Edit Segment' : 'Create Segment'}</DialogTitle>
+          <DialogTitle>{isEditing ? 'Editar segmento' : 'Criar segmento'}</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -507,8 +507,8 @@ export function SegmentFormDialog({
                   <div className="font-medium text-sm capitalize">{t}</div>
                   <div className="text-xs text-muted-foreground mt-0.5">
                     {t === 'manual'
-                      ? 'Manually assign users to this segment'
-                      : 'Auto-populate based on rules'}
+                      ? 'Atribua usuários manualmente a este segmento'
+                      : 'Preencha automaticamente com base em regras'}
                   </div>
                 </button>
               ))}
@@ -517,12 +517,12 @@ export function SegmentFormDialog({
 
           {/* Name */}
           <div className="space-y-1.5">
-            <Label htmlFor="seg-name">Name</Label>
+            <Label htmlFor="seg-name">Nome</Label>
             <Input
               id="seg-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Enterprise customers"
+              placeholder="Clientes enterprise"
               required
             />
           </div>
@@ -530,23 +530,23 @@ export function SegmentFormDialog({
           {/* Description */}
           <div className="space-y-1.5">
             <Label htmlFor="seg-desc">
-              Description <span className="text-muted-foreground font-normal">(optional)</span>
+              Descrição <span className="text-muted-foreground font-normal">(opcional)</span>
             </Label>
             <Input
               id="seg-desc"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="High-activity users with 10+ posts"
+              placeholder="Usuários muito ativos com mais de 10 posts"
             />
           </div>
 
           {/* Rules (dynamic only) */}
           {type === 'dynamic' && (
             <div className="space-y-2 border border-border/50 rounded-lg p-4 bg-muted/20">
-              <Label className="text-sm font-medium">Rules</Label>
+              <Label className="text-sm font-medium">Regras</Label>
               <p className="text-xs text-muted-foreground">
-                Define conditions to automatically match users. Membership is refreshed when you
-                trigger evaluation.
+                Defina condições para corresponder usuários automaticamente. A associação é
+                atualizada quando você executa a avaliação.
               </p>
               <RuleBuilder
                 match={ruleMatch}
@@ -565,10 +565,10 @@ export function SegmentFormDialog({
               onClick={() => onOpenChange(false)}
               disabled={isPending}
             >
-              Cancel
+              Cancelar
             </Button>
             <Button type="submit" disabled={!canSubmit || isPending}>
-              {isPending ? 'Saving...' : isEditing ? 'Save changes' : 'Create segment'}
+              {isPending ? 'Salvando...' : isEditing ? 'Salvar alterações' : 'Criar segmento'}
             </Button>
           </DialogFooter>
         </form>

@@ -50,7 +50,7 @@ export function RotateApiKeyDialog({
       onKeyRotated(result.apiKey, result.plainTextKey)
     } catch (err) {
       console.error('Failed to rotate API key:', err)
-      setError(err instanceof Error ? err.message : 'Failed to rotate API key')
+      setError(err instanceof Error ? err.message : 'Não foi possível rotacionar a chave de API')
     }
   }
 
@@ -58,17 +58,17 @@ export function RotateApiKeyDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Rotate API Key</DialogTitle>
+          <DialogTitle>Rotacionar chave de API</DialogTitle>
           <DialogDescription>
-            Generate a new secret for the API key <strong>{apiKey.name}</strong>.
+            Gere um novo segredo para a chave de API <strong>{apiKey.name}</strong>.
           </DialogDescription>
         </DialogHeader>
 
         <div className="py-4">
           <WarningBox
             variant="warning"
-            title="The old key will stop working immediately"
-            description="Any applications using the current key will lose access until you update them with the new key. The key name and settings will be preserved."
+            title="A chave antiga deixará de funcionar imediatamente"
+            description="Qualquer aplicação usando a chave atual perderá acesso até que você a atualize com a nova chave. O nome e as configurações da chave serão preservados."
           />
 
           {error && <p className="text-sm text-destructive mt-4">{error}</p>}
@@ -81,10 +81,10 @@ export function RotateApiKeyDialog({
             onClick={() => onOpenChange(false)}
             disabled={isPending}
           >
-            Cancel
+            Cancelar
           </Button>
           <Button onClick={handleRotate} disabled={isPending}>
-            {isPending ? 'Rotating...' : 'Rotate Key'}
+            {isPending ? 'Rotacionando...' : 'Rotacionar chave'}
           </Button>
         </DialogFooter>
       </DialogContent>

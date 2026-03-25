@@ -14,8 +14,8 @@ export const Route = createFileRoute('/_portal/changelog/')({
   head: ({ loaderData }) => {
     if (!loaderData) return {}
     const { workspaceName, baseUrl } = loaderData
-    const title = `Changelog - ${workspaceName}`
-    const description = `Stay up to date with the latest ${workspaceName} product updates and shipped features.`
+    const title = `Novidades - ${workspaceName}`
+    const description = `Acompanhe as últimas atualizações do produto ${workspaceName} e as funcionalidades lançadas.`
     const canonicalUrl = baseUrl ? `${baseUrl}/changelog` : ''
     return {
       meta: [
@@ -38,13 +38,13 @@ function ChangelogPage() {
     <div className="py-8">
       <PageHeader
         size="large"
-        title="Changelog"
-        description="Stay up to date with the latest product updates and shipped features."
+        title="Novidades"
+        description="Acompanhe as últimas atualizações do produto e as funcionalidades lançadas."
         action={
           <Button variant="outline" size="sm" asChild className="shrink-0 gap-1.5">
             <a href="/changelog/feed" target="_blank" rel="noopener noreferrer">
               <RssIcon className="h-4 w-4" />
-              <span className="hidden sm:inline">RSS Feed</span>
+              <span className="hidden sm:inline">Feed RSS</span>
             </a>
           </Button>
         }

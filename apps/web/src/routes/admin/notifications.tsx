@@ -31,13 +31,13 @@ function NotificationsPage() {
             <BellIconSolid className="h-4 w-4 text-primary" />
           </div>
           <div>
-            <h1 className="text-lg font-semibold">Notifications</h1>
+            <h1 className="text-lg font-semibold">Notificações</h1>
             <p className="text-xs text-muted-foreground">
               {total === 0
-                ? 'No notifications'
+                ? 'Nenhuma notificação'
                 : unreadCount > 0
-                  ? `${unreadCount} unread of ${total}`
-                  : `${total} notifications — all caught up`}
+                  ? `${unreadCount} não lidas de ${total}`
+                  : `${total} notificações — tudo em dia`}
             </p>
           </div>
         </div>
@@ -48,7 +48,7 @@ function NotificationsPage() {
             onClick={() => markAllAsRead.mutate()}
             disabled={markAllAsRead.isPending}
           >
-            Mark all as read
+            Marcar todas como lidas
           </Button>
         )}
       </div>
@@ -74,8 +74,8 @@ function NotificationsPage() {
       ) : (
         <EmptyState
           icon={InboxIcon}
-          title="No notifications yet"
-          description="You'll see notifications here when there are status changes or new comments on posts you're subscribed to."
+          title="Ainda não há notificações"
+          description="Você verá notificações aqui quando houver mudanças de status ou novos comentários nos posts que acompanha."
           className="py-24"
         />
       )}

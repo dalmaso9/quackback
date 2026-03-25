@@ -21,9 +21,9 @@ export function DefaultErrorPage({ error, reset, fullPage = true }: ErrorPagePro
           <ExclamationTriangleIcon className="h-7 w-7 text-destructive" />
         </div>
 
-        <h1 className="text-2xl font-semibold tracking-tight">Something went wrong</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Algo deu errado</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          An unexpected error occurred. Please try again or return to the home page.
+          Ocorreu um erro inesperado. Tente novamente ou volte para a página inicial.
         </p>
 
         {error.message && (
@@ -35,11 +35,11 @@ export function DefaultErrorPage({ error, reset, fullPage = true }: ErrorPagePro
         <div className="mt-6 flex items-center justify-center gap-3">
           {reset && (
             <Button onClick={reset} variant="default">
-              Try again
+              Tentar novamente
             </Button>
           )}
           <Button variant="outline" asChild>
-            <a href="/">Go home</a>
+            <a href="/">Ir para a página inicial</a>
           </Button>
         </div>
       </div>
@@ -52,14 +52,14 @@ export function NotFoundPage() {
     <div className="flex min-h-screen items-center justify-center px-4">
       <div className="w-full max-w-md text-center">
         <h1 className="text-6xl font-bold tracking-tight text-muted-foreground/30">404</h1>
-        <h2 className="mt-4 text-2xl font-semibold tracking-tight">Page not found</h2>
+        <h2 className="mt-4 text-2xl font-semibold tracking-tight">Página não encontrada</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+          A página que você procura não existe ou foi movida.
         </p>
 
         <div className="mt-6">
           <Button variant="outline" asChild>
-            <a href="/">Go home</a>
+            <a href="/">Ir para a página inicial</a>
           </Button>
         </div>
       </div>

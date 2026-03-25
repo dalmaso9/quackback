@@ -16,7 +16,7 @@ export function PinnedComment({ comment, workspaceName }: PinnedCommentProps) {
       <div className="flex items-start gap-3">
         <Avatar className="h-10 w-10 ring-2 ring-background shadow-md">
           {comment.avatarUrl && (
-            <AvatarImage src={comment.avatarUrl} alt={comment.authorName || 'Team member'} />
+            <AvatarImage src={comment.avatarUrl} alt={comment.authorName || 'Membro da equipe'} />
           )}
           <AvatarFallback className="text-sm bg-primary/20 text-primary font-semibold">
             {getInitials(comment.authorName)}
@@ -29,7 +29,7 @@ export function PinnedComment({ comment, workspaceName }: PinnedCommentProps) {
             </span>
             <Badge className="text-[10px] px-1.5 py-0 bg-primary/15 text-primary border-0">
               <MapPinIcon className="h-2.5 w-2.5 mr-0.5" />
-              Pinned
+              Fixado
             </Badge>
             <span className="text-muted-foreground">·</span>
             <TimeAgo date={comment.createdAt} className="text-xs text-muted-foreground" />

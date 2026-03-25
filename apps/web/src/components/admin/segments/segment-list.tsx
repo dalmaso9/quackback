@@ -61,7 +61,7 @@ function SegmentRow({
             {segment.type === 'dynamic' && (
               <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-4 gap-0.5">
                 <BoltIcon className="h-2.5 w-2.5" />
-                Auto
+                Automático
               </Badge>
             )}
           </div>
@@ -73,7 +73,7 @@ function SegmentRow({
 
       {/* Member count */}
       <span className="text-sm text-muted-foreground shrink-0 tabular-nums">
-        {segment.memberCount} {segment.memberCount === 1 ? 'user' : 'users'}
+        {segment.memberCount} {segment.memberCount === 1 ? 'usuário' : 'usuários'}
       </span>
 
       {/* Actions */}
@@ -85,7 +85,7 @@ function SegmentRow({
             className="h-7 px-2 text-xs text-muted-foreground"
             onClick={onEvaluate}
             disabled={isEvaluating}
-            title="Re-evaluate membership"
+            title="Reavaliar membros"
           >
             <ArrowPathIcon className={`h-3.5 w-3.5 ${isEvaluating ? 'animate-spin' : ''}`} />
           </Button>
@@ -95,7 +95,7 @@ function SegmentRow({
           size="sm"
           className="h-7 px-2 text-muted-foreground hover:text-foreground"
           onClick={onEdit}
-          title="Edit segment"
+          title="Editar segmento"
         >
           <PencilIcon className="h-3.5 w-3.5" />
         </Button>
@@ -104,7 +104,7 @@ function SegmentRow({
           size="sm"
           className="h-7 px-2 text-muted-foreground hover:text-destructive"
           onClick={onDelete}
-          title="Delete segment"
+          title="Excluir segmento"
         >
           <TrashIcon className="h-3.5 w-3.5" />
         </Button>
@@ -214,12 +214,12 @@ export function SegmentList() {
             <ArrowPathIcon
               className={`h-3.5 w-3.5 ${evaluateAll.isPending ? 'animate-spin' : ''}`}
             />
-            Re-evaluate all
+            Reavaliar todos
           </Button>
         )}
         <Button size="sm" className="h-8 text-xs gap-1.5" onClick={() => setCreateOpen(true)}>
           <PlusIcon className="h-3.5 w-3.5" />
-          New segment
+          Novo segmento
         </Button>
       </div>
 
@@ -227,12 +227,12 @@ export function SegmentList() {
       {!segments || segments.length === 0 ? (
         <EmptyState
           icon={TagIcon}
-          title="No segments yet"
-          description="Create segments to organize your users into groups for filtering and analysis."
+          title="Ainda não há segmentos"
+          description="Crie segmentos para organizar seus usuários em grupos para filtragem e análise."
           action={
             <Button size="sm" onClick={() => setCreateOpen(true)}>
               <PlusIcon className="h-4 w-4 mr-1.5" />
-              New segment
+              Novo segmento
             </Button>
           }
           className="py-12"
@@ -294,9 +294,9 @@ export function SegmentList() {
       <ConfirmDialog
         open={!!deleteTarget}
         onOpenChange={(open) => !open && setDeleteTarget(null)}
-        title={`Delete "${deleteTarget?.name}"?`}
-        description="This will permanently delete the segment and remove all user memberships. This cannot be undone."
-        confirmLabel="Delete"
+        title={`Excluir "${deleteTarget?.name}"?`}
+        description="Isso excluirá permanentemente o segmento e removerá todas as associações de usuários. Essa ação não pode ser desfeita."
+        confirmLabel="Excluir"
         variant="destructive"
         isPending={deleteSegment.isPending}
         onConfirm={handleDelete}

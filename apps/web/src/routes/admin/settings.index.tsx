@@ -27,7 +27,7 @@ function SettingsIndexPage() {
         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
           <Cog6ToothIcon className="h-5 w-5 text-primary" />
         </div>
-        <h1 className="text-xl font-semibold text-foreground">Settings</h1>
+        <h1 className="text-xl font-semibold text-foreground">Configurações</h1>
       </div>
       <SettingsNav />
     </div>

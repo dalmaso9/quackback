@@ -4,6 +4,7 @@ import { EmptyState } from '@/components/shared/empty-state'
 import { Spinner } from '@/components/shared/spinner'
 import { formatDistanceToNow, isToday, isYesterday, format } from 'date-fns'
 import { Button } from '@/components/ui/button'
+import { DATE_FNS_LOCALE } from '@/lib/shared/locale'
 import { cn } from '@/lib/shared/utils'
 import {
   useNotifications,
@@ -34,9 +35,9 @@ function groupNotificationsByDate(notifications: SerializedNotification[]) {
     }
   }
 
-  if (today.length > 0) groups.push({ label: 'Today', notifications: today })
-  if (yesterday.length > 0) groups.push({ label: 'Yesterday', notifications: yesterday })
-  if (earlier.length > 0) groups.push({ label: 'Earlier', notifications: earlier })
+  if (today.length > 0) groups.push({ label: 'Hoje', notifications: today })
+  if (yesterday.length > 0) groups.push({ label: 'Ontem', notifications: yesterday })
+  if (earlier.length > 0) groups.push({ label: 'Anteriores', notifications: earlier })
 
   return groups
 }
@@ -61,7 +62,7 @@ function NotificationsPage() {
             </div>
             <div>
               <h1 className="text-2xl font-semibold text-foreground tracking-tight">
-                Notifications
+                Notificações
                 {unreadCount > 0 && (
                   <span className="ml-2.5 inline-flex items-center justify-center h-6 min-w-6 px-2 rounded-full bg-primary text-primary-foreground text-xs font-semibold">
                     {unreadCount}
@@ -69,7 +70,7 @@ function NotificationsPage() {
                 )}
               </h1>
               <p className="text-sm text-muted-foreground mt-0.5">
-                Updates on posts you've subscribed to
+                Atualizações dos posts que você acompanha
               </p>
             </div>
           </div>
@@ -82,8 +83,8 @@ function NotificationsPage() {
               className="shrink-0 gap-1.5"
             >
               <CheckIcon className="h-4 w-4" />
-              <span className="hidden sm:inline">Mark all read</span>
-              <span className="sm:hidden">Read all</span>
+              <span className="hidden sm:inline">Marcar todas como lidas</span>
+              <span className="sm:hidden">Ler tudo</span>
             </Button>
           )}
         </div>
@@ -129,8 +130,8 @@ function NotificationsPage() {
         >
           <EmptyState
             icon={InboxIcon}
-            title="All caught up!"
-            description="Vote or comment on posts to subscribe. You'll get notified when there are status changes or new activity."
+            title="Tudo em dia!"
+            description="Vote ou comente em posts para acompanhá-los. Você receberá notificações quando houver mudanças de status ou novas atividades."
             className="py-20 px-6"
           />
         </div>
@@ -209,8 +210,8 @@ function NotificationRow({ notification, onMarkAsRead, style }: NotificationRowP
             dateTime={createdAt.toISOString()}
           >
             {isToday(createdAt)
-              ? formatDistanceToNow(createdAt, { addSuffix: true })
-              : format(createdAt, 'MMM d, h:mm a')}
+              ? formatDistanceToNow(createdAt, { addSuffix: true, locale: DATE_FNS_LOCALE })
+              : format(createdAt, "d 'de' MMM, HH:mm", { locale: DATE_FNS_LOCALE })}
           </time>
         </div>
       </div>

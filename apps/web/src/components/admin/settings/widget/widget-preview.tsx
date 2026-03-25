@@ -28,7 +28,7 @@ export function WidgetPreview({ position }: WidgetPreviewProps) {
             <div className="relative flex-1 min-w-0">
               <MagnifyingGlassIcon className="absolute left-2 top-1/2 -translate-y-1/2 w-3 h-3 text-muted-foreground/50" />
               <div className="w-full pl-6 pr-2 py-1.5 text-[10px] rounded-lg border border-border bg-muted/30 text-muted-foreground/60">
-                What's on your mind?
+                O que você está pensando?
               </div>
             </div>
             <button
@@ -43,14 +43,14 @@ export function WidgetPreview({ position }: WidgetPreviewProps) {
           {/* Post list */}
           <div className="flex-1 overflow-hidden px-2.5 pb-1.5">
             <p className="text-[8px] font-medium text-muted-foreground/60 uppercase tracking-wide px-0.5 py-1">
-              Popular ideas
+              Ideias populares
             </p>
             <div className="space-y-0.5">
-              <MockPost title="Add dark mode support" votes={42} voted />
-              <MockPost title="Mobile app improvements" votes={28} />
-              <MockPost title="Export data to CSV" votes={19} />
-              <MockPost title="Keyboard shortcuts" votes={14} voted />
-              <MockPost title="Custom notification rules" votes={11} />
+              <MockPost title="Adicionar suporte a modo escuro" votes={42} voted />
+              <MockPost title="Melhorias no app mobile" votes={28} />
+              <MockPost title="Exportar dados para CSV" votes={19} />
+              <MockPost title="Atalhos de teclado" votes={14} voted />
+              <MockPost title="Regras personalizadas de notificação" votes={11} />
             </div>
           </div>
 
@@ -58,7 +58,7 @@ export function WidgetPreview({ position }: WidgetPreviewProps) {
           <div className="px-2.5 py-1 border-t border-border text-center shrink-0">
             <span className="inline-flex items-center gap-0.5 text-[8px] text-muted-foreground/60">
               <img src="/logo.png" alt="" width={10} height={10} className="opacity-60" />
-              Powered by Featurepool
+              Desenvolvido com Featurepool
             </span>
           </div>
         </div>
@@ -117,7 +117,7 @@ function MockPost({
         <p className="text-[10px] font-medium text-foreground line-clamp-1">{title}</p>
         <div className="flex items-center gap-1 mt-0.5">
           <span className="size-1 rounded-full bg-chart-4 shrink-0" />
-          <span className="text-[7px] text-muted-foreground">In Progress</span>
+          <span className="text-[7px] text-muted-foreground">Em andamento</span>
         </div>
       </div>
     </div>

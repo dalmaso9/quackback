@@ -33,7 +33,7 @@ export function RevokeApiKeyDialog({ open, onOpenChange, apiKey }: RevokeApiKeyD
       onOpenChange(false)
     } catch (err) {
       console.error('Failed to revoke API key:', err)
-      setError(err instanceof Error ? err.message : 'Failed to revoke API key')
+      setError(err instanceof Error ? err.message : 'Não foi possível revogar a chave de API')
     }
   }
 
@@ -41,19 +41,19 @@ export function RevokeApiKeyDialog({ open, onOpenChange, apiKey }: RevokeApiKeyD
     <ConfirmDialog
       open={open}
       onOpenChange={onOpenChange}
-      title="Revoke API Key"
+      title="Revogar chave de API"
       description={
         <>
-          Are you sure you want to revoke the API key <strong>{apiKey.name}</strong>?
+          Tem certeza de que deseja revogar a chave de API <strong>{apiKey.name}</strong>?
         </>
       }
       warning={{
-        title: 'This action cannot be undone',
+        title: 'Essa ação não pode ser desfeita',
         description:
-          'Any applications using this key will immediately lose access to the API. You will need to create a new key and update your integrations.',
+          'Todos os aplicativos que usam esta chave perderão acesso à API imediatamente. Você precisará criar uma nova chave e atualizar suas integrações.',
       }}
       variant="destructive"
-      confirmLabel={isPending ? 'Revoking...' : 'Revoke Key'}
+      confirmLabel={isPending ? 'Revogando...' : 'Revogar chave'}
       isPending={isPending}
       onConfirm={handleRevoke}
     >

@@ -199,16 +199,16 @@ const FRAMEWORK_ICONS: Record<string, (props: { className?: string }) => React.R
 }
 
 const WEBHOOK_EVENTS = [
-  { id: 'post.created', label: 'New Post' },
-  { id: 'post.status_changed', label: 'Status Changed' },
-  { id: 'comment.created', label: 'New Comment' },
-  { id: 'changelog.published', label: 'Changelog Published' },
+  { id: 'post.created', label: 'Novo post' },
+  { id: 'post.status_changed', label: 'Status alterado' },
+  { id: 'comment.created', label: 'Novo comentário' },
+  { id: 'changelog.published', label: 'Changelog publicado' },
 ] as const
 
 const WEBHOOK_HEADERS = [
-  { name: 'X-Featurepool-Signature', desc: 'HMAC-SHA256 signature' },
-  { name: 'X-Featurepool-Timestamp', desc: 'Unix epoch seconds' },
-  { name: 'X-Featurepool-Event', desc: 'Event type' },
+  { name: 'X-Featurepool-Signature', desc: 'Assinatura HMAC-SHA256' },
+  { name: 'X-Featurepool-Timestamp', desc: 'Segundos Unix epoch' },
+  { name: 'X-Featurepool-Event', desc: 'Tipo de evento' },
 ] as const
 
 // ——————————————————————————————————————————————————
@@ -236,9 +236,9 @@ export function WebhookVerificationGuide() {
         <div className="flex flex-col border-b lg:border-b-0 lg:border-r border-border divide-y divide-border">
           {/* Header */}
           <div className="p-5">
-            <h3 className="text-sm font-semibold text-foreground">Signature Verification</h3>
+            <h3 className="text-sm font-semibold text-foreground">Verificação de assinatura</h3>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Verify webhook deliveries are authentic
+              Verifique se as entregas de webhook são autênticas
             </p>
           </div>
 
@@ -248,12 +248,13 @@ export function WebhookVerificationGuide() {
               <span className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary text-[11px] font-bold shrink-0">
                 1
               </span>
-              <span className="text-xs font-medium text-foreground">How it works</span>
+              <span className="text-xs font-medium text-foreground">Como funciona</span>
             </div>
             <div className="ml-7 space-y-2">
               <p className="text-[11px] text-muted-foreground">
-                Each delivery includes an HMAC-SHA256 signature computed from your signing secret.
-                Verify the signature and check the timestamp to prevent replay attacks.
+                Cada entrega inclui uma assinatura HMAC-SHA256 calculada a partir do seu segredo de
+                assinatura. Verifique a assinatura e confira o timestamp para evitar ataques de
+                repetição.
               </p>
               <div className="space-y-1">
                 {WEBHOOK_HEADERS.map((header) => (
@@ -274,7 +275,7 @@ export function WebhookVerificationGuide() {
               <span className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary text-[11px] font-bold shrink-0">
                 2
               </span>
-              <span className="text-xs font-medium text-foreground">Events</span>
+              <span className="text-xs font-medium text-foreground">Eventos</span>
             </div>
             <div className="ml-7 flex flex-wrap gap-1">
               {WEBHOOK_EVENTS.map((event) => (
@@ -296,8 +297,8 @@ export function WebhookVerificationGuide() {
                 3
               </span>
               <div>
-                <span className="text-xs font-medium text-foreground">Choose your framework</span>
-                <p className="text-[11px] text-muted-foreground">Copy the verification function</p>
+                <span className="text-xs font-medium text-foreground">Escolha seu framework</span>
+                <p className="text-[11px] text-muted-foreground">Copie a função de verificação</p>
               </div>
             </div>
 
@@ -328,17 +329,16 @@ export function WebhookVerificationGuide() {
 
           {/* Payload format note */}
           <div className="p-5 space-y-1.5">
-            <span className="text-xs font-medium text-foreground">Payload format</span>
+            <span className="text-xs font-medium text-foreground">Formato do payload</span>
             <p className="text-[11px] text-muted-foreground">
-              Deliveries are JSON with{' '}
+              As entregas são JSON com os campos{' '}
               <code className="text-[10px] bg-muted/50 px-1 py-0.5 rounded font-mono">id</code>,{' '}
               <code className="text-[10px] bg-muted/50 px-1 py-0.5 rounded font-mono">type</code>,{' '}
               <code className="text-[10px] bg-muted/50 px-1 py-0.5 rounded font-mono">
                 createdAt
               </code>
-              , and{' '}
-              <code className="text-[10px] bg-muted/50 px-1 py-0.5 rounded font-mono">data</code>{' '}
-              fields. Your endpoint must respond with a 2xx status within 5 seconds.
+              e <code className="text-[10px] bg-muted/50 px-1 py-0.5 rounded font-mono">data</code>{' '}
+              . Seu endpoint deve responder com status 2xx em até 5 segundos.
             </p>
           </div>
         </div>
@@ -363,12 +363,12 @@ export function WebhookVerificationGuide() {
               {copiedCode ? (
                 <>
                   <CheckIcon className="h-3 w-3 text-green-400" />
-                  <span className="text-green-400">Copied</span>
+                  <span className="text-green-400">Copiado</span>
                 </>
               ) : (
                 <>
                   <ClipboardDocumentIcon className="h-3 w-3" />
-                  <span>Copy</span>
+                  <span>Copiar</span>
                 </>
               )}
             </button>

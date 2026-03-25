@@ -45,7 +45,7 @@ function InviteLinkView({
   return (
     <div className="space-y-4">
       <p className="text-sm text-muted-foreground">
-        Email delivery is not configured. Copy the invitation link below and share it with{' '}
+        O envio de email não está configurado. Copie o link de convite abaixo e compartilhe com{' '}
         <span className="font-medium text-foreground">{email}</span>.
       </p>
 
@@ -60,17 +60,17 @@ function InviteLinkView({
           {copied ? (
             <>
               <CheckIcon className="h-4 w-4" />
-              Copied!
+              Copiado!
             </>
           ) : (
             <>
               <ClipboardDocumentIcon className="h-4 w-4" />
-              Copy invitation link
+              Copiar link do convite
             </>
           )}
         </Button>
         <Button variant="outline" onClick={onClose}>
-          Done
+          Concluir
         </Button>
       </div>
     </div>
@@ -116,7 +116,7 @@ export function InviteMemberDialog({ open, onClose, onSuccess }: InviteMemberDia
         }, 2000)
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to send invitation')
+      setError(err instanceof Error ? err.message : 'Não foi possível enviar o convite')
     }
   }
 
@@ -134,7 +134,7 @@ export function InviteMemberDialog({ open, onClose, onSuccess }: InviteMemberDia
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>Invite Team Member</DialogTitle>
+          <DialogTitle>Convidar membro da equipe</DialogTitle>
         </DialogHeader>
 
         {success ? (
@@ -149,9 +149,9 @@ export function InviteMemberDialog({ open, onClose, onSuccess }: InviteMemberDia
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 mb-4">
                 <CheckCircleIcon className="h-6 w-6 text-primary" />
               </div>
-              <div className="text-lg font-semibold text-foreground">Invitation sent!</div>
+              <div className="text-lg font-semibold text-foreground">Convite enviado!</div>
               <p className="mt-2 text-sm text-muted-foreground text-center">
-                {form.getValues('email')} will receive an email with instructions to join.
+                {form.getValues('email')} receberá um email com instruções para entrar.
               </p>
             </div>
           )
@@ -165,11 +165,11 @@ export function InviteMemberDialog({ open, onClose, onSuccess }: InviteMemberDia
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Nome</FormLabel>
                     <FormControl>
                       <Input
                         type="text"
-                        placeholder="John Doe"
+                        placeholder="João da Silva"
                         {...field}
                         value={field.value ?? ''}
                       />
@@ -184,7 +184,7 @@ export function InviteMemberDialog({ open, onClose, onSuccess }: InviteMemberDia
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email Address</FormLabel>
+                    <FormLabel>Endereço de email</FormLabel>
                     <FormControl>
                       <Input type="email" placeholder="colleague@example.com" {...field} />
                     </FormControl>
@@ -198,7 +198,7 @@ export function InviteMemberDialog({ open, onClose, onSuccess }: InviteMemberDia
                 name="role"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Role</FormLabel>
+                    <FormLabel>Função</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
@@ -207,10 +207,10 @@ export function InviteMemberDialog({ open, onClose, onSuccess }: InviteMemberDia
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="member">
-                          Member - Can view and create feedback
+                          Membro - Pode visualizar e criar feedback
                         </SelectItem>
                         <SelectItem value="admin">
-                          Admin - Can manage settings and members
+                          Admin - Pode gerenciar configurações e membros
                         </SelectItem>
                       </SelectContent>
                     </Select>
@@ -221,10 +221,10 @@ export function InviteMemberDialog({ open, onClose, onSuccess }: InviteMemberDia
 
               <DialogFooter>
                 <Button type="button" variant="outline" onClick={onClose}>
-                  Cancel
+                  Cancelar
                 </Button>
                 <Button type="submit" disabled={form.formState.isSubmitting}>
-                  {form.formState.isSubmitting ? 'Sending...' : 'Send Invitation'}
+                  {form.formState.isSubmitting ? 'Enviando...' : 'Enviar convite'}
                 </Button>
               </DialogFooter>
             </form>

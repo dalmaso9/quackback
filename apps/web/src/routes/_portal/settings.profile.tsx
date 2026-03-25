@@ -30,8 +30,8 @@ function ProfilePage() {
     <div className="space-y-6">
       <PageHeader
         icon={UserIcon}
-        title="Profile"
-        description="Manage your personal information"
+        title="Perfil"
+        description="Gerencie suas informações pessoais"
         animate
       />
 

@@ -50,19 +50,19 @@ interface StatusListProps {
 
 const CATEGORY_INFO: Record<StatusCategory, { label: string; description: string }> = {
   active: {
-    label: 'Active',
+    label: 'Ativos',
     description:
-      'Statuses for posts that are being worked on or need attention. These represent different stages of progress before completion.',
+      'Status para posts que estão em andamento ou precisam de atenção. Eles representam diferentes estágios de progresso antes da conclusão.',
   },
   complete: {
-    label: 'Complete',
+    label: 'Concluídos',
     description:
-      'Final statuses for posts that have been successfully addressed. Completed posts are deprioritized when suggesting similar posts to avoid duplicates.',
+      'Status finais para posts que já foram resolvidos com sucesso. Posts concluídos perdem prioridade ao sugerir posts semelhantes para evitar duplicidades.',
   },
   closed: {
-    label: 'Closed',
+    label: 'Fechados',
     description:
-      "Statuses for posts that won't be implemented. Use these for declined requests, duplicates, or items that are out of scope. Closed posts are deprioritized when suggesting similar posts.",
+      'Status para posts que não serão implementados. Use para solicitações recusadas, duplicadas ou fora de escopo. Posts fechados perdem prioridade ao sugerir posts semelhantes.',
   },
 }
 
@@ -275,7 +275,7 @@ export function StatusList({ initialStatuses }: StatusListProps) {
       })
     } catch (error) {
       console.error('Failed to save changes:', error)
-      alert('Failed to save changes')
+      alert('Não foi possível salvar as alterações')
     } finally {
       setIsSaving(false)
     }
@@ -296,7 +296,7 @@ export function StatusList({ initialStatuses }: StatusListProps) {
         router.invalidate()
       })
     } catch (error) {
-      alert(error instanceof Error ? error.message : 'Failed to delete status')
+      alert(error instanceof Error ? error.message : 'Não foi possível excluir o status')
     } finally {
       setDeleteStatus(null)
     }
@@ -322,7 +322,7 @@ export function StatusList({ initialStatuses }: StatusListProps) {
         router.invalidate()
       })
     } catch (error) {
-      alert(error instanceof Error ? error.message : 'Failed to create status')
+      alert(error instanceof Error ? error.message : 'Não foi possível criar o status')
     }
   }
 
@@ -334,8 +334,12 @@ export function StatusList({ initialStatuses }: StatusListProps) {
     <div className="space-y-8">
       {/* Roadmap info */}
       <div className="flex items-center justify-end gap-3">
-        <p className="text-sm text-muted-foreground">Toggle statuses to show on your roadmap</p>
-        <Badge variant={roadmapValid ? 'outline' : 'destructive'}>{roadmapCount}/3 selected</Badge>
+        <p className="text-sm text-muted-foreground">
+          Marque os status que devem aparecer no roadmap
+        </p>
+        <Badge variant={roadmapValid ? 'outline' : 'destructive'}>
+          {roadmapCount}/3 selecionados
+        </Badge>
       </div>
 
       {/* Status categories with drag and drop - Two column layout */}
@@ -378,7 +382,7 @@ export function StatusList({ initialStatuses }: StatusListProps) {
                   {/* Spacer for grip handle alignment */}
                   <div className="w-3.5" />
                   <PlusIcon className="h-3 w-3" />
-                  <span className="text-sm">Add new status</span>
+                  <span className="text-sm">Adicionar novo status</span>
                 </button>
               </div>
             </SettingsCard>
@@ -390,9 +394,9 @@ export function StatusList({ initialStatuses }: StatusListProps) {
       <ConfirmDialog
         open={!!deleteStatus}
         onOpenChange={() => setDeleteStatus(null)}
-        title="Delete status"
-        description={`Are you sure you want to delete "${deleteStatus?.name}"? This action cannot be undone.`}
-        confirmLabel="Delete"
+        title="Excluir status"
+        description={`Tem certeza de que deseja excluir "${deleteStatus?.name}"? Essa ação não pode ser desfeita.`}
+        confirmLabel="Excluir"
         variant="destructive"
         onConfirm={handleDelete}
       />
@@ -409,13 +413,15 @@ export function StatusList({ initialStatuses }: StatusListProps) {
       {hasChanges && (
         <div className="fixed bottom-6 right-6 flex items-center gap-2 bg-background border rounded-lg shadow-lg p-3">
           {!roadmapValid && (
-            <span className="text-sm text-destructive">Select exactly 3 roadmap statuses</span>
+            <span className="text-sm text-destructive">
+              Selecione exatamente 3 status para o roadmap
+            </span>
           )}
           <Button variant="ghost" size="sm" onClick={handleDiscard} disabled={isSaving}>
-            Discard
+            Descartar
           </Button>
           <Button size="sm" onClick={handleSave} disabled={isSaving || !roadmapValid}>
-            {isSaving ? 'Saving...' : 'Save changes'}
+            {isSaving ? 'Salvando...' : 'Salvar alterações'}
           </Button>
         </div>
       )}
@@ -449,9 +455,9 @@ function SortableStatusItem({
   }
 
   function getDeleteTitle(): string {
-    if (status.isDefault) return 'Cannot delete the default status'
-    if (!canDelete) return 'Must have at least one status in each category'
-    return 'Delete status'
+    if (status.isDefault) return 'Não é possível excluir o status padrão'
+    if (!canDelete) return 'É necessário manter pelo menos um status em cada categoria'
+    return 'Excluir status'
   }
 
   return (
@@ -489,7 +495,7 @@ function SortableStatusItem({
                 <LockClosedIcon className="h-3 w-3 text-muted-foreground" />
               </TooltipTrigger>
               <TooltipContent>
-                <p>Default status for new posts and cannot be removed</p>
+                <p>Status padrão para novos posts e não pode ser removido</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -569,50 +575,50 @@ function CreateStatusDialog({ open, onOpenChange, category, onSubmit }: CreateSt
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>Add new status</DialogTitle>
+          <DialogTitle>Adicionar novo status</DialogTitle>
           <DialogDescription>
-            Create a new status in the {CATEGORY_INFO[category].label.toLowerCase()} category.
+            Crie um novo status na categoria {CATEGORY_INFO[category].label.toLowerCase()}.
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">Nome</Label>
             <Input
               id="name"
               value={name}
               onChange={(e) => handleNameChange(e.target.value)}
-              placeholder="e.g., In Review"
+              placeholder="ex.: Em revisão"
               required
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="slug">Slug (for API)</Label>
+            <Label htmlFor="slug">Slug (para a API)</Label>
             <Input
               id="slug"
               value={slug}
               onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ''))}
-              placeholder="e.g., in_review"
+              placeholder="ex.: em_revisao"
               pattern="^[a-z0-9_]+$"
               required
             />
             <p className="text-xs text-muted-foreground">
-              Lowercase letters, numbers, and underscores only
+              Apenas letras minúsculas, números e sublinhados
             </p>
           </div>
 
           <div className="space-y-2">
-            <Label>Color</Label>
+            <Label>Cor</Label>
             <ColorPickerGrid selectedColor={color} onColorChange={setColor} />
           </div>
 
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              Cancelar
             </Button>
             <Button type="submit" disabled={isSubmitting || !name || !slug}>
-              {isSubmitting ? 'Creating...' : 'Create status'}
+              {isSubmitting ? 'Criando...' : 'Criar status'}
             </Button>
           </DialogFooter>
         </form>

@@ -4,9 +4,9 @@ import { ComputerDesktopIcon, MoonIcon, SunIcon } from '@heroicons/react/24/soli
 import { cn } from '@/lib/shared/utils'
 
 const themes = [
-  { value: 'system', label: 'System', icon: ComputerDesktopIcon },
-  { value: 'light', label: 'Light', icon: SunIcon },
-  { value: 'dark', label: 'Dark', icon: MoonIcon },
+  { value: 'system', label: 'Sistema', icon: ComputerDesktopIcon },
+  { value: 'light', label: 'Claro', icon: SunIcon },
+  { value: 'dark', label: 'Escuro', icon: MoonIcon },
 ] as const
 
 export function ThemeSwitcher() {

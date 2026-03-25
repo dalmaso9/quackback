@@ -114,7 +114,7 @@ export function OAuthButtons({ callbackUrl = '/', providers, onSuccess }: OAuthB
     <div className="space-y-3">
       {popupBlocked && (
         <p className="text-sm text-destructive text-center">
-          Popup blocked. Please allow popups for this site.
+          Pop-up bloqueado. Permita pop-ups para este site.
         </p>
       )}
       {providers.map((provider) => {
@@ -129,7 +129,7 @@ export function OAuthButtons({ callbackUrl = '/', providers, onSuccess }: OAuthB
             disabled={loadingProvider !== null}
           >
             {IconComponent && <IconComponent className="mr-2 h-4 w-4" />}
-            {loadingProvider === provider.id ? 'Signing in...' : `Continue with ${provider.name}`}
+            {loadingProvider === provider.id ? 'Entrando...' : `Continuar com ${provider.name}`}
           </Button>
         )
       })}

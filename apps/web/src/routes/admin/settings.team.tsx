@@ -143,7 +143,7 @@ function TeamPage() {
         id: 'name',
         accessorFn: (row) =>
           `${row.type === 'member' ? row.name : row.name || ''} ${row.email || ''} ${row.role || ''}`,
-        header: 'Name',
+        header: 'Nome',
         cell: ({ row }) => {
           const r = row.original
           if (r.type === 'member') {
@@ -156,7 +156,7 @@ function TeamPage() {
                   <p className="font-medium text-foreground truncate">
                     {r.name}
                     {isCurrentUser && (
-                      <span className="ml-2 text-xs text-muted-foreground">(you)</span>
+                      <span className="ml-2 text-xs text-muted-foreground">(você)</span>
                     )}
                   </p>
                   {r.email && <p className="text-sm text-muted-foreground truncate">{r.email}</p>}
@@ -179,12 +179,12 @@ function TeamPage() {
                     variant="outline"
                     className="ml-2 bg-amber-500/10 text-amber-600 border-amber-500/30"
                   >
-                    Invited
+                    Convidado
                   </Badge>
                 </p>
                 {r.name && <p className="text-sm text-muted-foreground truncate">{r.email}</p>}
                 <p className="text-xs text-muted-foreground">
-                  Sent {formatInviteDate(r.lastSentAt || r.createdAt)}
+                  Enviado {formatInviteDate(r.lastSentAt || r.createdAt)}
                   <span className="mx-1">&middot;</span>
                   <span className={expiry.className}>{expiry.text}</span>
                 </p>
@@ -195,7 +195,7 @@ function TeamPage() {
       },
       {
         id: 'role',
-        header: 'Role',
+        header: 'Função',
         meta: { className: 'w-0 whitespace-nowrap' },
         cell: ({ row }) => {
           const r = row.original
@@ -207,14 +207,14 @@ function TeamPage() {
                 isAdmin(role) ? 'bg-primary/10 text-primary border-primary/30' : 'bg-muted/50'
               }
             >
-              {role}
+              {isAdmin(role) ? 'Admin' : 'Membro'}
             </Badge>
           )
         },
       },
       {
         id: 'actions',
-        header: () => <span className="sr-only">Actions</span>,
+        header: () => <span className="sr-only">Ações</span>,
         meta: { className: 'w-0 whitespace-nowrap' },
         cell: ({ row }) => {
           const r = row.original
@@ -240,7 +240,7 @@ function TeamPage() {
             <div className="flex justify-end">
               <MemberActions
                 principalId={r.principalId}
-                memberName={r.name || r.email || 'Unnamed'}
+                memberName={r.name || r.email || 'Sem nome'}
                 memberRole={r.role as 'admin' | 'member'}
                 isLastAdmin={isLastAdmin && isAdmin(r.role)}
               />
@@ -266,7 +266,7 @@ function TeamPage() {
   return (
     <div className="space-y-6 max-w-5xl">
       <div className="lg:hidden">
-        <BackLink to="/admin/settings">Settings</BackLink>
+        <BackLink to="/admin/settings">Configurações</BackLink>
       </div>
       <TeamHeader workspaceName={settings!.name} />
 
@@ -277,7 +277,7 @@ function TeamPage() {
           <SearchInput
             value={search}
             onChange={setSearch}
-            placeholder="Search by name, email, or role..."
+            placeholder="Buscar por nome, email ou função..."
           />
         </div>
 
@@ -305,7 +305,9 @@ function TeamPage() {
                   colSpan={columns.length}
                   className="h-24 text-center text-muted-foreground"
                 >
-                  {data.length === 0 ? 'No team members yet' : 'No results found'}
+                  {data.length === 0
+                    ? 'Ainda não há membros na equipe'
+                    : 'Nenhum resultado encontrado'}
                 </TableCell>
               </TableRow>
             ) : (

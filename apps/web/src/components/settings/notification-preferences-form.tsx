@@ -23,7 +23,7 @@ export function NotificationPreferencesForm() {
         const result = await getNotificationPreferencesFn()
         setPreferences(result as Preferences)
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load preferences')
+        setError(err instanceof Error ? err.message : 'Não foi possível carregar as preferências')
       } finally {
         setLoading(false)
       }
@@ -53,7 +53,7 @@ export function NotificationPreferencesForm() {
       } catch (err) {
         // Revert on error
         setPreferences((prev) => (prev ? { ...prev, [key]: !value } : prev))
-        setError(err instanceof Error ? err.message : 'Failed to save preference')
+        setError(err instanceof Error ? err.message : 'Não foi possível salvar a preferência')
       } finally {
         setSaving(null)
       }
@@ -92,9 +92,9 @@ export function NotificationPreferencesForm() {
       {/* Status change emails */}
       <div className="flex items-center justify-between py-2">
         <div className="space-y-0.5">
-          <p className="text-sm font-medium">Status updates</p>
+          <p className="text-sm font-medium">Atualizações de status</p>
           <p className="text-xs text-muted-foreground">
-            Get notified when feedback you&apos;re subscribed to changes status
+            Receba uma notificação quando o feedback que você acompanha mudar de status
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -112,9 +112,9 @@ export function NotificationPreferencesForm() {
       {/* New comment emails */}
       <div className="flex items-center justify-between py-2">
         <div className="space-y-0.5">
-          <p className="text-sm font-medium">New comments</p>
+          <p className="text-sm font-medium">Novos comentários</p>
           <p className="text-xs text-muted-foreground">
-            Get notified when someone comments on feedback you&apos;re subscribed to
+            Receba uma notificação quando alguém comentar em um feedback que você acompanha
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -130,8 +130,8 @@ export function NotificationPreferencesForm() {
       </div>
 
       <p className="text-xs text-muted-foreground pt-2">
-        You automatically subscribe to posts you submit, vote on, or comment on. Use the bell icon
-        on each post to manage individual subscriptions.
+        Você passa a seguir automaticamente os posts que cria, vota ou comenta. Use o sino em cada
+        post para gerenciar assinaturas individuais.
       </p>
     </div>
   )

@@ -36,14 +36,14 @@ docker compose up -d
 docker compose logs -f
 ```
 
-Open http://localhost:3000 to access Featurepool.
+Open http://localhost:5433 to access Featurepool.
 
 ### Using Docker Run
 
 ```bash
 docker run -d \
   --name featurepool \
-  -p 3000:3000 \
+  -p 5433:5433 \
   -e DATABASE_URL="postgresql://user:pass@host:5432/featurepool" \
   -e SECRET_KEY="your-secret-key-at-least-32-chars" \
   -e BASE_URL="https://your-domain.com" \
@@ -92,7 +92,7 @@ docker pull ghcr.io/featurepoolhq/featurepool:latest-enterprise
 
 | Variable         | Description             | Default      |
 | ---------------- | ----------------------- | ------------ |
-| `PORT`           | Server port             | `3000`       |
+| `PORT`           | Server port             | `5433`       |
 | `NODE_ENV`       | Environment             | `production` |
 | `RESEND_API_KEY` | Email service (Resend)  | -            |
 | `EMAIL_FROM`     | From address for emails | -            |
@@ -197,7 +197,7 @@ bun run setup
 # Start development server
 bun run dev
 
-# Open http://localhost:3000
+# Open http://localhost:5433
 ```
 
 ---
@@ -221,7 +221,7 @@ server {
     ssl_certificate_key /path/to/key.pem;
 
     location / {
-        proxy_pass http://localhost:3000;
+        proxy_pass http://localhost:5433;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -238,7 +238,7 @@ server {
 
 ```
 feedback.yourcompany.com {
-    reverse_proxy localhost:3000
+    reverse_proxy localhost:5433
 }
 ```
 
@@ -270,7 +270,7 @@ Enterprise features require a license key:
 ```bash
 docker run -d \
   --name featurepool \
-  -p 3000:3000 \
+  -p 5433:5433 \
   -e DATABASE_URL="postgresql://..." \
   -e SECRET_KEY="..." \
   -e FEATUREPOOL_LICENSE_KEY="your-license-key" \
@@ -346,7 +346,7 @@ Common issues:
 
 - Missing required environment variables
 - Database connection failed
-- Port 3000 already in use
+- Port 5433 already in use
 
 ### Database Connection Failed
 

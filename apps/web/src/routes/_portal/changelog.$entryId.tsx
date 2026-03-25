@@ -28,8 +28,8 @@ export const Route = createFileRoute('/_portal/changelog/$entryId')({
   head: ({ loaderData }) => {
     if (!loaderData) return {}
     const { entryTitle, entryId, workspaceName, baseUrl } = loaderData
-    const title = `${entryTitle} - ${workspaceName} Changelog`
-    const description = `${entryTitle}. A product update from ${workspaceName}.`
+    const title = `${entryTitle} - Changelog do ${workspaceName}`
+    const description = `${entryTitle}. Uma atualização de produto do ${workspaceName}.`
     const canonicalUrl = baseUrl ? `${baseUrl}/changelog/${entryId}` : ''
     return {
       meta: [
@@ -71,9 +71,9 @@ function ChangelogEntryPage() {
 function ChangelogNotFound() {
   return (
     <div className="py-16 text-center">
-      <h1 className="text-2xl font-bold mb-2">Changelog entry not found</h1>
+      <h1 className="text-2xl font-bold mb-2">Entrada de changelog não encontrada</h1>
       <p className="text-muted-foreground mb-6">
-        This entry may have been removed or is not yet published.
+        Esta entrada pode ter sido removida ou ainda não foi publicada.
       </p>
       <BackLink to="/changelog">Changelog</BackLink>
     </div>

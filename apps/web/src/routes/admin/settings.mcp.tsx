@@ -33,17 +33,17 @@ function McpSettingsPage() {
   return (
     <div className="space-y-6 max-w-5xl">
       <div className="lg:hidden">
-        <BackLink to="/admin/settings">Settings</BackLink>
+        <BackLink to="/admin/settings">Configurações</BackLink>
       </div>
       <PageHeader
         icon={CommandLineIcon}
-        title="MCP Server"
-        description="Allow AI tools to interact with your feedback data via the Model Context Protocol"
+        title="Servidor MCP"
+        description="Permita que ferramentas de IA interajam com seus dados de feedback via Model Context Protocol"
       />
 
       <SettingsCard
-        title="MCP Server"
-        description="Enable or disable the MCP endpoint for AI integrations"
+        title="Servidor MCP"
+        description="Ative ou desative o endpoint MCP para integrações com IA"
       >
         <McpServerSettings initialEnabled={developerConfigQuery.data.mcpEnabled} />
       </SettingsCard>

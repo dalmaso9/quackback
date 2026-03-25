@@ -84,7 +84,7 @@ export function CreateBoardDialog({
         {trigger ?? (
           <Button>
             <PlusIcon className="h-4 w-4" />
-            New board
+            Novo board
           </Button>
         )}
       </DialogTrigger>
@@ -92,15 +92,15 @@ export function CreateBoardDialog({
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader>
-              <DialogTitle>Create new board</DialogTitle>
+              <DialogTitle>Criar novo board</DialogTitle>
               <DialogDescription>
-                Create a new feedback board to collect ideas from your users.
+                Crie um novo board de feedback para coletar ideias dos seus usuários.
               </DialogDescription>
             </DialogHeader>
 
             <div className="space-y-4 py-4">
               {mutation.isError && (
-                <FormError message={mutation.error?.message ?? 'An error occurred'} />
+                <FormError message={mutation.error?.message ?? 'Ocorreu um erro'} />
               )}
 
               <FormField
@@ -108,9 +108,9 @@ export function CreateBoardDialog({
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Board name</FormLabel>
+                    <FormLabel>Nome do board</FormLabel>
                     <FormControl>
-                      <Input placeholder="Feature Requests" {...field} />
+                      <Input placeholder="Solicitações de funcionalidades" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -122,10 +122,10 @@ export function CreateBoardDialog({
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>Descrição</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Share your ideas and vote on features"
+                        placeholder="Compartilhe suas ideias e vote em funcionalidades"
                         rows={3}
                         {...field}
                       />
@@ -141,8 +141,10 @@ export function CreateBoardDialog({
                 render={({ field }) => (
                   <FormItem className="flex items-center justify-between">
                     <div className="space-y-0.5">
-                      <FormLabel>Public board</FormLabel>
-                      <FormDescription>Anyone can view and submit feedback</FormDescription>
+                      <FormLabel>Board público</FormLabel>
+                      <FormDescription>
+                        Qualquer pessoa pode visualizar e enviar feedback
+                      </FormDescription>
                     </div>
                     <FormControl>
                       <Switch checked={field.value} onCheckedChange={field.onChange} />
@@ -154,10 +156,10 @@ export function CreateBoardDialog({
 
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => setIsOpen(false)}>
-                Cancel
+                Cancelar
               </Button>
               <Button type="submit" disabled={mutation.isPending}>
-                {mutation.isPending ? 'Creating...' : 'Create board'}
+                {mutation.isPending ? 'Criando...' : 'Criar board'}
               </Button>
             </DialogFooter>
           </form>

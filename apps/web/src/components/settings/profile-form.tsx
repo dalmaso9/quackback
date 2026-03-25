@@ -62,13 +62,13 @@ export function ProfileForm({ user }: ProfileFormProps) {
     // Validate file type
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
     if (!allowedTypes.includes(file.type)) {
-      toast.error('Invalid file type. Allowed: JPEG, PNG, GIF, WebP')
+      toast.error('Tipo de arquivo inválido. Permitidos: JPEG, PNG, GIF, WebP')
       return
     }
 
     // Validate file size (5MB) - basic check before cropping
     if (file.size > 5 * 1024 * 1024) {
-      toast.error('File too large. Maximum size is 5MB')
+      toast.error('Arquivo muito grande. O tamanho máximo é 5 MB')
       return
     }
 
@@ -92,10 +92,10 @@ export function ProfileForm({ user }: ProfileFormProps) {
     uploadMutation.mutate(croppedBlob, {
       onSuccess: () => {
         router.invalidate()
-        toast.success('Avatar updated')
+        toast.success('Avatar atualizado')
       },
       onError: (error) => {
-        toast.error(error instanceof Error ? error.message : 'Failed to upload avatar')
+        toast.error(error instanceof Error ? error.message : 'Não foi possível enviar o avatar')
       },
     })
   }
@@ -112,10 +112,10 @@ export function ProfileForm({ user }: ProfileFormProps) {
     deleteMutation.mutate(undefined, {
       onSuccess: () => {
         router.invalidate()
-        toast.success('Avatar removed')
+        toast.success('Avatar removido')
       },
       onError: (error) => {
-        toast.error(error instanceof Error ? error.message : 'Failed to remove avatar')
+        toast.error(error instanceof Error ? error.message : 'Não foi possível remover o avatar')
       },
     })
   }
@@ -124,12 +124,12 @@ export function ProfileForm({ user }: ProfileFormProps) {
     e.preventDefault()
 
     if (name.trim().length < 2) {
-      toast.error('Name must be at least 2 characters')
+      toast.error('O nome deve ter pelo menos 2 caracteres')
       return
     }
 
     if (name === user.name) {
-      toast.info('No changes to save')
+      toast.info('Nenhuma alteração para salvar')
       return
     }
 
@@ -147,9 +147,9 @@ export function ProfileForm({ user }: ProfileFormProps) {
           },
         }
       )
-      toast.success('Profile updated')
+      toast.success('Perfil atualizado')
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Failed to update profile')
+      toast.error(error instanceof Error ? error.message : 'Não foi possível atualizar o perfil')
     } finally {
       setIsSubmitting(false)
     }
@@ -163,7 +163,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
       {/* Avatar Section */}
       <div className="rounded-xl border border-border/50 bg-card p-6 shadow-sm">
         <h2 className="font-medium mb-1">Avatar</h2>
-        <p className="text-sm text-muted-foreground mb-4">Your profile picture</p>
+        <p className="text-sm text-muted-foreground mb-4">Sua foto de perfil</p>
         <div className="flex items-center gap-4">
           <div className="relative group">
             <Avatar className="h-16 w-16">
@@ -186,12 +186,12 @@ export function ProfileForm({ user }: ProfileFormProps) {
               {isUploadingAvatar ? (
                 <>
                   <ArrowPathIcon className="h-4 w-4 animate-spin mr-2" />
-                  Uploading...
+                  Enviando...
                 </>
               ) : (
                 <>
                   <CameraIcon className="h-4 w-4 mr-2" />
-                  Change avatar
+                  Alterar avatar
                 </>
               )}
             </Button>
@@ -224,13 +224,13 @@ export function ProfileForm({ user }: ProfileFormProps) {
       {/* Personal Information */}
       <form onSubmit={handleSubmit}>
         <div className="rounded-xl border border-border/50 bg-card p-6 shadow-sm">
-          <h2 className="font-medium mb-1">Personal Information</h2>
-          <p className="text-sm text-muted-foreground mb-4">Update your personal details</p>
+          <h2 className="font-medium mb-1">Informações pessoais</h2>
+          <p className="text-sm text-muted-foreground mb-4">Atualize seus dados pessoais</p>
           <div className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <label htmlFor="name" className="text-sm font-medium">
-                  Full name
+                  Nome completo
                 </label>
                 <Input
                   id="name"
@@ -248,7 +248,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
                   type="email"
                   defaultValue={user.email ?? ''}
                   disabled
-                  placeholder="No email"
+                  placeholder="Sem email"
                 />
               </div>
             </div>
@@ -257,10 +257,10 @@ export function ProfileForm({ user }: ProfileFormProps) {
                 {isSubmitting ? (
                   <>
                     <ArrowPathIcon className="h-4 w-4 animate-spin mr-2" />
-                    Saving...
+                    Salvando...
                   </>
                 ) : (
-                  'Save changes'
+                  'Salvar alterações'
                 )}
               </Button>
             </div>

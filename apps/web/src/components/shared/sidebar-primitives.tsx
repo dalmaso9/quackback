@@ -85,7 +85,7 @@ export function SidebarDivider() {
  * None label for empty values
  */
 export function SidebarNoneLabel() {
-  return <span className="text-sm italic text-muted-foreground">None</span>
+  return <span className="text-sm italic text-muted-foreground">Nenhum</span>
 }
 
 // ============================================================================
@@ -223,7 +223,7 @@ export function BadgeList<T extends BadgeItem>({
       )}
       {renderAddPopover?.()}
       {items.length === 0 && !renderAddPopover && (
-        <span className="text-xs text-muted-foreground/60 italic">None</span>
+        <span className="text-xs text-muted-foreground/60 italic">Nenhum</span>
       )}
     </div>
   )

@@ -16,6 +16,7 @@ import type { TenantSettings } from '@/lib/server/domains/settings'
 import { ThemeProvider } from '@/components/theme-provider'
 import { DefaultErrorPage } from '@/components/shared/error-page'
 import { OttHandler } from '@/components/shared/ott-handler'
+import { APP_LOCALE } from '@/lib/shared/locale'
 
 // Lazy load devtools in development only
 const TanStackRouterDevtools = import.meta.env.DEV
@@ -87,7 +88,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       },
       {
         name: 'description',
-        content: 'Open-source customer feedback platform',
+        content: 'Plataforma open source de feedback de clientes',
       },
       {
         property: 'og:type',
@@ -119,7 +120,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       {
         rel: 'alternate',
         type: 'application/rss+xml',
-        title: 'Changelog RSS Feed',
+        title: 'Feed RSS do changelog',
         href: '/changelog/feed',
       },
     ],
@@ -159,7 +160,7 @@ function DevtoolsWrapper() {
  */
 function MinimalDocument({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={APP_LOCALE} suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -205,7 +206,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   const defaultTheme = forcedTheme ?? themeCookie ?? 'system'
 
   return (
-    <html lang="en" className={defaultTheme} suppressHydrationWarning>
+    <html lang={APP_LOCALE} className={defaultTheme} suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>

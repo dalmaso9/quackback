@@ -48,7 +48,7 @@ export function MemberActions({
       await queryClient.invalidateQueries({ queryKey: ['settings', 'team'] })
     } catch (error) {
       console.error('Failed to update role:', error)
-      alert(error instanceof Error ? error.message : 'Failed to update role')
+      alert(error instanceof Error ? error.message : 'Não foi possível atualizar a função')
     } finally {
       setIsLoading(false)
       setRoleDialogOpen(false)
@@ -62,7 +62,7 @@ export function MemberActions({
       await queryClient.invalidateQueries({ queryKey: ['settings', 'team'] })
     } catch (error) {
       console.error('Failed to remove member:', error)
-      alert(error instanceof Error ? error.message : 'Failed to remove team member')
+      alert(error instanceof Error ? error.message : 'Não foi possível remover o membro da equipe')
     } finally {
       setIsLoading(false)
       setRemoveDialogOpen(false)
@@ -75,7 +75,7 @@ export function MemberActions({
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="h-8 w-8">
             <EllipsisVerticalIcon className="h-4 w-4" />
-            <span className="sr-only">Member actions</span>
+            <span className="sr-only">Ações do membro</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
@@ -87,12 +87,12 @@ export function MemberActions({
             {newRole === 'admin' ? (
               <>
                 <ShieldCheckIcon className="h-4 w-4" />
-                Make admin
+                Tornar admin
               </>
             ) : (
               <>
                 <UserIcon className="h-4 w-4" />
-                Make member
+                Tornar membro
               </>
             )}
           </DropdownMenuItem>
@@ -104,7 +104,7 @@ export function MemberActions({
             className="gap-2"
           >
             <UserMinusIcon className="h-4 w-4" />
-            Remove from team
+            Remover da equipe
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -112,22 +112,22 @@ export function MemberActions({
       <ConfirmDialog
         open={roleDialogOpen}
         onOpenChange={setRoleDialogOpen}
-        title={newRole === 'admin' ? 'Make admin?' : 'Remove admin privileges?'}
+        title={newRole === 'admin' ? 'Tornar admin?' : 'Remover privilégios de admin?'}
         description={
           newRole === 'admin' ? (
             <>
-              <strong>{memberName}</strong> will be able to manage team settings, members, and all
-              workspace configurations.
+              <strong>{memberName}</strong> poderá gerenciar configurações da equipe, membros e
+              todas as configurações do espaço de trabalho.
             </>
           ) : (
             <>
-              <strong>{memberName}</strong> will no longer be able to manage team settings or
-              members.
+              <strong>{memberName}</strong> não poderá mais gerenciar configurações da equipe nem
+              membros.
             </>
           )
         }
         confirmLabel={
-          isLoading ? 'Updating...' : newRole === 'admin' ? 'Make admin' : 'Remove admin'
+          isLoading ? 'Atualizando...' : newRole === 'admin' ? 'Tornar admin' : 'Remover admin'
         }
         isPending={isLoading}
         onConfirm={handleRoleChange}
@@ -136,16 +136,16 @@ export function MemberActions({
       <ConfirmDialog
         open={removeDialogOpen}
         onOpenChange={setRemoveDialogOpen}
-        title="Remove team member?"
+        title="Remover membro da equipe?"
         description={
           <>
-            <strong>{memberName}</strong> will be removed from the team and converted to a portal
-            user. They will lose access to the admin dashboard but can still interact with the
-            feedback portal.
+            <strong>{memberName}</strong> será removido da equipe e convertido em usuário do portal.
+            Ele perderá acesso ao painel administrativo, mas ainda poderá interagir com o portal de
+            feedback.
           </>
         }
         variant="destructive"
-        confirmLabel={isLoading ? 'Removing...' : 'Remove from team'}
+        confirmLabel={isLoading ? 'Removendo...' : 'Remover da equipe'}
         isPending={isLoading}
         onConfirm={handleRemove}
       />

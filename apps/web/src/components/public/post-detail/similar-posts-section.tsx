@@ -69,7 +69,7 @@ export function SimilarPostsSection({
     >
       <div className="mb-1.5 flex items-center gap-1.5 px-1">
         <LinkIcon className="h-3 w-3 text-muted-foreground/70" />
-        <h3 className="text-xs font-medium text-muted-foreground">Related</h3>
+        <h3 className="text-xs font-medium text-muted-foreground">Relacionados</h3>
       </div>
 
       <div className="space-y-0.5">

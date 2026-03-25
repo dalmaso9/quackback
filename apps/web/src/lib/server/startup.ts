@@ -12,7 +12,7 @@ export function logStartupBanner(): void {
   const runtime =
     typeof globalThis.Bun !== 'undefined' ? `bun ${Bun.version}` : `node ${process.version}`
   const env = process.env.NODE_ENV ?? 'development'
-  const port = process.env.PORT ?? '3000'
+  const port = process.env.PORT ?? '5433'
   const baseUrl = process.env.BASE_URL ?? `http://localhost:${port}`
 
   const lines = [

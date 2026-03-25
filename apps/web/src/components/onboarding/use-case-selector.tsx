@@ -19,26 +19,26 @@ interface UseCaseOption {
 const USE_CASE_OPTIONS: UseCaseOption[] = [
   {
     id: 'saas',
-    label: 'SaaS product',
-    description: 'Feature requests from business customers',
+    label: 'Produto SaaS',
+    description: 'Solicitações de funcionalidades de clientes B2B',
     icon: ComputerDesktopIcon,
   },
   {
     id: 'consumer',
-    label: 'Consumer app',
-    description: 'Feedback from your users',
+    label: 'Aplicativo de consumo',
+    description: 'Feedback dos seus usuários',
     icon: DevicePhoneMobileIcon,
   },
   {
     id: 'marketplace',
     label: 'Marketplace',
-    description: 'Feedback from buyers and sellers',
+    description: 'Feedback de compradores e vendedores',
     icon: BuildingStorefrontIcon,
   },
   {
     id: 'internal',
-    label: 'Internal team',
-    description: 'Ideas and improvements',
+    label: 'Equipe interna',
+    description: 'Ideias e melhorias',
     icon: UserGroupIcon,
   },
 ]

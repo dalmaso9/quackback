@@ -22,12 +22,12 @@ export function TeamHeader({ workspaceName }: TeamHeaderProps) {
     <>
       <PageHeader
         icon={UsersIcon}
-        title="Team Members"
-        description={`Manage who has access to ${workspaceName}`}
+        title="Membros da equipe"
+        description={`Gerencie quem tem acesso a ${workspaceName}`}
         action={
           <Button onClick={() => setShowInviteDialog(true)}>
             <PlusIcon className="h-4 w-4" />
-            Invite member
+            Convidar membro
           </Button>
         }
       />

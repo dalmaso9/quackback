@@ -28,7 +28,7 @@ export function SecretRevealDialog({
   description,
   secretLabel,
   secretValue,
-  confirmLabel = "I've saved this",
+  confirmLabel = 'Já salvei',
   children,
 }: SecretRevealDialogProps) {
   return (
@@ -44,8 +44,8 @@ export function SecretRevealDialog({
         <div className="py-4 space-y-4">
           <WarningBox
             variant="warning"
-            title={`Copy this ${secretLabel.toLowerCase()} now`}
-            description="This is the only time you'll see it. Store it securely and never share it publicly."
+            title={`Copie esta ${secretLabel.toLowerCase()} agora`}
+            description="Esta é a única vez que você verá esse valor. Armazene-o com segurança e nunca o compartilhe publicamente."
           />
 
           <div className="space-y-2">
@@ -56,7 +56,7 @@ export function SecretRevealDialog({
               </code>
               <CopyButton
                 value={secretValue ?? ''}
-                aria-label={`Copy ${secretLabel.toLowerCase()} to clipboard`}
+                aria-label={`Copiar ${secretLabel.toLowerCase()} para a área de transferência`}
               />
             </div>
           </div>

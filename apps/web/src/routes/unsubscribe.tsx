@@ -68,14 +68,14 @@ function SuccessView({ result }: { result: UnsubscribeResult }) {
               params={{ slug: result.boardSlug, postId: result.postId }}
               className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
             >
-              View Post
+              Ver post
             </Link>
           ) : (
             <Link
               to="/"
               className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
             >
-              Go to Home
+              Ir para a página inicial
             </Link>
           )}
         </div>
@@ -106,7 +106,7 @@ function ErrorView({ error }: { error: string }) {
             to="/"
             className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
           >
-            Go to Home
+            Ir para a página inicial
           </Link>
         </div>
       </div>
@@ -118,26 +118,26 @@ function getActionText(action?: string): { title: string; message: string } {
   switch (action) {
     case 'unsubscribe_post':
       return {
-        title: 'Unsubscribed',
+        title: 'Inscrição cancelada',
         message:
-          "You've been unsubscribed from this post. You won't receive any more email updates about it.",
+          'Você deixou de seguir este post. Não receberá mais atualizações por email sobre ele.',
       }
     case 'mute_post':
       return {
-        title: 'Notifications Muted',
+        title: 'Notificações silenciadas',
         message:
-          "You've muted notifications for this post. You can unmute anytime from the post page.",
+          'Você silenciou as notificações deste post. Pode reativá-las a qualquer momento na página do post.',
       }
     case 'unsubscribe_all':
       return {
-        title: 'All Emails Disabled',
+        title: 'Todos os emails desativados',
         message:
-          "You've disabled all email notifications. You can re-enable them from your settings.",
+          'Você desativou todas as notificações por email. Pode reativá-las nas configurações.',
       }
     default:
       return {
-        title: 'Success',
-        message: 'Your preferences have been updated.',
+        title: 'Sucesso',
+        message: 'Suas preferências foram atualizadas.',
       }
   }
 }
@@ -146,25 +146,25 @@ function getErrorContent(error: string): { title: string; message: string } {
   switch (error) {
     case 'missing':
       return {
-        title: 'Missing Token',
-        message: 'No unsubscribe token was provided. Please use the link from your email.',
+        title: 'Token ausente',
+        message: 'Nenhum token de cancelamento foi informado. Use o link enviado para o seu email.',
       }
     case 'invalid':
     case 'expired':
     case 'used':
       return {
-        title: 'Link Expired',
-        message: 'This unsubscribe link has already been used or has expired.',
+        title: 'Link expirado',
+        message: 'Este link de cancelamento já foi usado ou expirou.',
       }
     case 'failed':
       return {
-        title: 'Something Went Wrong',
-        message: "We couldn't process your request. Please try again later.",
+        title: 'Algo deu errado',
+        message: 'Não foi possível processar sua solicitação. Tente novamente mais tarde.',
       }
     default:
       return {
-        title: 'Invalid Link',
-        message: 'This unsubscribe link is not valid. Please use the link from your email.',
+        title: 'Link inválido',
+        message: 'Este link de cancelamento não é válido. Use o link enviado para o seu email.',
       }
   }
 }

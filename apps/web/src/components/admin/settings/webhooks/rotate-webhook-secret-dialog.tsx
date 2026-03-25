@@ -49,7 +49,7 @@ export function RotateWebhookSecretDialog({
       onOpenChange(false)
     } catch (err) {
       console.error('Failed to rotate webhook secret:', err)
-      setError(err instanceof Error ? err.message : 'Failed to rotate secret')
+      setError(err instanceof Error ? err.message : 'Não foi possível rotacionar o segredo')
     }
   }
 
@@ -57,17 +57,17 @@ export function RotateWebhookSecretDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Rotate Signing Secret</DialogTitle>
+          <DialogTitle>Rotacionar segredo de assinatura</DialogTitle>
           <DialogDescription>
-            Generate a new signing secret for this webhook endpoint.
+            Gere um novo segredo de assinatura para este endpoint de webhook.
           </DialogDescription>
         </DialogHeader>
 
         <div className="py-4">
           <WarningBox
             variant="warning"
-            title="The old secret will stop working immediately"
-            description="Your endpoint will need to use the new secret to verify webhook signatures. Make sure to update your code before rotating."
+            title="O segredo antigo deixará de funcionar imediatamente"
+            description="Seu endpoint precisará usar o novo segredo para verificar assinaturas do webhook. Atualize seu código antes de rotacionar."
           />
 
           <div className="mt-4 rounded-lg border p-3 bg-muted/30">
@@ -87,10 +87,10 @@ export function RotateWebhookSecretDialog({
             onClick={() => onOpenChange(false)}
             disabled={isPending}
           >
-            Cancel
+            Cancelar
           </Button>
           <Button onClick={handleRotate} disabled={isPending}>
-            {isPending ? 'Rotating...' : 'Rotate Secret'}
+            {isPending ? 'Rotacionando...' : 'Rotacionar segredo'}
           </Button>
         </DialogFooter>
       </DialogContent>

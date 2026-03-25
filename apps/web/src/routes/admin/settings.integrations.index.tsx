@@ -31,12 +31,12 @@ function IntegrationsPage() {
   return (
     <div className="space-y-6 max-w-5xl">
       <div className="lg:hidden">
-        <BackLink to="/admin/settings">Settings</BackLink>
+        <BackLink to="/admin/settings">Configurações</BackLink>
       </div>
       <PageHeader
         icon={PuzzlePieceIcon}
-        title="Integrations"
-        description="Connect external services to automate workflows"
+        title="Integrações"
+        description="Conecte serviços externos para automatizar fluxos de trabalho"
       />
 
       <IntegrationList catalog={catalogQuery.data} integrations={integrations} />

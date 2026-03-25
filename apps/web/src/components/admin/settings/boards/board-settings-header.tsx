@@ -27,7 +27,7 @@ export function BoardSettingsHeader({ currentBoard, allBoards }: BoardSettingsHe
     <div className="space-y-1">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <h1 className="text-xl font-medium text-foreground">Board Settings</h1>
+          <h1 className="text-xl font-medium text-foreground">Configurações do board</h1>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="gap-2" data-testid="board-switcher">
@@ -54,7 +54,7 @@ export function BoardSettingsHeader({ currentBoard, allBoards }: BoardSettingsHe
         <CreateBoardDialog />
       </div>
       <p className="text-sm text-muted-foreground">
-        Configure your feedback board settings and preferences
+        Configure as preferências e opções do seu board de feedback
       </p>
     </div>
   )

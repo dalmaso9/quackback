@@ -29,68 +29,68 @@ export const DEFAULT_BOARD_OPTIONS: DefaultBoardOption[] = [
   // Common boards (most use cases)
   {
     id: 'feature-requests',
-    name: 'Feature Requests',
-    description: 'Collect ideas and suggestions for new features',
+    name: 'Solicitações de funcionalidades',
+    description: 'Colete ideias e sugestões para novas funcionalidades',
     icon: LightBulbIcon,
     useCases: ['saas', 'consumer', 'marketplace'],
   },
   {
     id: 'bug-reports',
-    name: 'Bug Reports',
-    description: 'Track issues and problems reported by users',
+    name: 'Relatos de bugs',
+    description: 'Acompanhe problemas e falhas reportados pelos usuários',
     icon: BugAntIcon,
     useCases: ['saas', 'consumer', 'marketplace'],
   },
   // SaaS-specific
   {
     id: 'integrations',
-    name: 'Integrations',
-    description: 'Requests for new integrations and connections',
+    name: 'Integrações',
+    description: 'Pedidos de novas integrações e conexões',
     icon: PuzzlePieceIcon,
     useCases: ['saas'],
   },
   // Consumer-specific
   {
     id: 'ux-feedback',
-    name: 'UX Feedback',
-    description: 'Feedback on usability and user experience',
+    name: 'Feedback de UX',
+    description: 'Feedback sobre usabilidade e experiência do usuário',
     icon: SparklesIcon,
     useCases: ['consumer'],
   },
   // Platform-specific
   {
     id: 'seller-feedback',
-    name: 'Seller Feedback',
-    description: 'Feedback from sellers and vendors',
+    name: 'Feedback de vendedores',
+    description: 'Feedback de vendedores e parceiros',
     icon: BuildingStorefrontIcon,
     useCases: ['marketplace'],
   },
   {
     id: 'buyer-feedback',
-    name: 'Buyer Feedback',
-    description: 'Feedback from buyers and customers',
+    name: 'Feedback de compradores',
+    description: 'Feedback de compradores e clientes',
     icon: UserGroupIcon,
     useCases: ['marketplace'],
   },
   // Internal-specific
   {
     id: 'product-ideas',
-    name: 'Product Ideas',
-    description: 'Ideas for new products or features',
+    name: 'Ideias de produto',
+    description: 'Ideias para novos produtos ou funcionalidades',
     icon: LightBulbIcon,
     useCases: ['internal'],
   },
   {
     id: 'process-improvements',
-    name: 'Process Improvements',
-    description: 'Suggestions to improve workflows and processes',
+    name: 'Melhorias de processo',
+    description: 'Sugestões para melhorar fluxos e processos',
     icon: WrenchScrewdriverIcon,
     useCases: ['internal'],
   },
   {
     id: 'general-feedback',
-    name: 'General Feedback',
-    description: 'Open feedback for any topic',
+    name: 'Feedback geral',
+    description: 'Feedback aberto para qualquer assunto',
     icon: ChatBubbleOvalLeftEllipsisIcon,
     useCases: ['internal'],
   },
@@ -129,14 +129,14 @@ export function getBoardOptionsForUseCase(useCase?: UseCaseType): DefaultBoardOp
 export function getUseCaseLabel(useCase?: UseCaseType): string {
   switch (useCase) {
     case 'saas':
-      return 'SaaS products'
+      return 'produtos SaaS'
     case 'consumer':
-      return 'consumer apps'
+      return 'aplicativos de consumo'
     case 'marketplace':
       return 'marketplaces'
     case 'internal':
-      return 'teams'
+      return 'equipes'
     default:
-      return 'your product'
+      return 'seu produto'
   }
 }

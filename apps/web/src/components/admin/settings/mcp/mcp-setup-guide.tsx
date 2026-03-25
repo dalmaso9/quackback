@@ -194,10 +194,10 @@ const CLIENTS: ClientDef[] = [
     label: 'Claude Code',
     filename: '.mcp.json',
     lang: 'js',
-    note: 'Add to your project root.',
+    note: 'Adicione na raiz do seu projeto.',
     variants: [
-      { id: 'oauth', label: 'OAuth (recommended)', code: claudeCodeOAuthConfig },
-      { id: 'api-key', label: 'API Key', code: claudeCodeApiKeyConfig },
+      { id: 'oauth', label: 'OAuth (recomendado)', code: claudeCodeOAuthConfig },
+      { id: 'api-key', label: 'Chave de API', code: claudeCodeApiKeyConfig },
     ],
   },
   {
@@ -205,7 +205,7 @@ const CLIENTS: ClientDef[] = [
     label: 'Cursor',
     filename: '.cursor/mcp.json',
     lang: 'js',
-    note: 'Set FEATUREPOOL_API_KEY in your environment. OAuth is not supported.',
+    note: 'Defina FEATUREPOOL_API_KEY no seu ambiente. OAuth não é suportado.',
     code: cursorConfig,
   },
   {
@@ -213,7 +213,7 @@ const CLIENTS: ClientDef[] = [
     label: 'VS Code',
     filename: '.vscode/mcp.json',
     lang: 'js',
-    note: 'VS Code prompts for the API key on first use. Uses "servers" not "mcpServers". OAuth is not supported.',
+    note: 'O VS Code solicita a chave de API no primeiro uso. Usa "servers" em vez de "mcpServers". OAuth não é suportado.',
     code: vscodeConfig,
   },
   {
@@ -221,7 +221,7 @@ const CLIENTS: ClientDef[] = [
     label: 'Windsurf',
     filename: '~/.codeium/windsurf/mcp_config.json',
     lang: 'js',
-    note: 'Set FEATUREPOOL_API_KEY in your environment. Uses "serverUrl" not "url". OAuth is not supported.',
+    note: 'Defina FEATUREPOOL_API_KEY no seu ambiente. Usa "serverUrl" em vez de "url". OAuth não é suportado.',
     code: windsurfConfig,
   },
   {
@@ -229,10 +229,10 @@ const CLIENTS: ClientDef[] = [
     label: 'Claude Desktop',
     filename: 'claude_desktop_config.json',
     lang: 'js',
-    note: 'Requires mcp-remote bridge (Node.js must be installed).',
+    note: 'Requer a ponte mcp-remote (Node.js precisa estar instalado).',
     variants: [
-      { id: 'oauth', label: 'OAuth (recommended)', code: claudeDesktopOAuthConfig },
-      { id: 'api-key', label: 'API Key', code: claudeDesktopApiKeyConfig },
+      { id: 'oauth', label: 'OAuth (recomendado)', code: claudeDesktopOAuthConfig },
+      { id: 'api-key', label: 'Chave de API', code: claudeDesktopApiKeyConfig },
     ],
   },
 ]
@@ -311,9 +311,9 @@ export function McpSetupGuide({ endpointUrl }: McpSetupGuideProps) {
         <div className="flex flex-col border-b lg:border-b-0 lg:border-r border-border divide-y divide-border">
           {/* Header */}
           <div className="p-5">
-            <h3 className="text-sm font-semibold text-foreground">Setup Guide</h3>
+            <h3 className="text-sm font-semibold text-foreground">Guia de configuração</h3>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Connect an AI tool to your MCP server
+              Conecte uma ferramenta de IA ao seu servidor MCP
             </p>
           </div>
 
@@ -351,14 +351,14 @@ export function McpSetupGuide({ endpointUrl }: McpSetupGuideProps) {
               <span className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary text-[11px] font-bold shrink-0">
                 2
               </span>
-              <span className="text-xs font-medium text-foreground">Authentication</span>
+              <span className="text-xs font-medium text-foreground">Autenticação</span>
             </div>
             <p className="text-[11px] text-muted-foreground ml-7">
-              Use an{' '}
+              Use uma{' '}
               <Link to="/admin/settings/api-keys" className="text-primary hover:underline">
-                API key
+                chave de API
               </Link>{' '}
-              or OAuth (browser login). Claude Code and Claude Desktop support both.
+              ou OAuth (login no navegador). Claude Code e Claude Desktop suportam ambos.
             </p>
           </div>
 
@@ -369,8 +369,10 @@ export function McpSetupGuide({ endpointUrl }: McpSetupGuideProps) {
                 3
               </span>
               <div>
-                <span className="text-xs font-medium text-foreground">Choose your client</span>
-                <p className="text-[11px] text-muted-foreground">Add the config to your project</p>
+                <span className="text-xs font-medium text-foreground">Escolha seu cliente</span>
+                <p className="text-[11px] text-muted-foreground">
+                  Adicione a configuração ao seu projeto
+                </p>
               </div>
             </div>
 
@@ -428,7 +430,7 @@ export function McpSetupGuide({ endpointUrl }: McpSetupGuideProps) {
           <div className="p-5 space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-foreground">
-                {MCP_TOOLS.length} tools available
+                {MCP_TOOLS.length} ferramentas disponíveis
               </span>
               <a
                 href="https://www.featurepool.io/docs/mcp/reference"
@@ -436,7 +438,7 @@ export function McpSetupGuide({ endpointUrl }: McpSetupGuideProps) {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 text-[11px] text-primary hover:underline"
               >
-                Reference
+                Referência
                 <ArrowTopRightOnSquareIcon className="h-3 w-3" />
               </a>
             </div>
@@ -473,12 +475,12 @@ export function McpSetupGuide({ endpointUrl }: McpSetupGuideProps) {
               {copiedCode ? (
                 <>
                   <CheckIcon className="h-3 w-3 text-green-400" />
-                  <span className="text-green-400">Copied</span>
+                  <span className="text-green-400">Copiado</span>
                 </>
               ) : (
                 <>
                   <ClipboardDocumentIcon className="h-3 w-3" />
-                  <span>Copy</span>
+                  <span>Copiar</span>
                 </>
               )}
             </button>

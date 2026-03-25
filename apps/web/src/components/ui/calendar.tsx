@@ -4,6 +4,7 @@ import * as React from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 import { DayFlag, DayPicker, SelectionState, UI } from 'react-day-picker'
 
+import { DATE_FNS_LOCALE } from '@/lib/shared/locale'
 import { cn } from '@/lib/shared/utils'
 import { buttonVariants } from '@/components/ui/button'
 
@@ -12,6 +13,7 @@ export type CalendarProps = React.ComponentProps<typeof DayPicker>
 function Calendar({ className, classNames, showOutsideDays = true, ...props }: CalendarProps) {
   return (
     <DayPicker
+      locale={DATE_FNS_LOCALE}
       showOutsideDays={showOutsideDays}
       className={cn('p-2', className)}
       classNames={{

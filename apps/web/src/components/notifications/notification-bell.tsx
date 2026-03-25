@@ -44,7 +44,7 @@ export function NotificationBell({ className, popoverSide = 'right' }: Notificat
                 'transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring',
                 className
               )}
-              aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ''}`}
+              aria-label={`Notificações${unreadCount > 0 ? ` (${unreadCount} não lidas)` : ''}`}
             >
               <BellIcon className="h-5 w-5" />
               {unreadCount > 0 && (
@@ -64,7 +64,7 @@ export function NotificationBell({ className, popoverSide = 'right' }: Notificat
           </PopoverTrigger>
         </TooltipTrigger>
         <TooltipContent side={isBottomAligned ? 'bottom' : 'right'} sideOffset={8}>
-          Notifications
+          Notificações
         </TooltipContent>
       </Tooltip>
       <PopoverContent

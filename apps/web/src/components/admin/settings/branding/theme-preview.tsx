@@ -75,7 +75,7 @@ const DEFAULT_FONT = '"Inter", ui-sans-serif, system-ui, sans-serif'
 export function ThemePreview({
   previewMode,
   logoUrl,
-  workspaceName = 'Acme Feedback',
+  workspaceName = 'Feedback Acme',
   cssVariables,
 }: ThemePreviewProps) {
   const modeVars = cssVariables[previewMode === 'dark' ? 'dark' : 'light']
@@ -161,10 +161,10 @@ function PortalPreview({ logoUrl, displayName }: { logoUrl?: string | null; disp
           }}
         >
           <h1 className="text-xl font-bold text-[var(--foreground)] tracking-tight">
-            Share your feedback
+            Compartilhe seu feedback
           </h1>
           <p className="text-sm text-[var(--muted-foreground)] mt-1">
-            Help us improve {displayName} by sharing ideas, suggestions, or reporting issues.
+            Ajude-nos a melhorar {displayName} compartilhando ideias, sugestões ou problemas.
           </p>
         </div>
 
@@ -172,14 +172,14 @@ function PortalPreview({ logoUrl, displayName }: { logoUrl?: string | null; disp
         <div className="flex items-center justify-between gap-4">
           {/* Sort Pills */}
           <div className="flex items-center gap-1">
-            <SortPill icon={ArrowTrendingUpIcon} label="Top" active />
-            <SortPill icon={ClockIcon} label="New" />
-            <SortPill icon={FireIcon} label="Trending" />
+            <SortPill icon={ArrowTrendingUpIcon} label="Em alta" active />
+            <SortPill icon={ClockIcon} label="Recentes" />
+            <SortPill icon={FireIcon} label="Tendência" />
           </div>
           {/* Create Post Button */}
           <button className="portal-submit-button inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md transition-colors bg-[var(--portal-button-background)] text-[var(--portal-button-foreground)] hover:bg-[var(--portal-button-background)]/90">
             <PlusIcon className="h-4 w-4" />
-            Create post
+            Criar post
           </button>
         </div>
 
@@ -194,14 +194,14 @@ function PortalPreview({ logoUrl, displayName }: { logoUrl?: string | null; disp
           <PostCard
             votes={42}
             hasVoted
-            title="Add dark mode support"
-            description="Would love to have dark mode for better accessibility and reduced eye strain during night usage."
-            status="In Progress"
+            title="Adicionar suporte a modo escuro"
+            description="Seria ótimo ter modo escuro para melhorar a acessibilidade e reduzir o cansaço visual durante o uso noturno."
+            status="Em andamento"
             statusColor="var(--primary)"
             comments={12}
             authorName="James Wilson"
-            timeAgo="2 days ago"
-            tags={['Feature', 'UI']}
+            timeAgo="há 2 dias"
+            tags={['Funcionalidade', 'UI']}
           />
           {/* Divider between cards */}
           <div
@@ -210,12 +210,12 @@ function PortalPreview({ logoUrl, displayName }: { logoUrl?: string | null; disp
           <PostCard
             votes={28}
             hasVoted={false}
-            title="Mobile app improvements"
-            description="The mobile experience could be smoother with better touch interactions and faster loading."
-            status="Planned"
+            title="Melhorias no app mobile"
+            description="A experiência no mobile pode ficar mais fluida com melhores interações por toque e carregamento mais rápido."
+            status="Planejado"
             comments={8}
             authorName="Emily Davies"
-            timeAgo="5 days ago"
+            timeAgo="há 5 dias"
             boardName="Mobile"
           />
         </div>

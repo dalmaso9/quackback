@@ -13,8 +13,8 @@ function PreferencesPage() {
     <div className="space-y-6">
       <PageHeader
         icon={Cog6ToothIcon}
-        title="Preferences"
-        description="Customize your experience"
+        title="Preferências"
+        description="Personalize sua experiência"
         animate
       />
 
@@ -23,10 +23,10 @@ function PreferencesPage() {
         className="rounded-xl border border-border/50 bg-card p-6 shadow-sm animate-in fade-in duration-200 fill-mode-backwards"
         style={{ animationDelay: '75ms' }}
       >
-        <h2 className="font-medium mb-1">Appearance</h2>
-        <p className="text-sm text-muted-foreground mb-4">Customize how the app looks</p>
+        <h2 className="font-medium mb-1">Aparência</h2>
+        <p className="text-sm text-muted-foreground mb-4">Personalize a aparência da aplicação</p>
         <div className="space-y-3">
-          <p className="text-sm font-medium">Theme</p>
+          <p className="text-sm font-medium">Tema</p>
           <ThemeSwitcher />
         </div>
       </div>
@@ -36,9 +36,9 @@ function PreferencesPage() {
         className="rounded-xl border border-border/50 bg-card p-6 shadow-sm animate-in fade-in duration-200 fill-mode-backwards"
         style={{ animationDelay: '150ms' }}
       >
-        <h2 className="font-medium mb-1">Email Notifications</h2>
+        <h2 className="font-medium mb-1">Notificações por email</h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Manage email notifications for posts you&apos;re subscribed to
+          Gerencie as notificações por email dos posts que você acompanha
         </p>
         <NotificationPreferencesForm />
       </div>

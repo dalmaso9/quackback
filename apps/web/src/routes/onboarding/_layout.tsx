@@ -3,10 +3,10 @@ import { getSetupState, isOnboardingComplete } from '@/lib/shared/db-types'
 import { CheckIcon } from '@heroicons/react/24/solid'
 
 const ONBOARDING_STEPS = [
-  { path: '/onboarding/account', label: 'Account' },
-  { path: '/onboarding/usecase', label: 'Use case' },
-  { path: '/onboarding/workspace', label: 'Workspace' },
-  { path: '/onboarding/boards', label: 'Boards' },
+  { path: '/onboarding/account', label: 'Conta' },
+  { path: '/onboarding/usecase', label: 'Uso' },
+  { path: '/onboarding/workspace', label: 'Espaço' },
+  { path: '/onboarding/boards', label: 'Quadros' },
 ] as const
 
 /**

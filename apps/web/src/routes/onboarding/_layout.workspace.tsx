@@ -46,7 +46,7 @@ function WorkspaceStep() {
 
   async function handleSubmit() {
     if (!workspaceName.trim() || workspaceName.trim().length < 2) {
-      setError('Please enter a workspace name')
+      setError('Digite um nome para o espaço de trabalho')
       return
     }
 
@@ -63,7 +63,7 @@ function WorkspaceStep() {
 
       navigate({ to: '/onboarding/boards' })
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong')
+      setError(err instanceof Error ? err.message : 'Algo deu errado')
     } finally {
       setIsLoading(false)
     }
@@ -73,8 +73,10 @@ function WorkspaceStep() {
     <div className="w-full max-w-md mx-auto">
       {/* Header */}
       <div className="text-center mb-8">
-        <h1 className="text-2xl font-bold mb-2">Name your workspace</h1>
-        <p className="text-muted-foreground">This will be shown on your public feedback portal.</p>
+        <h1 className="text-2xl font-bold mb-2">Dê um nome ao seu espaço de trabalho</h1>
+        <p className="text-muted-foreground">
+          Isso será exibido no seu portal público de feedback.
+        </p>
       </div>
 
       {/* Form card */}
@@ -94,14 +96,14 @@ function WorkspaceStep() {
 
           <div className="space-y-2">
             <label htmlFor="workspaceName" className="text-sm font-medium">
-              Workspace name
+              Nome do espaço de trabalho
             </label>
             <Input
               id="workspaceName"
               type="text"
               value={workspaceName}
               onChange={(e) => setWorkspaceName(e.target.value)}
-              placeholder="Acme Corp"
+              placeholder="Empresa Exemplo"
               autoFocus
               disabled={isLoading}
               className="h-11"
@@ -113,7 +115,7 @@ function WorkspaceStep() {
             disabled={isLoading || !workspaceName.trim()}
             className="w-full h-11"
           >
-            {isLoading ? <ArrowPathIcon className="h-4 w-4 animate-spin" /> : 'Continue'}
+            {isLoading ? <ArrowPathIcon className="h-4 w-4 animate-spin" /> : 'Continuar'}
           </Button>
         </form>
       </div>

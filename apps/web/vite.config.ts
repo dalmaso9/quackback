@@ -36,7 +36,7 @@ export default defineConfig(({ mode }) => {
       __BUILD_TIME__: JSON.stringify(buildInfo.buildTime),
     },
     server: {
-      port: 3000,
+      port: 5433,
       allowedHosts: true,
       hmr: {
         overlay: false,

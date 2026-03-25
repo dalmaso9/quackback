@@ -33,17 +33,17 @@ function ApiKeysPage() {
   return (
     <div className="space-y-6 max-w-5xl">
       <div className="lg:hidden">
-        <BackLink to="/admin/settings">Settings</BackLink>
+        <BackLink to="/admin/settings">Configurações</BackLink>
       </div>
       <PageHeader
         icon={KeyIcon}
-        title="API Keys"
-        description="Manage API keys for programmatic access to Featurepool"
+        title="Chaves de API"
+        description="Gerencie chaves de API para acesso programático ao Featurepool"
       />
 
       <SettingsCard
-        title="API Keys"
-        description="Create and manage API keys to authenticate with the Featurepool REST API. Keys are shown only once when created."
+        title="Chaves de API"
+        description="Crie e gerencie chaves de API para autenticar na API REST do Featurepool. As chaves são exibidas apenas uma vez ao serem criadas."
       >
         <ApiKeysSettings apiKeys={apiKeysQuery.data} />
       </SettingsCard>

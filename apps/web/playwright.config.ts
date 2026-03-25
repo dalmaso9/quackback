@@ -27,7 +27,7 @@ export default defineConfig({
   /* Shared settings for all the projects below */
   use: {
     /* Base URL for tenant subdomain (acme workspace from seed data) */
-    baseURL: 'http://acme.localhost:3000',
+    baseURL: 'http://acme.localhost:5433',
 
     /* Collect trace when retrying the failed test */
     trace: 'on-first-retry',
@@ -87,7 +87,7 @@ export default defineConfig({
   /* Run local dev server before starting the tests */
   webServer: {
     command: 'bun run dev',
-    url: 'http://acme.localhost:3000',
+    url: 'http://acme.localhost:5433',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
   },

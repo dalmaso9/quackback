@@ -69,11 +69,9 @@ function PrivateNoteCard({ children }: { children: React.ReactNode }) {
     <div className="rounded-lg border border-amber-500/25 bg-amber-500/[0.04] dark:bg-amber-950/30 overflow-hidden">
       <div className="flex items-center gap-2 px-4 py-2 border-b border-amber-500/20 bg-amber-500/[0.06] dark:bg-amber-500/[0.08]">
         <LockClosedIcon className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
-        <span className="text-xs font-medium text-amber-700 dark:text-amber-400">
-          Internal note
-        </span>
+        <span className="text-xs font-medium text-amber-700 dark:text-amber-400">Nota interna</span>
         <span className="text-xs text-amber-600/60 dark:text-amber-500/50">
-          &middot; only visible to your team
+          &middot; visível apenas para sua equipe
         </span>
       </div>
       <div className="px-3 py-1 space-y-0">{children}</div>
@@ -183,9 +181,9 @@ export function CommentThread({
 
     return (
       <div className="flex items-center justify-center gap-3 py-4 px-4 bg-muted/30 [border-radius:var(--radius)] border border-border/30">
-        <p className="text-sm text-muted-foreground">Sign in to comment</p>
+        <p className="text-sm text-muted-foreground">Entre para comentar</p>
         <Button variant="outline" size="sm" onClick={onAuthRequired}>
-          Sign in
+          Entrar
         </Button>
       </div>
     )
@@ -197,7 +195,7 @@ export function CommentThread({
 
       {comments.length === 0 ? (
         <p className="text-muted-foreground text-center py-4">
-          No comments yet. Be the first to share your thoughts!
+          Ainda não há comentários. Seja a primeira pessoa a compartilhar sua opinião!
         </p>
       ) : (
         <div className="space-y-4">
@@ -342,12 +340,12 @@ function CommentItem({
               <Avatar className="h-8 w-8 shrink-0 opacity-40">
                 <AvatarFallback className="text-xs">?</AvatarFallback>
               </Avatar>
-              <span className="text-sm text-muted-foreground italic">[deleted]</span>
+              <span className="text-sm text-muted-foreground italic">[excluído]</span>
               <span className="text-muted-foreground text-xs">·</span>
               <TimeAgo date={comment.createdAt} className="text-xs text-muted-foreground" />
             </div>
             <p className="text-sm mt-1.5 ml-10 text-muted-foreground italic">
-              {comment.isRemovedByTeam ? '[removed]' : '[deleted]'}
+              {comment.isRemovedByTeam ? '[removido]' : '[excluído]'}
             </p>
             {/* Collapse toggle for replies */}
             {hasReplies && (
@@ -432,11 +430,14 @@ function CommentItem({
           <div className="flex items-center gap-2">
             <Avatar className="h-8 w-8 shrink-0">
               {comment.avatarUrl && (
-                <AvatarImage src={comment.avatarUrl} alt={comment.authorName || 'Comment author'} />
+                <AvatarImage
+                  src={comment.avatarUrl}
+                  alt={comment.authorName || 'Autor do comentário'}
+                />
               )}
               <AvatarFallback className="text-xs">{getInitials(comment.authorName)}</AvatarFallback>
             </Avatar>
-            <span className="font-medium text-sm">{comment.authorName || 'Anonymous'}</span>
+            <span className="font-medium text-sm">{comment.authorName || 'Anônimo'}</span>
             {comment.isTeamMember && (
               <Badge className="text-[10px] px-1.5 py-0 bg-primary/15 text-primary border-0">
                 {teamBadgeLogoUrl ? (
@@ -446,19 +447,19 @@ function CommentItem({
                     className="h-2.5 w-2.5 mr-0.5 rounded-sm object-contain"
                   />
                 ) : null}
-                Team
+                Equipe
               </Badge>
             )}
             {comment.isPrivate && !insidePrivateCard && (
               <Badge className="text-[10px] px-1.5 py-0 bg-amber-500/15 text-amber-700 dark:text-amber-400 border-0">
                 <LockClosedIcon className="h-2.5 w-2.5 mr-0.5" />
-                Internal note
+                Nota interna
               </Badge>
             )}
             {isPinned && (
               <Badge className="text-[10px] px-1.5 py-0 bg-primary/15 text-primary border-0">
                 <MapPinIcon className="h-2.5 w-2.5 mr-0.5" />
-                Pinned
+                Fixado
               </Badge>
             )}
             <span className="text-muted-foreground text-xs">·</span>
@@ -474,7 +475,7 @@ function CommentItem({
           {comment.statusChange && (
             <div className="flex items-center gap-1.5 ml-10 mt-1.5 text-xs text-muted-foreground">
               <ArrowRightIcon className="h-3 w-3 shrink-0" />
-              <span>changed status to</span>
+              <span>alterou o status para</span>
               <StatusBadge
                 name={comment.statusChange.toName}
                 color={comment.statusChange.toColor}
@@ -563,7 +564,7 @@ function CommentItem({
                 data-testid="reply-button"
               >
                 <ArrowUturnLeftIcon className="h-3 w-3 mr-1" />
-                Reply
+                Responder
               </Button>
             )}
 
@@ -577,7 +578,7 @@ function CommentItem({
                 disabled={isPinPending}
               >
                 <MapPinIcon className="h-3 w-3 mr-1" />
-                {isPinned ? 'Unpin' : 'Pin'}
+                {isPinned ? 'Desafixar' : 'Fixar'}
               </Button>
             )}
 
@@ -591,7 +592,7 @@ function CommentItem({
                 disabled={isBeingRestored}
               >
                 <ArrowUturnLeftIcon className="h-3 w-3 mr-1" />
-                {isBeingRestored ? 'Restoring...' : 'Restore'}
+                {isBeingRestored ? 'Restaurando...' : 'Restaurar'}
               </Button>
             )}
 
@@ -605,7 +606,7 @@ function CommentItem({
                 disabled={isBeingDeleted}
               >
                 <TrashIcon className="h-3 w-3 mr-1" />
-                {isBeingDeleted ? 'Deleting...' : 'Delete'}
+                {isBeingDeleted ? 'Excluindo...' : 'Excluir'}
               </Button>
             )}
           </div>

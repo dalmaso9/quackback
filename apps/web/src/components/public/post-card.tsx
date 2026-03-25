@@ -248,11 +248,11 @@ export function PostCard({
         <DropdownMenuContent align="end" className="w-44">
           <DropdownMenuItem onClick={() => window.open(`/b/${boardSlug}/posts/${id}`, '_blank')}>
             <ArrowTopRightOnSquareIcon className="h-4 w-4" />
-            View in Portal
+            Ver no portal
           </DropdownMenuItem>
           <DropdownMenuItem onClick={handleCopyLink}>
             <LinkIcon className="h-4 w-4" />
-            Copy Link
+            Copiar link
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -269,7 +269,7 @@ export function PostCard({
               type="button"
               onClick={(e) => e.preventDefault()}
               className="p-1 -m-1 rounded hover:bg-muted/50 transition-colors"
-              aria-label="Post options"
+              aria-label="Opções do post"
             >
               <EllipsisHorizontalIcon className="h-4 w-4" />
             </button>
@@ -283,18 +283,18 @@ export function PostCard({
                 }}
               >
                 <PencilIcon className="h-4 w-4" />
-                Edit
+                Editar
               </DropdownMenuItem>
             ) : (
               <Tooltip>
                 <TooltipTrigger asChild>
                   <DropdownMenuItem disabled>
                     <PencilIcon className="h-4 w-4" />
-                    Edit
+                    Editar
                   </DropdownMenuItem>
                 </TooltipTrigger>
                 <TooltipContent side="left">
-                  <p>{editReason || 'Edit not allowed'}</p>
+                  <p>{editReason || 'Edição não permitida'}</p>
                 </TooltipContent>
               </Tooltip>
             )}
@@ -307,18 +307,18 @@ export function PostCard({
                 }}
               >
                 <TrashIcon className="h-4 w-4" />
-                Delete
+                Excluir
               </DropdownMenuItem>
             ) : (
               <Tooltip>
                 <TooltipTrigger asChild>
                   <DropdownMenuItem disabled>
                     <TrashIcon className="h-4 w-4" />
-                    Delete
+                    Excluir
                   </DropdownMenuItem>
                 </TooltipTrigger>
                 <TooltipContent side="left">
-                  <p>{deleteReason || 'Delete not allowed'}</p>
+                  <p>{deleteReason || 'Exclusão não permitida'}</p>
                 </TooltipContent>
               </Tooltip>
             )}

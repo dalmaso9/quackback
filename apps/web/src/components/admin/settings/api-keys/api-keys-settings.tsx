@@ -17,6 +17,7 @@ import { RevokeApiKeyDialog } from './revoke-api-key-dialog'
 import { RotateApiKeyDialog } from './rotate-api-key-dialog'
 import type { ApiKey } from '@/lib/server/domains/api-keys'
 import { formatDistanceToNow } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 
 interface ApiKeysSettingsProps {
   apiKeys: ApiKey[]
@@ -61,12 +62,12 @@ export function ApiKeysSettings({ apiKeys }: ApiKeysSettingsProps) {
         <div className="rounded-lg border border-dashed">
           <EmptyState
             icon={KeyIcon}
-            title="No API keys yet"
-            description="API keys let you integrate Featurepool with your apps, sync feedback programmatically, and build custom workflows."
+            title="Ainda não há chaves de API"
+            description="Chaves de API permitem integrar o Featurepool com seus apps, sincronizar feedback programaticamente e criar fluxos personalizados."
             action={
               <Button size="sm" onClick={() => setCreateDialogOpen(true)}>
                 <PlusIcon className="h-4 w-4 mr-1.5" />
-                Create your first API key
+                Criar sua primeira chave de API
               </Button>
             }
           />
@@ -77,11 +78,11 @@ export function ApiKeysSettings({ apiKeys }: ApiKeysSettingsProps) {
       {apiKeys.length > 0 && (
         <div className="flex items-center justify-between">
           <p className="text-sm text-muted-foreground">
-            {apiKeys.length} active {apiKeys.length === 1 ? 'key' : 'keys'}
+            {apiKeys.length} {apiKeys.length === 1 ? 'chave ativa' : 'chaves ativas'}
           </p>
           <Button size="sm" onClick={() => setCreateDialogOpen(true)}>
             <PlusIcon className="h-4 w-4 mr-1.5" />
-            Create Key
+            Criar chave
           </Button>
         </div>
       )}
@@ -105,18 +106,21 @@ export function ApiKeysSettings({ apiKeys }: ApiKeysSettingsProps) {
                       {key.keyPrefix}...
                     </code>
                     <span className="hidden sm:inline">·</span>
-                    <span>Created {formatDistanceToNow(key.createdAt, { addSuffix: true })}</span>
+                    <span>
+                      Criada {formatDistanceToNow(key.createdAt, { addSuffix: true, locale: ptBR })}
+                    </span>
                     {key.lastUsedAt ? (
                       <>
                         <span className="hidden sm:inline">·</span>
                         <span>
-                          Last used {formatDistanceToNow(key.lastUsedAt, { addSuffix: true })}
+                          Último uso{' '}
+                          {formatDistanceToNow(key.lastUsedAt, { addSuffix: true, locale: ptBR })}
                         </span>
                       </>
                     ) : (
                       <>
                         <span className="hidden sm:inline">·</span>
-                        <span className="text-amber-600 dark:text-amber-400">Never used</span>
+                        <span className="text-amber-600 dark:text-amber-400">Nunca usada</span>
                       </>
                     )}
                   </div>
@@ -129,7 +133,7 @@ export function ApiKeysSettings({ apiKeys }: ApiKeysSettingsProps) {
                   variant="outline"
                   size="sm"
                   onClick={() => handleRotateClick(key)}
-                  aria-label={`Rotate ${key.name} API key`}
+                  aria-label={`Rotacionar chave de API ${key.name}`}
                 >
                   <ArrowPathIcon className="h-4 w-4" />
                 </Button>
@@ -137,7 +141,7 @@ export function ApiKeysSettings({ apiKeys }: ApiKeysSettingsProps) {
                   variant="outline"
                   size="sm"
                   onClick={() => handleRevokeClick(key)}
-                  aria-label={`Revoke ${key.name} API key`}
+                  aria-label={`Revogar chave de API ${key.name}`}
                   className="text-destructive hover:text-destructive"
                 >
                   <TrashIcon className="h-4 w-4" />
@@ -148,21 +152,21 @@ export function ApiKeysSettings({ apiKeys }: ApiKeysSettingsProps) {
               <div className="sm:hidden self-end">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm" aria-label="Key actions">
+                    <Button variant="outline" size="sm" aria-label="Ações da chave">
                       <EllipsisVerticalIcon className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem onClick={() => handleRotateClick(key)}>
                       <ArrowPathIcon className="h-4 w-4 mr-2" />
-                      Rotate Key
+                      Rotacionar chave
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => handleRevokeClick(key)}
                       className="text-destructive focus:text-destructive"
                     >
                       <TrashIcon className="h-4 w-4 mr-2" />
-                      Revoke Key
+                      Revogar chave
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>

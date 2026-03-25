@@ -62,7 +62,7 @@ export function EditWebhookDialog({ webhook, open, onOpenChange }: EditWebhookDi
     setError(null)
 
     if (selectedEvents.length === 0) {
-      setError('Select at least one event')
+      setError('Selecione pelo menos um evento')
       return
     }
 
@@ -83,7 +83,7 @@ export function EditWebhookDialog({ webhook, open, onOpenChange }: EditWebhookDi
 
       onOpenChange(false)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update webhook')
+      setError(err instanceof Error ? err.message : 'Não foi possível atualizar o webhook')
     }
   }
 
@@ -104,14 +104,14 @@ export function EditWebhookDialog({ webhook, open, onOpenChange }: EditWebhookDi
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>Edit Webhook</DialogTitle>
-            <DialogDescription>Update webhook configuration.</DialogDescription>
+            <DialogTitle>Editar webhook</DialogTitle>
+            <DialogDescription>Atualize a configuração do webhook.</DialogDescription>
           </DialogHeader>
 
           <form onSubmit={handleSubmit}>
             <div className="space-y-4 py-4">
               <div className="space-y-2">
-                <Label htmlFor="edit-url">Endpoint URL</Label>
+                <Label htmlFor="edit-url">URL do endpoint</Label>
                 <Input
                   id="edit-url"
                   type="url"
@@ -124,7 +124,7 @@ export function EditWebhookDialog({ webhook, open, onOpenChange }: EditWebhookDi
               </div>
 
               <div className="space-y-2">
-                <Label>Events</Label>
+                <Label>Eventos</Label>
                 <div className="space-y-2">
                   {WEBHOOK_EVENT_CONFIG.map((event) => (
                     <label
@@ -136,7 +136,7 @@ export function EditWebhookDialog({ webhook, open, onOpenChange }: EditWebhookDi
                         onCheckedChange={() => toggleEvent(event.id)}
                         disabled={isPending}
                         className="mt-0.5"
-                        aria-label={`Subscribe to ${event.label} events`}
+                        aria-label={`Assinar eventos de ${event.label}`}
                       />
                       <div>
                         <p className="text-sm font-medium">{event.label}</p>
@@ -150,12 +150,12 @@ export function EditWebhookDialog({ webhook, open, onOpenChange }: EditWebhookDi
               <div className="flex items-center justify-between rounded-lg border p-4">
                 <div>
                   <Label htmlFor="webhook-enabled" className="text-sm font-medium">
-                    Webhook Enabled
+                    Webhook ativado
                   </Label>
                   <p className="text-xs text-muted-foreground">
                     {wasAutoDisabled
-                      ? 'Re-enabling will reset the failure count'
-                      : 'Disabled webhooks will not receive events'}
+                      ? 'Reativar redefinirá a contagem de falhas'
+                      : 'Webhooks desativados não receberão eventos'}
                   </p>
                 </div>
                 <Switch
@@ -163,21 +163,21 @@ export function EditWebhookDialog({ webhook, open, onOpenChange }: EditWebhookDi
                   checked={isEnabled}
                   onCheckedChange={setIsEnabled}
                   disabled={isPending}
-                  aria-label="Toggle webhook enabled"
+                  aria-label="Alternar webhook ativado"
                 />
               </div>
 
               {wasAutoDisabled && (
                 <WarningBox
                   variant="warning"
-                  title={`Auto-disabled after ${webhook.failureCount} failures`}
-                  description={webhook.lastError ? `Last error: ${webhook.lastError}` : undefined}
+                  title={`Desativado automaticamente após ${webhook.failureCount} falhas`}
+                  description={webhook.lastError ? `Último erro: ${webhook.lastError}` : undefined}
                 />
               )}
 
               {/* Rotate Secret Section */}
               <div className="space-y-2">
-                <Label>Signing Secret</Label>
+                <Label>Segredo de assinatura</Label>
                 {newSecret ? (
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 rounded-lg bg-green-500/10 border border-green-500/20 p-3">
@@ -186,17 +186,17 @@ export function EditWebhookDialog({ webhook, open, onOpenChange }: EditWebhookDi
                         value={newSecret}
                         variant="ghost"
                         size="sm"
-                        aria-label="Copy secret to clipboard"
+                        aria-label="Copiar segredo para a área de transferência"
                       />
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      Save this secret now. It won't be shown again.
+                      Salve este segredo agora. Ele não será exibido novamente.
                     </p>
                   </div>
                 ) : (
                   <div className="flex items-center justify-between rounded-lg border p-3">
                     <p className="text-sm text-muted-foreground">
-                      Rotate to generate a new signing secret
+                      Rotacione para gerar um novo segredo de assinatura
                     </p>
                     <Button
                       type="button"
@@ -204,10 +204,10 @@ export function EditWebhookDialog({ webhook, open, onOpenChange }: EditWebhookDi
                       size="sm"
                       onClick={() => setRotateDialogOpen(true)}
                       disabled={isPending}
-                      aria-label="Rotate signing secret"
+                      aria-label="Rotacionar segredo de assinatura"
                     >
                       <ArrowPathIcon className="h-4 w-4 mr-1.5" />
-                      Rotate Secret
+                      Rotacionar segredo
                     </Button>
                   </div>
                 )}
@@ -223,10 +223,10 @@ export function EditWebhookDialog({ webhook, open, onOpenChange }: EditWebhookDi
                 onClick={() => onOpenChange(false)}
                 disabled={isPending}
               >
-                Cancel
+                Cancelar
               </Button>
               <Button type="submit" disabled={isPending || !url || selectedEvents.length === 0}>
-                {isPending ? 'Saving...' : 'Save Changes'}
+                {isPending ? 'Salvando...' : 'Salvar alterações'}
               </Button>
             </DialogFooter>
           </form>
