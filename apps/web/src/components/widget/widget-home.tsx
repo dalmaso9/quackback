@@ -438,7 +438,7 @@ export function WidgetHome({
                     className="border-t border-border bg-muted/30"
                   >
                     {needsEmail && (
-                      <div className="px-3 pt-2 pb-1 flex gap-2">
+                      <div className="px-3 pt-2 pb-1 flex gap-2 min-w-0 overflow-hidden">
                         <input
                           type="email"
                           required
