@@ -408,28 +408,38 @@ export function WidgetHome({
                     />
                   </motion.div>
 
-                  {!isSearching && searchResults && searchResults.posts.length > 0 && (
-                    <div className="px-3 pb-2">
-                      <p className="text-[10px] font-medium text-muted-foreground/60 flex items-center gap-1 mb-1.5">
-                        <LightBulbIcon className="w-3 h-3" />
-                        Similar ideas
-                      </p>
-                      <div className="space-y-0.5">
-                        {searchResults.posts.slice(0, 3).map((post) => (
-                          <WidgetPostRow
-                            key={post.id}
-                            post={post}
-                            statusMap={statusMap}
-                            compact
-                            canVote={canVote}
-                            ensureSession={ensureSession}
-                            onAuthRequired={() => handleAuthRequired(post.id)}
-                            onSelect={() => onPostSelect?.(post.id)}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                  <AnimatePresence>
+                    {!isSearching && searchResults && searchResults.posts.length > 0 && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.15, ease: 'easeOut' }}
+                        className="overflow-hidden"
+                      >
+                        <div className="px-3 pb-2">
+                          <p className="text-[10px] font-medium text-muted-foreground/60 flex items-center gap-1 mb-1.5">
+                            <LightBulbIcon className="w-3 h-3" />
+                            Similar ideas
+                          </p>
+                          <div className="space-y-0.5">
+                            {searchResults.posts.slice(0, 3).map((post) => (
+                              <WidgetPostRow
+                                key={post.id}
+                                post={post}
+                                statusMap={statusMap}
+                                compact
+                                canVote={canVote}
+                                ensureSession={ensureSession}
+                                onAuthRequired={() => handleAuthRequired(post.id)}
+                                onSelect={() => onPostSelect?.(post.id)}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
 
                   {error && (
                     <div className="px-3 pb-2">
