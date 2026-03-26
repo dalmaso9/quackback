@@ -76,7 +76,7 @@ export function WidgetShell({
       <div className="flex-1 overflow-hidden min-h-0">{children}</div>
 
       {/* Bottom tab bar + footer */}
-      <div className="border-t border-border shrink-0">
+      <div className="border-t border-border/40 shrink-0">
         {showTabBar && (
           <div className="flex">
             <button
