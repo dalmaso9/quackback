@@ -4,6 +4,8 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { ArrowLeftIcon, XMarkIcon, LightBulbIcon, NewspaperIcon } from '@heroicons/react/24/solid'
 import { cn } from '@/lib/shared/utils'
 import { Avatar } from '@/components/ui/avatar'
+import { UserStatsBar } from '@/components/shared/user-stats'
+import { getWidgetAuthHeaders } from '@/lib/client/widget-auth'
 import { useWidgetAuth } from './widget-auth-provider'
 
 export type WidgetTab = 'feedback' | 'changelog'
@@ -168,6 +170,9 @@ function UserAvatarPopover({
                 <p className="text-[11px] text-muted-foreground truncate">{user.email}</p>
               </div>
             </div>
+          </div>
+          <div className="border-t border-border px-3 py-2.5">
+            <UserStatsBar compact headers={getWidgetAuthHeaders()} />
           </div>
         </div>
       )}

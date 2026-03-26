@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Avatar } from '@/components/ui/avatar'
+import { UserStatsBar } from '@/components/shared/user-stats'
 import {
   ArrowRightStartOnRectangleIcon,
   Cog6ToothIcon,
@@ -200,6 +201,10 @@ export function PortalHeader({
                 <p className="text-xs text-muted-foreground">{email}</p>
               </div>
             </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <div className="px-2 py-2">
+              <UserStatsBar />
+            </div>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
               <Link to="/settings">
