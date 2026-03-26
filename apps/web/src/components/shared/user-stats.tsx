@@ -18,25 +18,18 @@ function StatItem({
   compact?: boolean
 }) {
   return (
-    <div className="flex flex-col items-center gap-0.5">
-      <div className="flex items-center gap-1">
-        <Icon
-          className={
-            compact ? 'w-3 h-3 text-muted-foreground/60' : 'w-3.5 h-3.5 text-muted-foreground/60'
-          }
-        />
-        <span
-          className={cn(
-            'font-semibold tabular-nums text-foreground',
-            compact ? 'text-xs' : 'text-sm'
-          )}
-        >
-          {value ?? '-'}
+    <div className="flex flex-col items-center">
+      <span
+        className={cn('font-bold tabular-nums text-foreground', compact ? 'text-sm' : 'text-lg')}
+      >
+        {value ?? '-'}
+      </span>
+      <div className="flex items-center gap-0.5 mt-0.5">
+        <Icon className={cn('text-muted-foreground/50', compact ? 'w-2.5 h-2.5' : 'w-3 h-3')} />
+        <span className={cn('text-muted-foreground/50', compact ? 'text-[9px]' : 'text-[10px]')}>
+          {label}
         </span>
       </div>
-      <span className={cn('text-muted-foreground/60', compact ? 'text-[9px]' : 'text-[10px]')}>
-        {label}
-      </span>
     </div>
   )
 }
@@ -44,7 +37,6 @@ function StatItem({
 interface UserStatsBarProps {
   compact?: boolean
   className?: string
-  /** Auth headers for widget context (Bearer token). Portal uses cookies automatically. */
   headers?: Record<string, string>
 }
 
