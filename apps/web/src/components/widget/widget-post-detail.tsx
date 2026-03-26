@@ -324,7 +324,7 @@ export function WidgetPostDetail({
 }
 
 /** Count non-deleted comments recursively */
-function countLiveComments(
+export function countLiveComments(
   comments: { deletedAt?: Date | string | null; replies: typeof comments }[]
 ): number {
   let count = 0

@@ -60,7 +60,7 @@ async function findOrCreateSession(userId: UserId, request: Request): Promise<st
  * Verify a HS256 JWT without external libraries.
  * Returns the decoded payload or null if invalid.
  */
-function verifyHS256JWT(token: string, secret: string): Record<string, unknown> | null {
+export function verifyHS256JWT(token: string, secret: string): Record<string, unknown> | null {
   const parts = token.split('.')
   if (parts.length !== 3) return null
 

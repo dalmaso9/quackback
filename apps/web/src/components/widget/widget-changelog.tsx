@@ -14,7 +14,7 @@ function formatDate(iso: string) {
   })
 }
 
-function truncateContent(content: string, maxLength = 120): string {
+export function truncateContent(content: string, maxLength = 120): string {
   const plain = content
     .replace(/^#{1,6}\s+/gm, '')
     .replace(/\*\*(.*?)\*\*/g, '$1')
