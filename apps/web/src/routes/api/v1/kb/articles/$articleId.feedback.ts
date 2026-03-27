@@ -9,7 +9,7 @@ import {
 } from '@/lib/server/domains/api/responses'
 import { validateTypeId } from '@/lib/server/domains/api/validation'
 import { isFeatureEnabled } from '@/lib/server/domains/settings/settings.service'
-import { recordArticleFeedback } from '@/lib/server/domains/help-center'
+import { recordArticleFeedback } from '@/lib/server/domains/help-center/help-center.service'
 import type { HelpCenterArticleId, PrincipalId } from '@quackback/ids'
 
 const feedbackBody = z.object({

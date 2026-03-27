@@ -9,7 +9,10 @@ import {
   handleDomainError,
 } from '@/lib/server/domains/api/responses'
 import { isFeatureEnabled } from '@/lib/server/domains/settings/settings.service'
-import { listCategories, createCategory } from '@/lib/server/domains/help-center'
+import {
+  listCategories,
+  createCategory,
+} from '@/lib/server/domains/help-center/help-center.service'
 
 const createCategoryBody = z.object({
   name: z.string().min(1, 'Name is required').max(200),

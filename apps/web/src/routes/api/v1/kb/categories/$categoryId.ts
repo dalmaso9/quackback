@@ -10,7 +10,11 @@ import {
 } from '@/lib/server/domains/api/responses'
 import { validateTypeId } from '@/lib/server/domains/api/validation'
 import { isFeatureEnabled } from '@/lib/server/domains/settings/settings.service'
-import { getCategoryById, updateCategory, deleteCategory } from '@/lib/server/domains/help-center'
+import {
+  getCategoryById,
+  updateCategory,
+  deleteCategory,
+} from '@/lib/server/domains/help-center/help-center.service'
 import type { HelpCenterCategoryId } from '@quackback/ids'
 
 const updateCategoryBody = z.object({

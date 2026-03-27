@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { isFeatureEnabled } from '@/lib/server/domains/settings/settings.service'
-import { listPublicArticles } from '@/lib/server/domains/help-center'
+import { listPublicArticles } from '@/lib/server/domains/help-center/help-center.service'
 
 export const Route = createFileRoute('/api/widget/kb-search')({
   server: {

@@ -10,7 +10,7 @@ import {
   parsePaginationParams,
 } from '@/lib/server/domains/api/responses'
 import { isFeatureEnabled } from '@/lib/server/domains/settings/settings.service'
-import { listArticles, createArticle } from '@/lib/server/domains/help-center'
+import { listArticles, createArticle } from '@/lib/server/domains/help-center/help-center.service'
 import type { PrincipalId } from '@quackback/ids'
 
 const createArticleBody = z.object({

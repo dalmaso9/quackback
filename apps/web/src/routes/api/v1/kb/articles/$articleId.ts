@@ -16,7 +16,7 @@ import {
   publishArticle,
   unpublishArticle,
   deleteArticle,
-} from '@/lib/server/domains/help-center'
+} from '@/lib/server/domains/help-center/help-center.service'
 import type { HelpCenterArticleId } from '@quackback/ids'
 
 const updateArticleBody = z.object({
