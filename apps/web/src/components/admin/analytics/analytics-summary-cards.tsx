@@ -94,7 +94,7 @@ function Sparkline({ data, color }: { data: number[]; color: string }) {
           style={{
             height: `${Math.max((v / max) * 100, 4)}%`,
             background: color,
-            opacity: 0.3 + (i / (data.length - 1)) * 0.6,
+            opacity: data.length > 1 ? 0.3 + (i / (data.length - 1)) * 0.6 : 0.9,
           }}
         />
       ))}
