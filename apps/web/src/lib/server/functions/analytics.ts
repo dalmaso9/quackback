@@ -14,6 +14,7 @@ import {
   gte,
   isNull,
   sum,
+  desc,
   analyticsDailyStats,
   analyticsTopPosts,
   postStatuses,
@@ -80,6 +81,7 @@ export const getAnalyticsData = createServerFn({ method: 'GET' })
       posts: r.newPosts,
       votes: r.newVotes,
       comments: r.newComments,
+      users: r.newUsers,
     }))
 
     // -- Status distribution from latest day's snapshot --
@@ -155,7 +157,8 @@ export const getAnalyticsData = createServerFn({ method: 'GET' })
     }))
 
     // -- Top 5 contributors (live query, small result set) --
-    const since = start
+    // Use ISO string to ensure PostgreSQL receives a valid timestamptz literal
+    const sinceIso = start.toISOString()
     const contributorRows = await db.execute(sql`
       SELECT
         p.id as "principalId",
@@ -167,18 +170,18 @@ export const getAnalyticsData = createServerFn({ method: 'GET' })
         (COALESCE(post_counts.cnt, 0) + COALESCE(vote_counts.cnt, 0) + COALESCE(comment_counts.cnt, 0))::int as total
       FROM principal p
       LEFT JOIN (
-        SELECT owner_principal_id as pid, COUNT(*)::int as cnt
-        FROM posts WHERE created_at >= ${since} AND deleted_at IS NULL
-        GROUP BY owner_principal_id
+        SELECT principal_id as pid, COUNT(*)::int as cnt
+        FROM posts WHERE created_at >= ${sinceIso}::timestamptz AND deleted_at IS NULL
+        GROUP BY principal_id
       ) post_counts ON post_counts.pid = p.id
       LEFT JOIN (
         SELECT principal_id as pid, COUNT(*)::int as cnt
-        FROM votes WHERE created_at >= ${since}
+        FROM votes WHERE created_at >= ${sinceIso}::timestamptz
         GROUP BY principal_id
       ) vote_counts ON vote_counts.pid = p.id
       LEFT JOIN (
         SELECT principal_id as pid, COUNT(*)::int as cnt
-        FROM comments WHERE created_at >= ${since} AND deleted_at IS NULL
+        FROM comments WHERE created_at >= ${sinceIso}::timestamptz AND deleted_at IS NULL
         GROUP BY principal_id
       ) comment_counts ON comment_counts.pid = p.id
       WHERE p.type != 'anonymous' AND p.role = 'user'
@@ -217,6 +220,17 @@ export const getAnalyticsData = createServerFn({ method: 'GET' })
 
     const totalViews = Number(changelogResult[0]?.totalViews ?? 0)
 
+    const topChangelogEntries = await db
+      .select({
+        id: changelogEntries.id,
+        title: changelogEntries.title,
+        viewCount: changelogEntries.viewCount,
+      })
+      .from(changelogEntries)
+      .where(isNull(changelogEntries.deletedAt))
+      .orderBy(desc(changelogEntries.viewCount))
+      .limit(5)
+
     // -- Computed at timestamp --
     const computedAt = latestRow?.computedAt?.toISOString() ?? null
 
@@ -228,7 +242,15 @@ export const getAnalyticsData = createServerFn({ method: 'GET' })
       sourceBreakdown,
       topPosts,
       topContributors,
-      changelog: { totalViews, totalReactions: 0 },
+      changelog: {
+        totalViews,
+        totalReactions: 0,
+        topEntries: topChangelogEntries.map((e) => ({
+          id: e.id,
+          title: e.title,
+          viewCount: e.viewCount,
+        })),
+      },
       computedAt,
     }
   })
