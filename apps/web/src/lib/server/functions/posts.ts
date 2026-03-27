@@ -507,7 +507,7 @@ export const changePostBoardFn = createServerFn({ method: 'POST' })
     try {
       const auth = await requireAuth({ roles: ['admin', 'member'] })
       const result = await changeBoard(data.id as PostId, data.boardId as BoardId, {
-        principalId: auth.principal.id as PrincipalId,
+        principalId: auth.principal.id,
         userId: auth.user.id as UserId,
         email: auth.user.email,
         displayName: auth.user.name,

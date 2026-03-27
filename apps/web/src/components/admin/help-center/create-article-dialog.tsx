@@ -3,42 +3,34 @@ import { useKeyboardSubmit } from '@/lib/client/hooks/use-keyboard-submit'
 import { ModalFooter } from '@/components/shared/modal-footer'
 import { useForm } from 'react-hook-form'
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
-import { createChangelogSchema } from '@/lib/shared/schemas/changelog'
+import { createArticleSchema } from '@/lib/shared/schemas/help-center'
 import type { TiptapContent } from '@/lib/shared/schemas/posts'
-import { useCreateChangelog } from '@/lib/client/mutations/changelog'
+import { useCreateArticle } from '@/lib/client/mutations/help-center'
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
 import { PlusIcon, Cog6ToothIcon } from '@heroicons/react/24/solid'
 import { Form } from '@/components/ui/form'
-import { ChangelogFormFields } from './changelog-form-fields'
-import { ChangelogMetadataSidebar } from './changelog-metadata-sidebar'
-import type { PublishState } from '@/lib/shared/schemas/changelog'
+import { HelpCenterFormFields } from './help-center-form-fields'
+import {
+  HelpCenterMetadataSidebar,
+  HelpCenterMetadataSidebarContent,
+} from './help-center-metadata-sidebar'
 import type { JSONContent } from '@tiptap/react'
-import type { PostId } from '@quackback/ids'
 
-// Mobile-only version of the sidebar content for the sheet
-import { ChangelogMetadataSidebarContent } from './changelog-metadata-sidebar-content'
-
-interface CreateChangelogDialogProps {
-  onChangelogCreated?: () => void
-}
-
-export function CreateChangelogDialog({ onChangelogCreated }: CreateChangelogDialogProps) {
+export function CreateArticleDialog() {
   const [open, setOpen] = useState(false)
   const [contentJson, setContentJson] = useState<JSONContent | null>(null)
-  const [linkedPostIds, setLinkedPostIds] = useState<PostId[]>([])
-  const [publishState, setPublishState] = useState<PublishState>({ type: 'draft' })
+  const [categoryId, setCategoryId] = useState('')
   const [mobileSettingsOpen, setMobileSettingsOpen] = useState(false)
-  const createChangelogMutation = useCreateChangelog()
+  const createArticleMutation = useCreateArticle()
 
   const form = useForm({
-    resolver: standardSchemaResolver(createChangelogSchema),
+    resolver: standardSchemaResolver(createArticleSchema),
     defaultValues: {
+      categoryId: '',
       title: '',
       content: '',
-      linkedPostIds: [] as string[],
-      publishState: { type: 'draft' as const },
     },
   })
 
@@ -50,23 +42,28 @@ export function CreateChangelogDialog({ onChangelogCreated }: CreateChangelogDia
     [form]
   )
 
+  const handleCategoryChange = useCallback(
+    (id: string) => {
+      setCategoryId(id)
+      form.setValue('categoryId', id, { shouldValidate: true })
+    },
+    [form]
+  )
+
   const handleSubmit = form.handleSubmit((data) => {
-    createChangelogMutation.mutate(
+    createArticleMutation.mutate(
       {
+        categoryId: data.categoryId,
         title: data.title,
         content: data.content,
         contentJson: contentJson as TiptapContent | null,
-        linkedPostIds,
-        publishState,
       },
       {
         onSuccess: () => {
           setOpen(false)
           form.reset()
           setContentJson(null)
-          setLinkedPostIds([])
-          setPublishState({ type: 'draft' })
-          onChangelogCreated?.()
+          setCategoryId('')
         },
       }
     )
@@ -77,34 +74,19 @@ export function CreateChangelogDialog({ onChangelogCreated }: CreateChangelogDia
     if (!isOpen) {
       form.reset()
       setContentJson(null)
-      setLinkedPostIds([])
-      setPublishState({ type: 'draft' })
-      createChangelogMutation.reset()
+      setCategoryId('')
+      createArticleMutation.reset()
     }
   }
 
   const handleKeyDown = useKeyboardSubmit(handleSubmit)
-
-  const getSubmitButtonText = () => {
-    if (createChangelogMutation.isPending) {
-      return publishState.type === 'published' ? 'Publishing...' : 'Saving...'
-    }
-    switch (publishState.type) {
-      case 'draft':
-        return 'Save Draft'
-      case 'scheduled':
-        return 'Schedule'
-      case 'published':
-        return 'Publish Now'
-    }
-  }
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button size="sm">
           <PlusIcon className="h-4 w-4 mr-1.5" />
-          New Entry
+          New Article
         </Button>
       </DialogTrigger>
       <DialogContent
@@ -112,42 +94,35 @@ export function CreateChangelogDialog({ onChangelogCreated }: CreateChangelogDia
         onKeyDown={handleKeyDown}
         showCloseButton={false}
       >
-        <DialogTitle className="sr-only">Create changelog entry</DialogTitle>
+        <DialogTitle className="sr-only">Create help article</DialogTitle>
 
         <Form {...form}>
           <form onSubmit={handleSubmit} className="flex flex-col h-full">
-            {/* Main content area - 2 column layout on desktop */}
             <div className="flex flex-1 min-h-0">
-              {/* Left: Content editor */}
               <div className="flex-1 overflow-y-auto">
-                <ChangelogFormFields
+                <HelpCenterFormFields
                   form={form}
                   contentJson={contentJson}
                   onContentChange={handleContentChange}
                   error={
-                    createChangelogMutation.isError
-                      ? createChangelogMutation.error.message
-                      : undefined
+                    createArticleMutation.isError ? createArticleMutation.error.message : undefined
                   }
                 />
               </div>
 
-              {/* Right: Metadata sidebar (desktop only) */}
-              <ChangelogMetadataSidebar
-                publishState={publishState}
-                onPublishStateChange={setPublishState}
-                linkedPostIds={linkedPostIds}
-                onLinkedPostsChange={setLinkedPostIds}
+              <HelpCenterMetadataSidebar
+                categoryId={categoryId}
+                onCategoryChange={handleCategoryChange}
+                isPublished={false}
+                onPublishToggle={() => {}}
               />
             </div>
 
-            {/* Footer */}
             <ModalFooter
               onCancel={() => setOpen(false)}
-              submitLabel={getSubmitButtonText()}
-              isPending={createChangelogMutation.isPending}
+              submitLabel={createArticleMutation.isPending ? 'Saving...' : 'Save Draft'}
+              isPending={createArticleMutation.isPending}
             >
-              {/* Mobile settings button */}
               <Sheet open={mobileSettingsOpen} onOpenChange={setMobileSettingsOpen}>
                 <SheetTrigger asChild>
                   <Button type="button" variant="outline" size="sm" className="lg:hidden">
@@ -157,14 +132,14 @@ export function CreateChangelogDialog({ onChangelogCreated }: CreateChangelogDia
                 </SheetTrigger>
                 <SheetContent side="bottom" className="h-[70vh]">
                   <SheetHeader>
-                    <SheetTitle>Entry Settings</SheetTitle>
+                    <SheetTitle>Article Settings</SheetTitle>
                   </SheetHeader>
                   <div className="py-4 overflow-y-auto">
-                    <ChangelogMetadataSidebarContent
-                      publishState={publishState}
-                      onPublishStateChange={setPublishState}
-                      linkedPostIds={linkedPostIds}
-                      onLinkedPostsChange={setLinkedPostIds}
+                    <HelpCenterMetadataSidebarContent
+                      categoryId={categoryId}
+                      onCategoryChange={handleCategoryChange}
+                      isPublished={false}
+                      onPublishToggle={() => {}}
                     />
                   </div>
                 </SheetContent>

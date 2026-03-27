@@ -136,17 +136,17 @@ export type ExternalUserMappingId = TypeId<'user_mapping'>
 export type MergeSuggestionId = TypeId<'merge_sug'>
 
 // ============================================
-// Knowledge Base Entity IDs
+// Help Center Entity IDs
 // ============================================
 
-/** Knowledge base category ID - e.g., kb_cat_01h455vb4pex5vsknk084sn02q */
-export type KnowledgebaseCategoryId = TypeId<'kb_cat'>
+/** Help center category ID - e.g., helpcenter_category_01h455vb4pex5vsknk084sn02q */
+export type HelpCenterCategoryId = TypeId<'helpcenter_category'>
 
-/** Knowledge base article ID - e.g., kb_article_01h455vb4pex5vsknk084sn02q */
-export type KnowledgebaseArticleId = TypeId<'kb_article'>
+/** Help center article ID - e.g., helpcenter_article_01h455vb4pex5vsknk084sn02q */
+export type HelpCenterArticleId = TypeId<'helpcenter_article'>
 
-/** Knowledge base article feedback ID - e.g., kb_fb_01h455vb4pex5vsknk084sn02q */
-export type KnowledgebaseFeedbackId = TypeId<'kb_fb'>
+/** Help center article feedback ID - e.g., helpcenter_feedback_01h455vb4pex5vsknk084sn02q */
+export type HelpCenterFeedbackId = TypeId<'helpcenter_feedback'>
 
 // ============================================
 // Auth Entity IDs (Better-auth)
@@ -256,9 +256,9 @@ export interface EntityIdMap {
   webhook: WebhookId
   subscription: SubscriptionId
   invoice: InvoiceId
-  knowledgebase_category: KnowledgebaseCategoryId
-  knowledgebase_article: KnowledgebaseArticleId
-  knowledgebase_feedback: KnowledgebaseFeedbackId
+  helpcenter_category: HelpCenterCategoryId
+  helpcenter_article: HelpCenterArticleId
+  helpcenter_feedback: HelpCenterFeedbackId
 }
 
 /**

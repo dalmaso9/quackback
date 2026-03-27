@@ -27,10 +27,10 @@ export const ID_PREFIXES = {
   roadmap: 'roadmap',
   changelog: 'changelog',
 
-  // Knowledge base
-  knowledgebase_category: 'kb_cat',
-  knowledgebase_article: 'kb_article',
-  knowledgebase_feedback: 'kb_fb',
+  // Help center
+  helpcenter_category: 'helpcenter_category',
+  helpcenter_article: 'helpcenter_article',
+  helpcenter_feedback: 'helpcenter_feedback',
 
   // Integrations
   integration: 'integration',

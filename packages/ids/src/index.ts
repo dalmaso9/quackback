@@ -100,10 +100,10 @@ export type {
   FeedbackCorrectionId,
   ExternalUserMappingId,
   MergeSuggestionId,
-  // Knowledge base entities
-  KnowledgebaseCategoryId,
-  KnowledgebaseArticleId,
-  KnowledgebaseFeedbackId,
+  // Help center entities
+  HelpCenterCategoryId,
+  HelpCenterArticleId,
+  HelpCenterFeedbackId,
   // Auth entities
   WorkspaceId,
   UserId,

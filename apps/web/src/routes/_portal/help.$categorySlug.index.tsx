@@ -2,7 +2,7 @@ import { createFileRoute, notFound } from '@tanstack/react-router'
 import { PageHeader } from '@/components/shared/page-header'
 import { BackLink } from '@/components/ui/back-link'
 import { HelpCenterArticleList } from '@/components/portal/help-center'
-import { getCategoryBySlug } from '@/lib/server/domains/help-center'
+import { getPublicCategoryBySlugFn } from '@/lib/server/functions/help-center'
 import type { FeatureFlags } from '@/lib/server/domains/settings/settings.types'
 
 export const Route = createFileRoute('/_portal/help/$categorySlug/')({
@@ -11,7 +11,7 @@ export const Route = createFileRoute('/_portal/help/$categorySlug/')({
     if (!flags?.helpCenter) throw notFound()
 
     try {
-      const category = await getCategoryBySlug(params.categorySlug)
+      const category = await getPublicCategoryBySlugFn({ data: { slug: params.categorySlug } })
       return {
         category: {
           id: category.id,

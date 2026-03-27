@@ -27,13 +27,13 @@ const vector = customType<{ data: number[] }>({
 })
 
 // ============================================
-// Knowledge Base Categories
+// Help Center Categories
 // ============================================
 
-export const knowledgebaseCategories = pgTable(
+export const helpCenterCategories = pgTable(
   'kb_categories',
   {
-    id: typeIdWithDefault('kb_cat')('id').primaryKey(),
+    id: typeIdWithDefault('helpcenter_category')('id').primaryKey(),
     slug: text('slug').notNull(),
     name: text('name').notNull(),
     description: text('description'),
@@ -51,16 +51,16 @@ export const knowledgebaseCategories = pgTable(
 )
 
 // ============================================
-// Knowledge Base Articles
+// Help Center Articles
 // ============================================
 
-export const knowledgebaseArticles = pgTable(
+export const helpCenterArticles = pgTable(
   'kb_articles',
   {
-    id: typeIdWithDefault('kb_article')('id').primaryKey(),
-    categoryId: typeIdColumn('kb_cat')('category_id')
+    id: typeIdWithDefault('helpcenter_article')('id').primaryKey(),
+    categoryId: typeIdColumn('helpcenter_category')('category_id')
       .notNull()
-      .references(() => knowledgebaseCategories.id, { onDelete: 'cascade' }),
+      .references(() => helpCenterCategories.id, { onDelete: 'cascade' }),
     slug: text('slug').notNull(),
     title: text('title').notNull(),
     content: text('content').notNull(),
@@ -97,13 +97,13 @@ export const knowledgebaseArticles = pgTable(
 // Article Feedback (helpful/not helpful)
 // ============================================
 
-export const knowledgebaseArticleFeedback = pgTable(
+export const helpCenterArticleFeedback = pgTable(
   'kb_article_feedback',
   {
-    id: typeIdWithDefault('kb_fb')('id').primaryKey(),
-    articleId: typeIdColumn('kb_article')('article_id')
+    id: typeIdWithDefault('helpcenter_feedback')('id').primaryKey(),
+    articleId: typeIdColumn('helpcenter_article')('article_id')
       .notNull()
-      .references(() => knowledgebaseArticles.id, { onDelete: 'cascade' }),
+      .references(() => helpCenterArticles.id, { onDelete: 'cascade' }),
     principalId: typeIdColumnNullable('principal')('principal_id').references(() => principal.id, {
       onDelete: 'set null',
     }),
@@ -120,34 +120,34 @@ export const knowledgebaseArticleFeedback = pgTable(
 // Relations
 // ============================================
 
-export const knowledgebaseCategoriesRelations = relations(knowledgebaseCategories, ({ many }) => ({
-  articles: many(knowledgebaseArticles),
+export const helpCenterCategoriesRelations = relations(helpCenterCategories, ({ many }) => ({
+  articles: many(helpCenterArticles),
 }))
 
-export const knowledgebaseArticlesRelations = relations(knowledgebaseArticles, ({ one, many }) => ({
-  category: one(knowledgebaseCategories, {
-    fields: [knowledgebaseArticles.categoryId],
-    references: [knowledgebaseCategories.id],
+export const helpCenterArticlesRelations = relations(helpCenterArticles, ({ one, many }) => ({
+  category: one(helpCenterCategories, {
+    fields: [helpCenterArticles.categoryId],
+    references: [helpCenterCategories.id],
   }),
   author: one(principal, {
-    fields: [knowledgebaseArticles.principalId],
+    fields: [helpCenterArticles.principalId],
     references: [principal.id],
-    relationName: 'knowledgebaseArticleAuthor',
+    relationName: 'helpCenterArticleAuthor',
   }),
-  feedback: many(knowledgebaseArticleFeedback),
+  feedback: many(helpCenterArticleFeedback),
 }))
 
-export const knowledgebaseArticleFeedbackRelations = relations(
-  knowledgebaseArticleFeedback,
+export const helpCenterArticleFeedbackRelations = relations(
+  helpCenterArticleFeedback,
   ({ one }) => ({
-    article: one(knowledgebaseArticles, {
-      fields: [knowledgebaseArticleFeedback.articleId],
-      references: [knowledgebaseArticles.id],
+    article: one(helpCenterArticles, {
+      fields: [helpCenterArticleFeedback.articleId],
+      references: [helpCenterArticles.id],
     }),
     principal: one(principal, {
-      fields: [knowledgebaseArticleFeedback.principalId],
+      fields: [helpCenterArticleFeedback.principalId],
       references: [principal.id],
-      relationName: 'knowledgebaseFeedbackPrincipal',
+      relationName: 'helpCenterFeedbackPrincipal',
     }),
   })
 )
