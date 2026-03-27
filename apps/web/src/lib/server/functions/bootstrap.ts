@@ -5,7 +5,7 @@ import { getThemeCookie, type Theme } from '@/lib/shared/theme'
 import { auth } from '@/lib/server/auth/index'
 import { db, principal, eq } from '@/lib/server/db'
 import { config } from '@/lib/server/config'
-import type { Session } from './auth'
+import type { Session, PrincipalType } from './auth'
 import type { TenantSettings } from '@/lib/server/domains/settings'
 import type { SessionId, UserId } from '@quackback/ids'
 
@@ -27,6 +27,13 @@ async function getSessionInternal(): Promise<Session | null> {
       return null
     }
 
+    const userId = session.user.id as UserId
+
+    const principalRecord = await db.query.principal.findFirst({
+      where: eq(principal.userId, userId),
+      columns: { type: true },
+    })
+
     return {
       session: {
         id: session.session.id as SessionId,
@@ -34,15 +41,15 @@ async function getSessionInternal(): Promise<Session | null> {
         token: session.session.token,
         createdAt: session.session.createdAt.toISOString(),
         updatedAt: session.session.updatedAt.toISOString(),
-        userId: session.session.userId as UserId,
+        userId,
       },
       user: {
-        id: session.user.id as UserId,
+        id: userId,
         name: session.user.name,
         email: session.user.email,
         emailVerified: session.user.emailVerified,
         image: session.user.image ?? null,
-        isAnonymous: (session.user as Record<string, unknown>).isAnonymous === true,
+        principalType: (principalRecord?.type as PrincipalType) ?? 'user',
         createdAt: session.user.createdAt.toISOString(),
         updatedAt: session.user.updatedAt.toISOString(),
       },
