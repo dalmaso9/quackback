@@ -1,4 +1,3 @@
-import '@tanstack/react-start/server-only'
 /**
  * Centralized configuration with Zod validation.
  *
