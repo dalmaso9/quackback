@@ -333,11 +333,14 @@ export interface FeatureFlags {
   analytics: boolean
   /** Help center knowledge base */
   helpCenter: boolean
+  /** AI-powered feedback extraction from external sources */
+  aiFeedbackExtraction: boolean
 }
 
 export const DEFAULT_FEATURE_FLAGS: FeatureFlags = {
   analytics: false,
   helpCenter: false,
+  aiFeedbackExtraction: false,
 }
 
 /**
@@ -354,5 +357,9 @@ export const FEATURE_FLAG_REGISTRY: Record<
   helpCenter: {
     label: 'Help Center',
     description: 'Create and manage a knowledge base with categories and articles for your users.',
+  },
+  aiFeedbackExtraction: {
+    label: 'AI Feedback Extraction',
+    description: 'Automatically extract and categorize feedback from connected sources using AI.',
   },
 }
