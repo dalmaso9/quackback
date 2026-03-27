@@ -125,20 +125,6 @@ export const getAnalyticsData = createServerFn({ method: 'GET' })
       }))
       .sort((a, b) => b.count - a.count)
 
-    // -- Source breakdown: sum postsBySource across date range --
-    const sourceTotals = new Map<string, number>()
-    for (const row of currentRows) {
-      if (row.postsBySource) {
-        for (const [source, cnt] of Object.entries(row.postsBySource)) {
-          sourceTotals.set(source, (sourceTotals.get(source) ?? 0) + cnt)
-        }
-      }
-    }
-
-    const sourceBreakdown = Array.from(sourceTotals.entries())
-      .map(([source, count]) => ({ source, count }))
-      .sort((a, b) => b.count - a.count)
-
     // -- Top posts --
     const topPostRows = await db
       .select()
@@ -239,7 +225,6 @@ export const getAnalyticsData = createServerFn({ method: 'GET' })
       dailyStats,
       statusDistribution,
       boardBreakdown,
-      sourceBreakdown,
       topPosts,
       topContributors,
       changelog: {

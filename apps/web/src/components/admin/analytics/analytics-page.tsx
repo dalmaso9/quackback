@@ -66,7 +66,7 @@ export function AnalyticsPage() {
               <Skeleton key={i} className="h-60 rounded-xl" />
             ))}
           </div>
-          <div className="grid grid-cols-5 gap-6">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
             <Skeleton className="col-span-3 h-72 rounded-xl" />
             <Skeleton className="col-span-2 h-72 rounded-xl" />
           </div>

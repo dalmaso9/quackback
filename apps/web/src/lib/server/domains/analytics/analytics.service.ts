@@ -7,12 +7,12 @@
 
 import {
   db,
-  sql,
   eq,
   gte,
   lte,
   and,
   isNull,
+  inArray,
   count,
   ne,
   desc,
@@ -200,7 +200,7 @@ async function refreshTopPosts(): Promise<void> {
         .from(comments)
         .where(
           and(
-            sql`${comments.postId} = ANY(${postIds})`,
+            inArray(comments.postId, postIds),
             gte(comments.createdAt, since),
             isNull(comments.deletedAt)
           )
@@ -212,23 +212,24 @@ async function refreshTopPosts(): Promise<void> {
       }
     }
 
-    // Delete old entries for this period, then insert new ones
-    await db.delete(analyticsTopPosts).where(eq(analyticsTopPosts.period, key))
-
-    if (topPosts.length > 0) {
-      await db.insert(analyticsTopPosts).values(
-        topPosts.map((post, i) => ({
-          period: key,
-          rank: i + 1,
-          postId: post.postId,
-          title: post.title,
-          voteCount: post.voteCount,
-          commentCount: commentCounts[post.postId] ?? 0,
-          boardName: post.boardName,
-          statusName: post.statusName,
-          computedAt: new Date(),
-        }))
-      )
-    }
+    // Replace entries for this period atomically
+    await db.transaction(async (tx) => {
+      await tx.delete(analyticsTopPosts).where(eq(analyticsTopPosts.period, key))
+      if (topPosts.length > 0) {
+        await tx.insert(analyticsTopPosts).values(
+          topPosts.map((post, i) => ({
+            period: key,
+            rank: i + 1,
+            postId: post.postId,
+            title: post.title,
+            voteCount: post.voteCount,
+            commentCount: commentCounts[post.postId] ?? 0,
+            boardName: post.boardName,
+            statusName: post.statusName,
+            computedAt: new Date(),
+          }))
+        )
+      }
+    })
   }
 }
