@@ -32,7 +32,7 @@ export function AnalyticsSummaryCards({ summary, activeMetric, onMetricChange }:
             type="button"
             onClick={() => onMetricChange(key)}
             className={cn(
-              'group relative flex-1 px-5 py-5 text-left transition-colors duration-150',
+              'group relative flex-1 px-5 py-4 text-left transition-colors duration-150',
               !isActive && 'hover:bg-muted/20'
             )}
             style={
