@@ -43,7 +43,7 @@ export function AnalyticsStatusChart({ data }: StatusChartProps) {
             innerRadius={52}
             outerRadius={80}
             strokeWidth={2}
-            stroke="hsl(var(--background))"
+            stroke="var(--background)"
           >
             {sorted.map((entry) => (
               <Cell key={entry.status} fill={entry.color} />

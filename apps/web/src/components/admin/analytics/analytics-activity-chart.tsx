@@ -38,13 +38,13 @@ export function AnalyticsActivityChart({ dailyStats, activeMetric, color }: Acti
       className="aspect-auto h-[260px] w-full"
     >
       <AreaChart data={dailyStats} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
-        <CartesianGrid vertical={false} stroke="hsl(var(--border))" strokeOpacity={0.4} />
+        <CartesianGrid vertical={false} stroke="var(--border)" strokeOpacity={0.4} />
         <XAxis
           dataKey="date"
           tickLine={false}
           axisLine={false}
           tickMargin={10}
-          tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
+          tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }}
           tickFormatter={formatDate}
         />
         <YAxis
@@ -52,7 +52,7 @@ export function AnalyticsActivityChart({ dailyStats, activeMetric, color }: Acti
           axisLine={false}
           tickMargin={8}
           allowDecimals={false}
-          tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
+          tick={{ fontSize: 11, fill: 'var(--muted-foreground)' }}
           width={32}
           domain={[0, (dataMax: number) => Math.max(dataMax, 4)]}
         />

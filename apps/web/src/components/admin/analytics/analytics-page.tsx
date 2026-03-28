@@ -41,7 +41,7 @@ export function AnalyticsPage() {
     placeholderData: keepPreviousData,
   })
 
-  const activeColor = METRICS.find((m) => m.key === activeMetric)?.color ?? 'hsl(var(--chart-1))'
+  const activeColor = METRICS.find((m) => m.key === activeMetric)?.color ?? 'var(--chart-1)'
 
   return (
     <div className="flex h-full bg-background">
