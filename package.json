@@ -2,6 +2,7 @@
   "name": "featurepool",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.58.2",
     "@types/node": "^25.5.0",
     "dotenv-cli": "^11.0.0",
     "eslint": "^10.0.3",
@@ -43,6 +44,7 @@
     "test": "vitest",
     "test:api": "vitest apps/web/src/lib/api/__tests__/api-integration.test.ts",
     "test:e2e": "bun run --filter @featurepool/web test:e2e",
+    "typecheck": "bun run --filter @featurepool/web typecheck && bun run --filter @featurepool/ids typecheck",
     "db:generate": "bun run --cwd packages/db db:generate",
     "db:migrate": "bun run --cwd packages/db db:migrate",
     "db:studio": "bun run --cwd packages/db db:studio",

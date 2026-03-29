@@ -16,6 +16,27 @@ import { config } from '@/lib/server/config'
 
 /** Temporary storage for magic link tokens during invitation flow */
 const pendingMagicLinkTokens = new Map<string, { token: string; timestamp: number }>()
+function isLoopbackHostname(hostname: string): boolean {
+  const normalized = hostname.toLowerCase()
+  return (
+    normalized === 'localhost' ||
+    normalized.endsWith('.localhost') ||
+    normalized === '127.0.0.1' ||
+    normalized === '::1' ||
+    normalized === '[::1]'
+  )
+}
+
+function getDevelopmentTrustedOrigin(request?: Request): string | null {
+  if (!request) return null
+
+  try {
+    const url = new URL(request.url)
+    return isLoopbackHostname(url.hostname) ? url.origin : null
+  } catch {
+    return null
+  }
+}
 
 export function storeMagicLinkToken(email: string, token: string): void {
   const normalizedEmail = email.toLowerCase()
@@ -116,8 +137,27 @@ async function createAuth() {
     }
   }
 
-  // BASE_URL is required for auth callbacks and redirects
-  const baseURL = config.baseUrl
+  const configuredBaseUrl = config.baseUrl
+  const isDevelopment = config.nodeEnv === 'development'
+  // Keep a concrete base URL for Better Auth plugin initialization.
+  // Some plugins (notably the OAuth provider) read ctx.baseURL during init and
+  // currently break when Better Auth is configured with a dynamic baseURL object.
+  const baseURL = configuredBaseUrl
+  const trustedOrigins = isDevelopment
+    ? async (request?: Request) => {
+        const requestOrigin = getDevelopmentTrustedOrigin(request)
+        return requestOrigin && requestOrigin !== configuredBaseUrl
+          ? [configuredBaseUrl, requestOrigin]
+          : [configuredBaseUrl]
+      }
+    : [configuredBaseUrl]
+
+  //console.log("ENV CHECK:", {
+  //  secret: process.env.BETTER_AUTH_SECRET,
+  //  databaseUrl: process.env.DATABASE_URL,
+  //})
+
+  //try{
 
   return betterAuth({
     // Use SECRET_KEY for auth signing (Better Auth defaults to BETTER_AUTH_SECRET)
@@ -153,7 +193,7 @@ async function createAuth() {
     baseURL,
 
     // Trusted origins for CORS/CSRF protection
-    trustedOrigins: [baseURL],
+    trustedOrigins,
 
     // Password auth — default sign-in method for self-hosted deployments
     emailAndPassword: {
@@ -205,7 +245,7 @@ async function createAuth() {
       defaultCookieAttributes: {
         sameSite: 'lax',
         // Secure cookies only when served over HTTPS
-        secure: baseURL.startsWith('https://'),
+        secure: configuredBaseUrl.startsWith('https://'),
       },
     },
 
@@ -323,7 +363,7 @@ async function createAuth() {
         ],
 
         // MCP endpoint is a valid token audience
-        validAudiences: [`${baseURL}/api/mcp`],
+        validAudiences: [`${configuredBaseUrl}/api/mcp`],
 
         // Better Auth warns that /.well-known/oauth-authorization-server/api/auth
         // doesn't exist, but we intentionally serve metadata at the root well-known
@@ -541,6 +581,11 @@ async function createAuth() {
       tanstackStartCookies(),
     ],
   })
+
+  //} catch (err) {
+  //  console.error("🔥 BETTER AUTH INIT ERROR:", err)
+  //  throw err
+  //}
 }
 
 /**

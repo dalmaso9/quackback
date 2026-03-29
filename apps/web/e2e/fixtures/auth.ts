@@ -6,7 +6,7 @@ import { test as base, expect } from '@playwright/test'
 export const TEST_ADMIN = {
   email: 'demo@example.com',
   name: 'Demo User',
-  password: 'demo1234',
+  password: 'password',
 }
 
 export const TEST_ORG = {

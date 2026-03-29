@@ -41,6 +41,20 @@ else
   echo -e "${GREEN}.env already exists${NC}"
 fi
 
+# Fix legacy defaults that conflict with the app port (5433) or the user's
+# local PostgreSQL (commonly 5432). Keep the project DB on a dedicated port.
+if grep -q '^DATABASE_URL="postgresql://postgres:password@localhost:5433/featurepool"$' .env 2>/dev/null || \
+   grep -q '^DATABASE_URL="postgresql://postgres:password@localhost:5432/featurepool"$' .env 2>/dev/null; then
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    sed -i '' 's#^DATABASE_URL="postgresql://postgres:password@localhost:5433/featurepool"$#DATABASE_URL="postgresql://postgres:password@localhost:5435/featurepool"#' .env
+    sed -i '' 's#^DATABASE_URL="postgresql://postgres:password@localhost:5432/featurepool"$#DATABASE_URL="postgresql://postgres:password@localhost:5435/featurepool"#' .env
+  else
+    sed -i 's#^DATABASE_URL="postgresql://postgres:password@localhost:5433/featurepool"$#DATABASE_URL="postgresql://postgres:password@localhost:5435/featurepool"#' .env
+    sed -i 's#^DATABASE_URL="postgresql://postgres:password@localhost:5432/featurepool"$#DATABASE_URL="postgresql://postgres:password@localhost:5435/featurepool"#' .env
+  fi
+  echo -e "${GREEN}Updated DATABASE_URL to localhost:5435${NC}"
+fi
+
 # Generate SECRET_KEY if empty
 if grep -q '^SECRET_KEY=""' .env 2>/dev/null; then
   SECRET=$(openssl rand -hex 32)
@@ -54,12 +68,12 @@ fi
 
 echo ""
 
-# Check if port 5432 is in use by another container
-if docker ps --format '{{.Names}}' | grep -v featurepool-db | xargs -I {} docker port {} 2>/dev/null | grep -q "5432"; then
-  echo -e "${YELLOW}Port 5432 is in use by another container${NC}"
+# Check if port 5435 is in use by another container
+if docker ps --format '{{.Names}}' | grep -v featurepool-db | xargs -I {} docker port {} 2>/dev/null | grep -q "5435"; then
+  echo -e "${YELLOW}Port 5435 is in use by another container${NC}"
   echo "Stopping conflicting containers..."
-  docker ps --format '{{.ID}} {{.Names}} {{.Ports}}' | grep "5432->" | grep -v featurepool-db | awk '{print $1}' | xargs -r docker stop
-  echo -e "${GREEN}Cleared port 5432${NC}"
+  docker ps --format '{{.ID}} {{.Names}} {{.Ports}}' | grep "5435->" | grep -v featurepool-db | awk '{print $1}' | xargs -r docker stop
+  echo -e "${GREEN}Cleared port 5435${NC}"
 fi
 
 # Start PostgreSQL, MinIO, and Dragonfly (minio-init handles bucket creation automatically)
