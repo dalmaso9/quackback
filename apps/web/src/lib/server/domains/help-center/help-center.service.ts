@@ -22,7 +22,7 @@ import {
   sql,
   inArray,
 } from '@/lib/server/db'
-import type { HelpCenterCategoryId, HelpCenterArticleId, PrincipalId } from '@quackback/ids'
+import type { HelpCenterCategoryId, HelpCenterArticleId, PrincipalId } from '@featurepool/ids'
 import { NotFoundError, ValidationError } from '@/lib/shared/errors'
 import { markdownToTiptapJson } from '@/lib/server/markdown-tiptap'
 import { slugify } from '@/lib/shared/utils'

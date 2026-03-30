@@ -9,7 +9,7 @@ export const Route = createFileRoute('/_portal/help/')({
     if (!flags?.helpCenter) throw notFound()
 
     return {
-      workspaceName: context.settings?.name ?? 'Quackback',
+      workspaceName: context.settings?.name ?? 'Featurepool',
       baseUrl: context.baseUrl ?? '',
     }
   },

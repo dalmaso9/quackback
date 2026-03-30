@@ -6,7 +6,7 @@ import { LightBulbIcon } from '@heroicons/react/24/outline'
 import { VoteButton } from '@/components/public/vote-button'
 import type { SimilarPost } from '@/lib/client/hooks/use-similar-posts'
 import { cn } from '@/lib/shared/utils'
-import type { PostId } from '@quackback/ids'
+import type { PostId } from '@featurepool/ids'
 
 interface SimilarPostsCardProps {
   posts: SimilarPost[]
@@ -55,7 +55,7 @@ export function SimilarPostsCard({
           <div ref={contentRef}>
             <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground mb-2">
               <LightBulbIcon className="h-3.5 w-3.5 text-muted-foreground/60" />
-              Similar ideas
+              Solicitações parecidas da comunidade
             </p>
             <div className="space-y-1.5">
               {posts.slice(0, MAX_SIMILAR_POSTS).map((post) => (

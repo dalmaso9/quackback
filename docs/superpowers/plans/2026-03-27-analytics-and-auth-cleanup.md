@@ -454,8 +454,8 @@ async function handleAnonymousIdentify() {
   // Don't eagerly create anonymous session — it will be created lazily
   // on first write action (vote, comment, post) via ensureSessionThen.
   setUser(null)
-  window.parent.postMessage({ type: 'quackback:identify-result', success: true, user: null }, '*')
-  window.parent.postMessage({ type: 'quackback:auth-change', user: null }, '*')
+  window.parent.postMessage({ type: 'featurepool:identify-result', success: true, user: null }, '*')
+  window.parent.postMessage({ type: 'featurepool:auth-change', user: null }, '*')
 }
 ```
 
@@ -588,7 +588,7 @@ Create `packages/db/src/schema/analytics.ts`:
 
 ```ts
 import { pgTable, date, integer, jsonb, timestamp, text, primaryKey } from 'drizzle-orm/pg-core'
-import { typeIdColumn } from '@quackback/ids/drizzle'
+import { typeIdColumn } from '@featurepool/ids/drizzle'
 
 /**
  * Pre-aggregated daily analytics stats.

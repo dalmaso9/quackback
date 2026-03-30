@@ -26,7 +26,7 @@ import {
   HelpCenterMetadataSidebarContent,
 } from './help-center-metadata-sidebar'
 import { Route } from '@/routes/admin/help-center'
-import type { HelpCenterArticleId } from '@quackback/ids'
+import type { HelpCenterArticleId } from '@featurepool/ids'
 import type { JSONContent } from '@tiptap/react'
 
 interface ArticleModalProps {

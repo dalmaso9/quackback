@@ -24,7 +24,7 @@ import {
   segments,
   asc,
 } from '@/lib/server/db'
-import type { PrincipalId, SegmentId } from '@quackback/ids'
+import type { PrincipalId, SegmentId } from '@featurepool/ids'
 import { InternalError } from '@/lib/shared/errors'
 import type {
   PortalUserDetail,

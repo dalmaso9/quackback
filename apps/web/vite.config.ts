@@ -68,9 +68,9 @@ export default defineConfig(({ mode }) => {
           client: {
             specifiers: [
               'postgres',
-              '@quackback/db',
-              '@quackback/db/client',
-              '@quackback/db/schema',
+              '@featurepool/db',
+              '@featurepool/db/client',
+              '@featurepool/db/schema',
             ],
           },
         },

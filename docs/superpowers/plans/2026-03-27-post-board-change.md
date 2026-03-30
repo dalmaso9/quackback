@@ -55,7 +55,7 @@ Create `apps/web/src/lib/server/domains/posts/__tests__/post-board.test.ts`:
 
 ```typescript
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import type { PostId, BoardId, PrincipalId } from '@quackback/ids'
+import type { PostId, BoardId, PrincipalId } from '@featurepool/ids'
 
 const createActivity = vi.fn()
 const mockPostsFindFirst = vi.fn()
@@ -198,7 +198,7 @@ Create `apps/web/src/lib/server/domains/posts/post.board.ts`:
  */
 
 import { db, posts, boards, eq } from '@/lib/server/db'
-import { type PostId, type BoardId, type UserId, type PrincipalId } from '@quackback/ids'
+import { type PostId, type BoardId, type UserId, type PrincipalId } from '@featurepool/ids'
 import { NotFoundError } from '@/lib/shared/errors'
 import { createActivity } from '@/lib/server/domains/activity/activity.service'
 
@@ -295,10 +295,10 @@ In `apps/web/src/lib/server/functions/posts.ts`:
 import { changeBoard } from '@/lib/server/domains/posts/post.board'
 ```
 
-2. Add `BoardId` to the `@quackback/ids` import if not already there:
+2. Add `BoardId` to the `@featurepool/ids` import if not already there:
 
 ```typescript
-import type { PostId, StatusId, TagId, BoardId, UserId, PrincipalId } from '@quackback/ids'
+import type { PostId, StatusId, TagId, BoardId, UserId, PrincipalId } from '@featurepool/ids'
 ```
 
 (Check the existing import — it likely already has `UserId` and `PrincipalId`; add `BoardId` if missing.)
@@ -369,7 +369,7 @@ Add the following import near the top of `mutations/posts.ts` (alongside the oth
 import { changePostBoardFn } from '@/lib/server/functions/posts'
 ```
 
-Add `BoardId` to the `@quackback/ids` import in this file.
+Add `BoardId` to the `@featurepool/ids` import in this file.
 
 Add the hook after `useChangePostStatusId` (around line 130):
 
@@ -454,10 +454,10 @@ Wait — check the file's current imports. The file imports from `@heroicons/rea
 import { CheckIcon } from '@heroicons/react/24/solid'
 ```
 
-2. Add `BoardId` to the `@quackback/ids` import (it currently imports `PostId, StatusId, TagId, RoadmapId`):
+2. Add `BoardId` to the `@featurepool/ids` import (it currently imports `PostId, StatusId, TagId, RoadmapId`):
 
 ```typescript
-import type { PostId, StatusId, TagId, RoadmapId, BoardId } from '@quackback/ids'
+import type { PostId, StatusId, TagId, RoadmapId, BoardId } from '@featurepool/ids'
 ```
 
 - [ ] **Step 2: Update `board` prop type and add new props**
@@ -611,7 +611,7 @@ import {
 } from '@/lib/client/mutations'
 ```
 
-2. Add `BoardId` to the `@quackback/ids` import:
+2. Add `BoardId` to the `@featurepool/ids` import:
 
 ```typescript
 import {
@@ -621,7 +621,7 @@ import {
   type RoadmapId,
   type CommentId,
   type BoardId, // ← add
-} from '@quackback/ids'
+} from '@featurepool/ids'
 ```
 
 3. Add the boards query alongside the existing queries (after `roadmaps` query):

@@ -10,7 +10,7 @@ import {
   customType,
 } from 'drizzle-orm/pg-core'
 import { relations, sql } from 'drizzle-orm'
-import { typeIdWithDefault, typeIdColumn, typeIdColumnNullable } from '@quackback/ids/drizzle'
+import { typeIdWithDefault, typeIdColumn, typeIdColumnNullable } from '@featurepool/ids/drizzle'
 import { principal } from './auth'
 import type { TiptapContent } from '../types'
 

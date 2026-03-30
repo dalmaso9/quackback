@@ -15,7 +15,7 @@ import {
   roadmaps,
   principal as principalTable,
 } from '@/lib/server/db'
-import { toUuid, type PostId, type CommentId, type PrincipalId } from '@quackback/ids'
+import { toUuid, type PostId, type CommentId, type PrincipalId } from '@featurepool/ids'
 import { buildCommentTree, toStatusChange } from '@/lib/shared'
 import type { PublicPostDetail, PublicComment, PinnedComment } from './post.types'
 import { resolveAvatarUrl, parseJson, parseAvatarData } from './post.public'
@@ -148,7 +148,7 @@ export async function getPublicPostDetail(
   }
 
   const tagsResult = parseJson<
-    Array<{ id: import('@quackback/ids').TagId; name: string; color: string }>
+    Array<{ id: import('@featurepool/ids').TagId; name: string; color: string }>
   >(postResult.tagsJson)
   const roadmapsResult = parseJson<Array<{ id: string; name: string; slug: string }>>(
     postResult.roadmapsJson

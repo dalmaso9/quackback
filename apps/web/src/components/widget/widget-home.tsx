@@ -227,7 +227,7 @@ export function WidgetHome({
         onPostSelect(postId)
       } else {
         window.parent.postMessage(
-          { type: 'quackback:navigate', url: `${window.location.origin}/auth/login` },
+          { type: 'featurepool:navigate', url: `${window.location.origin}/auth/login` },
           '*'
         )
       }
@@ -300,7 +300,7 @@ export function WidgetHome({
       } else if (!canPost) {
         if (hmacRequired) {
           window.parent.postMessage(
-            { type: 'quackback:navigate', url: `${window.location.origin}/auth/login` },
+            { type: 'featurepool:navigate', url: `${window.location.origin}/auth/login` },
             '*'
           )
           setIsSubmitting(false)

@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { publicChangelogQueries } from '@/lib/client/queries/changelog'
 import { RichTextContent, isRichTextContent } from '@/components/ui/rich-text-editor'
-import type { ChangelogId } from '@quackback/ids'
+import type { ChangelogId } from '@featurepool/ids'
 import type { JSONContent } from '@tiptap/react'
 import { WidgetPortalTitle } from './widget-portal-title'
 
@@ -26,7 +26,7 @@ export function WidgetChangelogDetail({ entryId }: WidgetChangelogDetailProps) {
   const handleViewOnPortal = useCallback(() => {
     if (!changelogEntryId) return
     const url = `${window.location.origin}/changelog/${changelogEntryId}`
-    window.parent.postMessage({ type: 'quackback:navigate', url }, '*')
+    window.parent.postMessage({ type: 'featurepool:navigate', url }, '*')
   }, [changelogEntryId])
 
   if (isLoading) {

@@ -17,7 +17,7 @@ import { HelpCenterListItem } from './help-center-list-item'
 import { helpCenterQueries } from '@/lib/client/queries/help-center'
 import { useDeleteArticle } from '@/lib/client/mutations/help-center'
 import { Route } from '@/routes/admin/help-center'
-import type { HelpCenterArticleId } from '@quackback/ids'
+import type { HelpCenterArticleId } from '@featurepool/ids'
 import { QuestionMarkCircleIcon } from '@heroicons/react/24/outline'
 
 function ArticleSkeleton() {

@@ -114,7 +114,7 @@
 - [ ] **Step 4: Verify types**
 
   ```bash
-  cd /home/james/quackback && bun run typecheck 2>&1 | head -30
+  cd /home/james/featurepool && bun run typecheck 2>&1 | head -30
   ```
 
   Expected: no new errors.

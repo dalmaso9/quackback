@@ -5,7 +5,7 @@ import {
   HandThumbDownIcon as HandThumbDownSolid,
 } from '@heroicons/react/24/solid'
 import { recordArticleFeedbackFn } from '@/lib/server/functions/help-center'
-import type { HelpCenterArticleId } from '@quackback/ids'
+import type { HelpCenterArticleId } from '@featurepool/ids'
 
 interface HelpCenterArticleFeedbackProps {
   articleId: string

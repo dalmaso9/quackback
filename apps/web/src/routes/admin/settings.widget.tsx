@@ -288,7 +288,7 @@ function WidgetAppearanceControls({
 
       <div className="p-5 space-y-4">
         <div>
-          <h3 className="text-sm font-medium text-foreground">Default Board</h3>
+          <h3 className="text-sm font-medium text-foreground">Board padrãod</h3>
           <p className="text-xs text-muted-foreground mt-0.5">
             Para qual board os novos posts enviados pelo widget irão
           </p>

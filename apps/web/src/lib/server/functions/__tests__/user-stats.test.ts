@@ -40,7 +40,7 @@ vi.mock('@/lib/server/db', () => {
   }
 })
 
-vi.mock('@quackback/ids', () => ({ generateId: vi.fn() }))
+vi.mock('@featurepool/ids', () => ({ generateId: vi.fn() }))
 vi.mock('./auth', () => ({ getSession: vi.fn() }))
 vi.mock('./workspace', () => ({ getCurrentUserRole: vi.fn() }))
 vi.mock('@/lib/server/domains/principals/principal.service', () => ({

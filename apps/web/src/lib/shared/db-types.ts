@@ -10,7 +10,7 @@
  * import { REACTION_EMOJIS } from '@/lib/shared/db-types'
  */
 
-import type { SetupState } from '@quackback/db/types'
+import type { SetupState } from '@featurepool/db/types'
 
 // Re-export types only to keep this module client-safe.
 export type * from '@featurepool/db/types'

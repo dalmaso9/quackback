@@ -8,7 +8,7 @@
 
 **Tech Stack:** Vanilla JS string template (SDK), React/TSX (widget shell), Vitest for tests.
 
-**Worktree:** `/home/james/quackback/.worktrees/trigger-toggle` on branch `feat/trigger-as-toggle`
+**Worktree:** `/home/james/featurepool/.worktrees/trigger-toggle` on branch `feat/trigger-as-toggle`
 
 ---
 
@@ -73,7 +73,7 @@ it('updates aria-label when open and closed', () => {
 - [ ] **Step 2: Run tests to confirm they fail**
 
 ```bash
-cd /home/james/quackback/.worktrees/trigger-toggle
+cd /home/james/featurepool/.worktrees/trigger-toggle
 bun run test apps/web/src/lib/shared/widget/__tests__/sdk-template.test.ts 2>&1 | tail -20
 ```
 
@@ -82,7 +82,7 @@ Expected: 7 new test failures, all existing tests still pass.
 - [ ] **Step 3: Commit failing tests**
 
 ```bash
-cd /home/james/quackback/.worktrees/trigger-toggle
+cd /home/james/featurepool/.worktrees/trigger-toggle
 git add apps/web/src/lib/shared/widget/__tests__/sdk-template.test.ts
 git commit -m "test: add failing tests for trigger-as-toggle behavior"
 ```
@@ -210,7 +210,7 @@ if (trigger && isIdentified && !(config && config.trigger === false)) {
 - [ ] **Step 7: Run the tests**
 
 ```bash
-cd /home/james/quackback/.worktrees/trigger-toggle
+cd /home/james/featurepool/.worktrees/trigger-toggle
 bun run test apps/web/src/lib/shared/widget/__tests__/sdk-template.test.ts 2>&1 | tail -15
 ```
 
@@ -219,7 +219,7 @@ Expected: All tests pass (existing 15 + new 7 = 22 passing).
 - [ ] **Step 8: Commit**
 
 ```bash
-cd /home/james/quackback/.worktrees/trigger-toggle
+cd /home/james/featurepool/.worktrees/trigger-toggle
 git add apps/web/src/lib/shared/widget/sdk-template.ts
 git commit -m "feat: position panel above trigger, swap icon on open/close"
 ```
@@ -275,7 +275,7 @@ Find and delete this entire block from the render:
 - [ ] **Step 3: Run full test suite to confirm nothing broke**
 
 ```bash
-cd /home/james/quackback/.worktrees/trigger-toggle
+cd /home/james/featurepool/.worktrees/trigger-toggle
 bun run test 2>&1 | tail -8
 ```
 
@@ -284,7 +284,7 @@ Expected: 1141+ tests passing, 0 failures.
 - [ ] **Step 4: Run typecheck**
 
 ```bash
-cd /home/james/quackback/.worktrees/trigger-toggle
+cd /home/james/featurepool/.worktrees/trigger-toggle
 bun run typecheck 2>&1 | tail -10
 ```
 
@@ -293,7 +293,7 @@ Expected: No errors.
 - [ ] **Step 5: Commit**
 
 ```bash
-cd /home/james/quackback/.worktrees/trigger-toggle
+cd /home/james/featurepool/.worktrees/trigger-toggle
 git add apps/web/src/components/widget/widget-shell.tsx
 git commit -m "feat: remove X close button from widget header (trigger now closes)"
 ```
@@ -305,7 +305,7 @@ git commit -m "feat: remove X close button from widget header (trigger now close
 - [ ] **Step 1: Push branch**
 
 ```bash
-cd /home/james/quackback/.worktrees/trigger-toggle
+cd /home/james/featurepool/.worktrees/trigger-toggle
 git push -u origin feat/trigger-as-toggle
 ```
 

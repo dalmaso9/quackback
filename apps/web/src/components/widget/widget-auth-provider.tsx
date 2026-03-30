@@ -143,10 +143,10 @@ export function WidgetAuthProvider({
         )
       }
       window.parent.postMessage(
-        { type: 'quackback:identify-result', success: true, user: result.user },
+        { type: 'featurepool:identify-result', success: true, user: result.user },
         '*'
       )
-      window.parent.postMessage({ type: 'quackback:auth-change', user: result.user }, '*')
+      window.parent.postMessage({ type: 'featurepool:auth-change', user: result.user }, '*')
     },
     [storeToken, queryClient]
   )
@@ -192,10 +192,10 @@ export function WidgetAuthProvider({
     if (portalUser) {
       setUser(portalUser)
       window.parent.postMessage(
-        { type: 'quackback:identify-result', success: true, user: portalUser },
+        { type: 'featurepool:identify-result', success: true, user: portalUser },
         '*'
       )
-      window.parent.postMessage({ type: 'quackback:auth-change', user: portalUser }, '*')
+      window.parent.postMessage({ type: 'featurepool:auth-change', user: portalUser }, '*')
     }
   }, [portalSessionToken, portalUser, storeToken])
 
@@ -260,10 +260,10 @@ export function WidgetAuthProvider({
       // on first write action (vote, comment, post) via ensureSessionThen.
       setUser(null)
       window.parent.postMessage(
-        { type: 'quackback:identify-result', success: true, user: null },
+        { type: 'featurepool:identify-result', success: true, user: null },
         '*'
       )
-      window.parent.postMessage({ type: 'quackback:auth-change', user: null }, '*')
+      window.parent.postMessage({ type: 'featurepool:auth-change', user: null }, '*')
     }
 
     function handleMessage(event: MessageEvent) {
@@ -309,10 +309,10 @@ export function WidgetAuthProvider({
           case 'skip':
             // Portal session takes precedence — ack without changing state
             window.parent.postMessage(
-              { type: 'quackback:identify-result', success: true, user: user ?? null },
+              { type: 'featurepool:identify-result', success: true, user: user ?? null },
               '*'
             )
-            window.parent.postMessage({ type: 'quackback:auth-change', user: user ?? null }, '*')
+            window.parent.postMessage({ type: 'featurepool:auth-change', user: user ?? null }, '*')
             break
         }
       }

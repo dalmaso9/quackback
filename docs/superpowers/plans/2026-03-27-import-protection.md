@@ -26,12 +26,12 @@ After all tasks, the config will be:
 importProtection: {
   behavior: { dev: 'error', build: 'error' },
   client: {
-    specifiers: ['postgres', '@quackback/db', '@quackback/db/client', '@quackback/db/schema'],
+    specifiers: ['postgres', '@featurepool/db', '@featurepool/db/client', '@featurepool/db/schema'],
   },
 },
 ```
 
-Four specifiers. `@quackback/db/types` is allowed through (safe — no runtime code).
+Four specifiers. `@featurepool/db/types` is allowed through (safe — no runtime code).
 
 ---
 
@@ -39,7 +39,7 @@ Four specifiers. `@quackback/db/types` is allowed through (safe — no runtime c
 
 ### Task 1: Fix the postgres leak in feedback-types.ts
 
-The confirmed leak chain: `feedback-types.ts` → `import type from @/lib/server/db` → `export from @quackback/db` → `export * from ./src/schema` → postgres. Even though it's `import type`, the barrel re-export in db.ts causes Vite to resolve the entire module graph.
+The confirmed leak chain: `feedback-types.ts` → `import type from @/lib/server/db` → `export from @featurepool/db` → `export * from ./src/schema` → postgres. Even though it's `import type`, the barrel re-export in db.ts causes Vite to resolve the entire module graph.
 
 **Files:**
 
@@ -47,7 +47,7 @@ The confirmed leak chain: `feedback-types.ts` → `import type from @/lib/server
 
 - [ ] **Step 1: Update the import**
 
-`RawFeedbackAuthor` and `RawFeedbackContent` are already available via `@quackback/db/types`, which `lib/shared/db-types.ts` re-exports with `export type *`.
+`RawFeedbackAuthor` and `RawFeedbackContent` are already available via `@featurepool/db/types`, which `lib/shared/db-types.ts` re-exports with `export type *`.
 
 ```typescript
 // Before (line 8):
@@ -121,7 +121,7 @@ git commit -m "Add server-only markers to db, config, encryption, redis"
 importProtection: {
   behavior: { dev: 'error', build: 'error' },
   client: {
-    specifiers: ['postgres', '@quackback/db', '@quackback/db/client', '@quackback/db/schema'],
+    specifiers: ['postgres', '@featurepool/db', '@featurepool/db/client', '@featurepool/db/schema'],
   },
 },
 ```
@@ -129,13 +129,13 @@ importProtection: {
 This blocks:
 
 - `postgres` — catches any transitive import of the postgres driver
-- `@quackback/db` — main barrel (schema tables depend on postgres)
-- `@quackback/db/client` — direct database client
-- `@quackback/db/schema` — schema tables (depend on client.ts → postgres)
+- `@featurepool/db` — main barrel (schema tables depend on postgres)
+- `@featurepool/db/client` — direct database client
+- `@featurepool/db/schema` — schema tables (depend on client.ts → postgres)
 
 This allows through:
 
-- `@quackback/db/types` — type-only, no runtime code, no postgres dependency
+- `@featurepool/db/types` — type-only, no runtime code, no postgres dependency
 
 - [ ] **Step 2: Verify dev server starts clean**
 
@@ -146,7 +146,7 @@ Expected: No import protection errors.
 
 ```bash
 git add apps/web/vite.config.ts
-git commit -m "Import protection: block postgres and unsafe @quackback/db subpaths"
+git commit -m "Import protection: block postgres and unsafe @featurepool/db subpaths"
 ```
 
 ---
@@ -158,13 +158,13 @@ git commit -m "Import protection: block postgres and unsafe @quackback/db subpat
 Temporarily add to `apps/web/src/components/admin/feedback/feedback-types.ts`:
 
 ```typescript
-import { db } from '@quackback/db/client'
+import { db } from '@featurepool/db/client'
 console.log(db)
 ```
 
 - [ ] **Step 2: Verify it's caught**
 
-Load the app in the browser. Expected: Vite error about `@quackback/db/client` being blocked in client code.
+Load the app in the browser. Expected: Vite error about `@featurepool/db/client` being blocked in client code.
 
 - [ ] **Step 3: Revert the test**
 
@@ -189,7 +189,7 @@ The `Webhook`, `CreateWebhookInput`, `CreateWebhookResult`, `UpdateWebhookInput`
 - [ ] **Step 1: Create webhook.types.ts**
 
 ```typescript
-import type { WebhookId, PrincipalId } from '@quackback/ids'
+import type { WebhookId, PrincipalId } from '@featurepool/ids'
 
 export interface Webhook {
   id: WebhookId
@@ -287,7 +287,7 @@ Same pattern as Task 5. `ApiKey`, `ApiKeyId`, `CreateApiKeyInput`, `CreateApiKey
 - [ ] **Step 1: Create api-key.types.ts**
 
 ```typescript
-import type { TypeId, PrincipalId } from '@quackback/ids'
+import type { TypeId, PrincipalId } from '@featurepool/ids'
 
 export type ApiKeyId = TypeId<'api_key'>
 

@@ -17,7 +17,7 @@ import {
   unpublishArticle,
   deleteArticle,
 } from '@/lib/server/domains/help-center/help-center.service'
-import type { HelpCenterArticleId } from '@quackback/ids'
+import type { HelpCenterArticleId } from '@featurepool/ids'
 
 const updateArticleBody = z.object({
   categoryId: z.string().optional(),

@@ -26,7 +26,7 @@ export const Route = createFileRoute('/_portal/help/$categorySlug/$articleSlug')
       categorySlug: params.categorySlug,
       articleTitle: article.title,
       categoryName: article.category.name,
-      workspaceName: context.settings?.name ?? 'Quackback',
+      workspaceName: context.settings?.name ?? 'Featurepool',
       baseUrl: context.baseUrl ?? '',
     }
   },
