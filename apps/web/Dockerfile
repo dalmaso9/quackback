@@ -30,6 +30,7 @@ COPY packages ./packages
 COPY scripts ./scripts
 
 # Install all dependencies (including devDependencies for build)
+ENV HUSKY=0
 RUN bun install --frozen-lockfile
 
 # Set build-time environment
@@ -80,8 +81,8 @@ ENV BUN_INSTALL_CACHE_DIR=/app/.cache
 # Set migrations folder for Docker context
 ENV MIGRATIONS_FOLDER=/app/packages/db/drizzle
 
-EXPOSE 5433
-ENV PORT=5433
+EXPOSE 5435
+ENV PORT=5435
 ENV HOSTNAME="0.0.0.0"
 
 # Run migrations on startup, then start the app

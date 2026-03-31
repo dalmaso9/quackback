@@ -35,7 +35,8 @@ export default defineConfig(({ mode }) => {
       __BUILD_TIME__: JSON.stringify(buildInfo.buildTime),
     },
     server: {
-      port: 5433,
+      port: Number(process.env.PORT || 3001),
+      cors: mode === 'development',
       allowedHosts: true,
       hmr: {
         overlay: false,
@@ -61,6 +62,18 @@ export default defineConfig(({ mode }) => {
         srcDirectory: 'src',
         router: {
           routesDirectory: 'routes',
+          routeFileIgnorePattern: '.*\\.test\\..*|__tests__',
+        },
+        importProtection: {
+          behavior: { dev: 'error', build: 'error' },
+          client: {
+            specifiers: [
+              'postgres',
+              '@featurepool/db',
+              '@featurepool/db/client',
+              '@featurepool/db/schema',
+            ],
+          },
         },
       }),
       viteReact(),

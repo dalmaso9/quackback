@@ -88,6 +88,12 @@ describe('buildWidgetSDK', () => {
     expect(result).toContain('Feedback Widget')
   })
 
+  it('should add CSS classes to iframe wrapper and iframe', () => {
+    const result = buildWidgetSDK('https://feedback.acme.com')
+    expect(result).toContain('featurepool-widget-iframe-wrapper')
+    expect(result).toContain('featurepool-widget-iframe')
+  })
+
   it('should support mobile detection', () => {
     const result = buildWidgetSDK('https://feedback.acme.com')
     expect(result).toContain('window.innerWidth < 640')

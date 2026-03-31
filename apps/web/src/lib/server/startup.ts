@@ -12,7 +12,7 @@ export function logStartupBanner(): void {
   const runtime =
     typeof globalThis.Bun !== 'undefined' ? `bun ${Bun.version}` : `node ${process.version}`
   const env = process.env.NODE_ENV ?? 'development'
-  const port = process.env.PORT ?? '5433'
+  const port = process.env.PORT ?? '5435'
   const baseUrl = process.env.BASE_URL ?? `http://localhost:${port}`
 
   const lines = [
@@ -41,6 +41,11 @@ export function logStartupBanner(): void {
   import('./domains/feedback/queues/feedback-ai-queue')
     .then(({ initFeedbackAiWorker }) => initFeedbackAiWorker())
     .catch((err) => console.error('[Startup] Failed to init feedback AI worker:', err))
+
+  // Initialize analytics worker (hourly stats refresh)
+  import('./domains/analytics/analytics-queue')
+    .then(({ initAnalyticsWorker }) => initAnalyticsWorker())
+    .catch((err) => console.error('[Startup] Failed to init analytics worker:', err))
 
   // Periodic feedback maintenance (stuck-item recovery every 15min, suggestion expiry daily)
   Promise.all([
