@@ -5,8 +5,8 @@ node_modules
 # Build outputs
 .next
 **/.next
-.output
-**/.output
+#.output
+#**/.output
 dist
 **/dist
 .turbo
